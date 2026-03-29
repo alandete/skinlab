@@ -1,0 +1,605 @@
+/* ============================================
+   SkinLab – Admin Styles
+   Sidebar layout, Mobile First
+   ============================================ */
+
+/* ── Layout ── */
+.admin-page {
+    background: #FFFFFF;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.admin-layout {
+    display: flex;
+    height: 100%;
+}
+
+/* ── Sidebar ── */
+.admin-sidebar {
+    display: none;
+    flex-direction: column;
+    width: 15rem;
+    background: var(--sl-secondary);
+    color: #FFFFFF;
+    flex-shrink: 0;
+    overflow-y: auto;
+}
+
+@media (min-width: 768px) {
+    .admin-sidebar {
+        display: flex;
+    }
+}
+
+/* Mobile: overlay flotante */
+.admin-sidebar.sidebar-open {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 300;
+    box-shadow: var(--sl-shadow-lg);
+}
+
+/* Brand */
+.admin-sidebar-header {
+    padding: 1.25rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+}
+
+.admin-sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    color: #FFFFFF;
+    font-size: 1.0625rem;
+    font-weight: 700;
+}
+
+.admin-sidebar-brand:hover {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.admin-sidebar-brand i {
+    font-size: 1.25rem;
+}
+
+/* Nav */
+.admin-sidebar-nav {
+    flex: 1;
+    padding: 0.75rem 0;
+}
+
+.admin-sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+.admin-sidebar-nav a,
+.admin-nav-disabled {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6875rem 1.25rem;
+    font-size: 0.9375rem;
+    color: rgba(255, 255, 255, 0.7);
+    transition: all var(--sl-transition-fast);
+    border-left: 3px solid transparent;
+    cursor: pointer;
+}
+
+.admin-sidebar-nav a:hover {
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.admin-sidebar-nav a.active {
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.12);
+    border-left-color: var(--sl-primary);
+    font-weight: 600;
+}
+
+.admin-sidebar-nav a:focus-visible {
+    outline: 2px solid #FFFFFF;
+    outline-offset: -2px;
+}
+
+.admin-nav-disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    position: relative;
+}
+
+.admin-nav-badge {
+    font-size: 0.625rem;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.5rem;
+    margin-left: auto;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+}
+
+.admin-sidebar-nav i {
+    font-size: 1.125rem;
+    flex-shrink: 0;
+}
+
+/* Footer */
+.admin-sidebar-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.75rem 1rem;
+    flex-shrink: 0;
+}
+
+.admin-sidebar-user {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    margin-bottom: 0.75rem;
+}
+
+.admin-sidebar-avatar {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--sl-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.admin-sidebar-user-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.admin-sidebar-user-info strong {
+    font-size: 0.875rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.admin-sidebar-user-info small {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.admin-sidebar-back {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8125rem;
+    padding: 0.375rem 0;
+    transition: color var(--sl-transition-fast);
+}
+
+.admin-sidebar-back:hover {
+    color: #FFFFFF;
+}
+
+/* ── Content wrapper ── */
+.admin-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+/* ── Topbar (breadcrumb + mobile toggle) ── */
+.admin-topbar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 1rem;
+    height: 3rem;
+    border-bottom: 1px solid var(--sl-border-light);
+    flex-shrink: 0;
+}
+
+.admin-menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: none;
+    background: transparent;
+    color: var(--sl-text);
+    cursor: pointer;
+    border-radius: var(--sl-radius);
+    font-size: 1.375rem;
+    flex-shrink: 0;
+    transition: background var(--sl-transition-fast);
+}
+
+.admin-menu-toggle:hover {
+    background: var(--sl-bg);
+}
+
+@media (min-width: 768px) {
+    .admin-menu-toggle {
+        display: none;
+    }
+}
+
+/* Breadcrumb */
+.admin-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.875rem;
+    color: var(--sl-text-muted);
+    flex: 1;
+    min-width: 0;
+}
+
+.admin-breadcrumb a {
+    color: var(--sl-text-light);
+    white-space: nowrap;
+    transition: color var(--sl-transition-fast);
+}
+
+.admin-breadcrumb a:hover {
+    color: var(--sl-primary);
+}
+
+.admin-breadcrumb i {
+    font-size: 0.5rem;
+    color: var(--sl-border);
+    flex-shrink: 0;
+}
+
+.admin-breadcrumb span {
+    color: var(--sl-text);
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ── Main ── */
+.admin-main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem 1rem;
+}
+
+@media (min-width: 576px) {
+    .admin-main {
+        padding: 1.5rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    .admin-main {
+        padding: 2rem 2.5rem;
+    }
+}
+
+/* ── Panel header ── */
+.panel-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 576px) {
+    .panel-header {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+.panel-header h2 {
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: var(--sl-text);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ── Cards ── */
+.card {
+    background: #FFFFFF;
+    border: 1px solid var(--sl-border-light);
+    border-radius: var(--sl-radius-lg);
+    padding: 1.25rem;
+}
+
+.form-card {
+    margin-bottom: 1.5rem;
+}
+
+.form-card h3 {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--sl-text);
+    margin-bottom: 1rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+/* ── Users grid ── */
+.users-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .users-grid {
+        grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    }
+}
+
+.user-card {
+    background: #FFFFFF;
+    border: 1px solid var(--sl-border-light);
+    border-radius: var(--sl-radius-lg);
+    padding: 1.25rem;
+    transition: border-color var(--sl-transition-fast), box-shadow var(--sl-transition-fast);
+}
+
+.user-card:hover {
+    border-color: var(--sl-border);
+    box-shadow: var(--sl-shadow-sm);
+}
+
+.user-card-inactive {
+    opacity: 0.55;
+}
+
+.user-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.user-card-header h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--sl-text);
+    margin-bottom: 0.125rem;
+}
+
+/* ── Avatar ── */
+.user-avatar {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    color: #FFFFFF;
+    flex-shrink: 0;
+}
+
+.user-avatar-admin  { background: var(--sl-primary); }
+.user-avatar-editor { background: var(--sl-warning); }
+.user-avatar-guest  { background: var(--sl-text-muted); }
+
+/* ── Role badges ── */
+.role-badge {
+    display: inline-block;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    padding: 0.1875rem 0.5rem;
+    border-radius: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.role-badge-admin  { background: rgba(3,116,181,0.12); color: var(--sl-primary-dark); }
+.role-badge-editor { background: rgba(245,124,0,0.12); color: #E65100; }
+.role-badge-guest  { background: rgba(45,59,69,0.1); color: var(--sl-text-light); }
+
+.status-badge {
+    display: inline-block;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    padding: 0.1875rem 0.5rem;
+    border-radius: 0.625rem;
+}
+
+.status-inactive {
+    background: var(--sl-danger-bg);
+    color: var(--sl-danger);
+}
+
+/* ── User card info (definition list) ── */
+.user-card-info {
+    border-top: 1px solid var(--sl-border-light);
+    padding-top: 0.75rem;
+    margin-bottom: 0.875rem;
+}
+
+.info-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1875rem;
+}
+
+.info-label {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: var(--sl-text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.info-row dd {
+    font-size: 0.8125rem;
+    color: var(--sl-text);
+    margin: 0;
+}
+
+/* ── User card actions ── */
+.user-card-actions {
+    border-top: 1px solid var(--sl-border-light);
+    padding-top: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+}
+
+.pw-row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.pw-row .form-input {
+    flex: 1;
+    min-width: 0;
+}
+
+.form-input-sm {
+    padding: 0.4375rem 0.625rem;
+    font-size: 0.875rem;
+}
+
+.action-row {
+    display: flex;
+    gap: 0.375rem;
+}
+
+.btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid var(--sl-border-light);
+    border-radius: var(--sl-radius);
+    background: #FFFFFF;
+    color: var(--sl-text-light);
+    cursor: pointer;
+    transition: all var(--sl-transition-fast);
+    flex-shrink: 0;
+    font-size: 1rem;
+}
+
+.btn-icon:hover {
+    background: var(--sl-bg);
+    color: var(--sl-primary);
+    border-color: var(--sl-primary);
+}
+
+.btn-icon:focus-visible {
+    outline: 2px solid var(--sl-primary);
+    outline-offset: 2px;
+}
+
+.btn-icon-danger:hover {
+    color: var(--sl-danger);
+    border-color: var(--sl-danger);
+    background: var(--sl-danger-bg);
+}
+
+/* ── Recovery section ── */
+.recovery-section h3 {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--sl-text);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.recovery-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+@media (min-width: 576px) {
+    .recovery-form {
+        flex-direction: row;
+    }
+
+    .recovery-form .form-input {
+        flex: 1;
+    }
+}
+
+/* ── Modal / Overlay ── */
+.overlay,
+.admin-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 250;
+}
+
+.admin-overlay.visible {
+    display: block;
+}
+
+.overlay {
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.overlay:not(.hidden) {
+    display: flex;
+}
+
+.modal {
+    background: #FFFFFF;
+    border-radius: var(--sl-radius-lg);
+    padding: 2rem;
+    width: 100%;
+    max-width: 25rem;
+    box-shadow: var(--sl-shadow-lg);
+    text-align: center;
+}
+
+.modal-icon {
+    font-size: 2.5rem;
+    color: var(--sl-warning);
+    margin-bottom: 0.75rem;
+}
+
+.modal h3 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--sl-text);
+    margin-bottom: 0.5rem;
+}
+
+.modal p {
+    font-size: 0.9375rem;
+    color: var(--sl-text-light);
+    margin-bottom: 1.25rem;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}

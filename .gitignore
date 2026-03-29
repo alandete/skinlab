@@ -1,0 +1,27 @@
+# Database
+database/*.sqlite
+
+# Storage
+storage/logs/*
+storage/projects/*
+!storage/logs/.gitkeep
+!storage/projects/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Environment
+.env
+
+# Claude
+.claude/
+
+# Temp
+instrucciones.txt

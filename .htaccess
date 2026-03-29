@@ -1,0 +1,28 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Acceso directo a assets públicos
+    RewriteRule ^assets/(.*)$ public/assets/$1 [L]
+
+    # Todo lo demás va al front controller
+    RewriteRule ^$ public/index.php [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ public/index.php [L,QSA]
+</IfModule>
+
+# Bloquear acceso directo a carpetas sensibles
+<IfModule mod_rewrite.c>
+    RewriteRule ^(app|config|database|storage|lang|views|templates)/ - [F,L]
+</IfModule>
+
+# Deshabilitar directory listing
+Options -Indexes
+
+# Headers de seguridad base
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+</IfModule>
