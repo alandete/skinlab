@@ -125,7 +125,7 @@
                 <button class="sl-hamburger" id="btn-toggle-course"
                         title="<?= e(__('nav.projects')) ?>"
                         aria-label="<?= e(__('nav.projects')) ?>"
-                        aria-expanded="false" aria-controls="course-nav">
+                        aria-expanded="false" aria-controls="left-side">
                     <i class="bi bi-list" aria-hidden="true"></i>
                 </button>
                 <nav class="sl-content-breadcrumb" aria-label="Breadcrumb">
@@ -139,7 +139,7 @@
             <div class="sl-content">
 
                 <!-- COL 2: Páginas del proyecto -->
-                <aside class="sl-course-nav" id="course-nav" aria-label="<?= e(__('nav.projects')) ?>">
+                <aside class="sl-course-nav" id="left-side" aria-label="<?= e(__('nav.projects')) ?>">
                     <ul class="sl-course-items" id="project-pages" role="navigation"
                         aria-label="<?= e(__('nav.projects')) ?>">
                         <li class="sl-course-empty"><?= e(__('nav.no_active_projects')) ?></li>

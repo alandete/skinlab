@@ -33,6 +33,7 @@ return [
     'username_format'       => 'Username may only contain letters, numbers and underscores.',
     'password_required'     => 'Password is required.',
     'password_min'          => 'Password must be at least 6 characters.',
+    'password_max'          => 'Password must not exceed 72 characters.',
     'password_mismatch'     => 'Passwords do not match.',
     'email_invalid'         => 'Invalid email address.',
 

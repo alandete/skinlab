@@ -11,12 +11,15 @@ class User
     public static function find(int $id): ?array
     {
         return Database::fetch(
-            "SELECT id, username, email, role, is_active, created_at, updated_at
+            "SELECT id, username, email, role, is_active, last_login_at, created_at, updated_at
              FROM users WHERE id = :id",
             [':id' => $id]
         );
     }
 
+    /**
+     * Buscar por username incluyendo password (para autenticación).
+     */
     public static function findByUsername(string $username): ?array
     {
         return Database::fetch(
@@ -25,12 +28,44 @@ class User
         );
     }
 
-    public static function all(): array
+    /**
+     * Buscar por ID incluyendo password (para re-autenticación).
+     */
+    public static function findWithPassword(int $id): ?array
     {
-        return Database::fetchAll(
-            "SELECT id, username, email, role, is_active, created_at, updated_at
-             FROM users ORDER BY FIELD(role, 'admin', 'editor', 'guest'), username"
+        return Database::fetch(
+            "SELECT * FROM users WHERE id = :id",
+            [':id' => $id]
         );
+    }
+
+    /**
+     * Listar usuarios con filtros opcionales.
+     */
+    public static function all(?string $role = null, ?bool $active = null, ?string $search = null): array
+    {
+        $sql = "SELECT id, username, email, role, is_active, last_login_at, created_at, updated_at FROM users WHERE 1=1";
+        $params = [];
+
+        if ($role !== null) {
+            $sql .= " AND role = :role";
+            $params[':role'] = $role;
+        }
+
+        if ($active !== null) {
+            $sql .= " AND is_active = :active";
+            $params[':active'] = $active ? 1 : 0;
+        }
+
+        if ($search !== null && $search !== '') {
+            $sql .= " AND (username LIKE :search OR email LIKE :search2)";
+            $params[':search'] = '%' . $search . '%';
+            $params[':search2'] = '%' . $search . '%';
+        }
+
+        $sql .= " ORDER BY FIELD(role, 'admin', 'editor', 'guest'), username";
+
+        return Database::fetchAll($sql, $params);
     }
 
     public static function create(string $username, string $password, string $role, ?string $email = null): int
@@ -47,11 +82,42 @@ class User
         );
     }
 
+    public static function update(int $id, array $fields): void
+    {
+        $allowed = ['username', 'email', 'role'];
+        $sets = [];
+        $params = [':id' => $id];
+
+        foreach ($fields as $key => $value) {
+            if (in_array($key, $allowed, true)) {
+                $sets[] = "{$key} = :{$key}";
+                $params[":{$key}"] = $value;
+            }
+        }
+
+        if (empty($sets)) {
+            return;
+        }
+
+        Database::execute(
+            "UPDATE users SET " . implode(', ', $sets) . " WHERE id = :id",
+            $params
+        );
+    }
+
     public static function updatePassword(int $id, string $newPassword): void
     {
         Database::execute(
             "UPDATE users SET password = :p WHERE id = :id",
             [':p' => password_hash($newPassword, PASSWORD_DEFAULT), ':id' => $id]
+        );
+    }
+
+    public static function updateLastLogin(int $id): void
+    {
+        Database::execute(
+            "UPDATE users SET last_login_at = NOW() WHERE id = :id",
+            [':id' => $id]
         );
     }
 
@@ -63,6 +129,15 @@ class User
         );
         $user = self::find($id);
         return $user !== null && (bool) $user['is_active'];
+    }
+
+    public static function isStillActive(int $id): bool
+    {
+        $r = Database::fetch(
+            "SELECT is_active FROM users WHERE id = :id",
+            [':id' => $id]
+        );
+        return $r !== null && (int) $r['is_active'] === 1;
     }
 
     public static function delete(int $id): void
@@ -85,13 +160,41 @@ class User
         return (int) ($r['total'] ?? 0);
     }
 
-    public static function usernameExists(string $username): bool
+    public static function usernameExists(string $username, ?int $excludeId = null): bool
     {
-        $r = Database::fetch(
-            "SELECT 1 FROM users WHERE username = :u",
-            [':u' => strtolower($username)]
-        );
-        return $r !== null;
+        $sql = "SELECT 1 FROM users WHERE username = :u";
+        $params = [':u' => strtolower($username)];
+
+        if ($excludeId !== null) {
+            $sql .= " AND id != :id";
+            $params[':id'] = $excludeId;
+        }
+
+        return Database::fetch($sql, $params) !== null;
+    }
+
+    // ── Validaciones ──
+
+    public static function validatePassword(string $password): ?string
+    {
+        if (mb_strlen($password) < 6) {
+            return __('auth.password_min');
+        }
+        if (mb_strlen($password) > 72) {
+            return __('auth.password_max');
+        }
+        return null;
+    }
+
+    public static function validateUsername(string $username): ?string
+    {
+        if ($username === '' || mb_strlen($username) < 3 || mb_strlen($username) > 30) {
+            return __('auth.username_length');
+        }
+        if (!preg_match('/^[a-z0-9_]+$/', $username)) {
+            return __('auth.username_format');
+        }
+        return null;
     }
 
     // ── Settings helpers ──

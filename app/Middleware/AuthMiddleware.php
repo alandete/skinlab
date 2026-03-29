@@ -6,29 +6,50 @@ namespace App\Middleware;
 
 use App\Core\Request;
 use App\Core\Response;
+use App\Models\User;
 
 class AuthMiddleware
 {
     /**
-     * Verifica que el usuario esté autenticado.
-     * Si no lo está, redirige a /login o devuelve 401 en API.
+     * Verifica que el usuario esté autenticado y activo.
      */
     public function handle(Request $request, ?string $param = null): void
     {
-        if (self::isLoggedIn()) {
-            return;
+        if (!self::isLoggedIn()) {
+            if ($request->expectsJson()) {
+                Response::json(['error' => __('general.unauthenticated')], 401);
+            }
+            Response::redirect('/login');
         }
 
-        if ($request->expectsJson()) {
-            Response::json(['error' => __('general.unauthenticated')], 401);
-        }
-
-        Response::redirect('/login');
+        // Verificar que el usuario sigue activo en BD (cache 60s)
+        self::checkStillActive();
     }
 
     public static function isLoggedIn(): bool
     {
         return isset($_SESSION['user_id'], $_SESSION['user_role']);
+    }
+
+    /**
+     * Verificar en BD que el usuario sigue activo.
+     * Se cachea por 60 segundos para no consultar en cada request.
+     */
+    private static function checkStillActive(): void
+    {
+        $lastCheck = $_SESSION['_active_check'] ?? 0;
+
+        if (time() - $lastCheck < 60) {
+            return;
+        }
+
+        $userId = self::userId();
+        if ($userId === null || !User::isStillActive($userId)) {
+            self::logout();
+            Response::redirect('/login');
+        }
+
+        $_SESSION['_active_check'] = time();
     }
 
     public static function userId(): ?int
@@ -61,10 +82,6 @@ class AuthMiddleware
         return self::role() === 'guest';
     }
 
-    /**
-     * Verifica si el usuario tiene al menos el rol especificado.
-     * Jerarquía: admin > editor > guest
-     */
     public static function hasRole(string $minimumRole): bool
     {
         $hierarchy = ['guest' => 1, 'editor' => 2, 'admin' => 3];
@@ -80,15 +97,31 @@ class AuthMiddleware
     public static function login(array $user): void
     {
         session_regenerate_id(true);
-        $_SESSION['user_id']   = $user['id'];
-        $_SESSION['user_name'] = $user['username'];
-        $_SESSION['user_role'] = $user['role'];
-        $_SESSION['_created']  = time();
+        $_SESSION['user_id']      = $user['id'];
+        $_SESSION['user_name']    = $user['username'];
+        $_SESSION['user_role']    = $user['role'];
+        $_SESSION['_created']     = time();
+        $_SESSION['_active_check'] = time();
+
+        User::updateLastLogin((int) $user['id']);
     }
 
     /**
-     * Cierra la sesión.
+     * Verifica la contraseña del admin actual (re-autenticación).
      */
+    public static function verifyCurrentPassword(string $password): bool
+    {
+        $userId = self::userId();
+        if ($userId === null) {
+            return false;
+        }
+        $user = User::findWithPassword($userId);
+        if ($user === null) {
+            return false;
+        }
+        return password_verify($password, $user['password']);
+    }
+
     public static function logout(): void
     {
         $_SESSION = [];

@@ -92,6 +92,45 @@ Recreación limpia y modular de CanvasThemes para desarrollo de temas Canvas LMS
 
 ---
 
+## Rediseño Módulo de Usuarios ✅
+> Completado: 2026-03-29
+
+### Tareas completadas
+
+| # | Tarea | Fecha | Detalles |
+|---|-------|-------|----------|
+| U.1 | Col 2 con ID Canvas | 2026-03-29 | ID cambiado a `#left-side`, toggle con `display:block/none` inline como Canvas LMS. CSS adapta mobile (overlay) y desktop (inline) |
+| U.2 | Rate limiting en API | 2026-03-29 | `RateLimitMiddleware::check` aplicado en create, update, changePassword, toggle, delete |
+| U.3 | Máximo contraseña 72 chars | 2026-03-29 | Validación en `User::validatePassword()`, traducción en ambos idiomas |
+| U.4 | Verificación usuario activo | 2026-03-29 | `AuthMiddleware::checkStillActive()` consulta BD cada 60s. Si desactivado, destruye sesión |
+| U.5 | Re-autenticación | 2026-03-29 | Cambio de contraseña requiere `current_password` del admin. `AuthMiddleware::verifyCurrentPassword()` |
+| U.6 | Dropdown de acciones | 2026-03-29 | Menú tres puntos por tarjeta: editar, cambiar contraseña, activar/desactivar, eliminar. Reemplaza campos inline |
+| U.7 | Toast notifications | 2026-03-29 | Sistema global de toasts (success/error) con animación. Elimina alert() y location.reload() |
+| U.8 | DOM updates sin reload | 2026-03-29 | Toggle y delete actualizan tarjeta directamente. Delete con fade out |
+| U.9 | Confirmación en toggle | 2026-03-29 | Modal de confirmación con mensaje contextual y advertencia de consecuencia |
+| U.10 | i18n en JS | 2026-03-29 | `window.LANG` con traducciones desde PHP. Cero strings hardcodeados en JS |
+| U.11 | Cambiar rol | 2026-03-29 | Endpoint POST /api/users/update + modal editar. Protecciones: no cambiar propio, no quitar último admin |
+| U.12 | Editar email | 2026-03-29 | Campo email en modal editar y en formulario de creación |
+| U.13 | Last login tracking | 2026-03-29 | Columna `last_login_at` en BD. Se actualiza en AuthMiddleware::login(). Visible en tarjeta |
+| U.14 | Búsqueda y filtros | 2026-03-29 | Barra de búsqueda por username + filtros por rol (admin/editor/guest) + estado (activo/inactivo). Client-side |
+| U.15 | Fechas en tarjetas | 2026-03-29 | Último acceso y fecha de creación en cada tarjeta |
+| U.16 | Credenciales post-creación | 2026-03-29 | Panel verde con username + password + botón copiar después de crear usuario |
+
+### Archivos modificados
+
+- `app/Models/User.php` — Nuevos métodos: findWithPassword, update, updateLastLogin, isStillActive, validatePassword, validateUsername. all() con filtros
+- `app/Middleware/AuthMiddleware.php` — checkStillActive (cada 60s), verifyCurrentPassword, updateLastLogin en login
+- `app/Controllers/Api/UserApiController.php` — Rate limiting, re-auth, max password, nuevo endpoint update
+- `views/admin/users.php` — Rediseño completo: dropdowns, search, filters, modales (edit, password, confirm), toasts, credentials panel
+- `public/assets/css/admin.css` — Dropdown, search bar, filters, toast, credentials, modal-form
+- `public/assets/js/admin.js` — Reescrito: toasts, DOM updates, dropdowns, search/filter, modales, i18n
+- `config/routes.php` — Nueva ruta POST /api/users/update
+- `database/schema.sql` — Columna last_login_at
+- `lang/es/admin.php` + `lang/en/admin.php` — 18 nuevas traducciones
+- `lang/es/auth.php` + `lang/en/auth.php` — password_max
+
+---
+
 ## FASE 4: Gestión de Proyectos ⬜
 > Pendiente
 

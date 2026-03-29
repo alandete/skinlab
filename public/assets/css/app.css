@@ -565,6 +565,10 @@ select.form-input {
     color: var(--sl-text-muted);
 }
 
+.text-danger {
+    color: var(--sl-danger);
+}
+
 .mt-1 { margin-top: 0.5rem; }
 .mt-2 { margin-top: 1rem; }
 .mt-3 { margin-top: 1.5rem; }

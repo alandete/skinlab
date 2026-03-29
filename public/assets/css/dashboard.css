@@ -357,35 +357,35 @@
     text-overflow: ellipsis;
 }
 
-/* ── Col 2: Nav páginas del proyecto ── */
-.sl-course-nav {
-    display: none;
+/* ── Col 2: Nav páginas del proyecto (#left-side) ──
+   Canvas LMS usa style="display:none" / "display:block" en #left-side.
+   Los temas CSS usan body:has(#left-side:not([style*="display: none"])) */
+#left-side {
     flex-direction: column;
     width: var(--sl-course-nav-width);
     flex-shrink: 0;
     overflow-y: auto;
+    /* display se controla con inline style (block/none) desde JS */
 }
 
-.sl-course-nav.course-visible {
-    display: flex;
+/* Mobile: flotante con fondo cuando está visible */
+@media (max-width: 767px) {
+    #left-side[style*="display: block"] {
+        position: fixed;
+        top: var(--sl-toolbar-height);
+        left: 0;
+        bottom: 0;
+        z-index: 150;
+        background: #FFFFFF;
+        box-shadow: var(--sl-shadow);
+        display: flex !important;
+    }
 }
 
-/* Mobile: overlay flotante */
-.sl-course-nav.course-visible {
-    position: fixed;
-    top: var(--sl-toolbar-height);
-    left: 0;
-    bottom: 0;
-    z-index: 150;
-    background: var(--sl-bg-white);
-    box-shadow: var(--sl-shadow);
-}
-
+/* Desktop: inline dentro del layout */
 @media (min-width: 768px) {
-    .sl-course-nav.course-visible {
-        position: static;
-        background: transparent;
-        box-shadow: none;
+    #left-side[style*="display: block"] {
+        display: flex !important;
     }
 }
 

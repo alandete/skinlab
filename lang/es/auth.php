@@ -33,6 +33,7 @@ return [
     'username_format'       => 'El usuario solo puede contener letras, números y guion bajo.',
     'password_required'     => 'La contraseña es obligatoria.',
     'password_min'          => 'La contraseña debe tener al menos 6 caracteres.',
+    'password_max'          => 'La contraseña no puede exceder 72 caracteres.',
     'password_mismatch'     => 'Las contraseñas no coinciden.',
     'email_invalid'         => 'El correo electrónico no es válido.',
 

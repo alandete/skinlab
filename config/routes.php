@@ -44,6 +44,7 @@ return function (Router $router): void {
 
     // ── API: Usuarios ──
     $router->post('/api/users/create', [UserApiController::class, 'create'], ['auth', 'role:admin']);
+    $router->post('/api/users/update', [UserApiController::class, 'update'], ['auth', 'role:admin']);
     $router->post('/api/users/password', [UserApiController::class, 'changePassword'], ['auth', 'role:admin']);
     $router->post('/api/users/toggle', [UserApiController::class, 'toggle'], ['auth', 'role:admin']);
     $router->post('/api/users/delete', [UserApiController::class, 'delete'], ['auth', 'role:admin']);

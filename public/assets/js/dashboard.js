@@ -19,8 +19,8 @@
     var canvasNav = document.getElementById('canvas-nav');
     var btnToggleNav = document.getElementById('btn-toggle-nav');
 
-    // Course nav (hamburger toggle)
-    var courseNav = document.getElementById('course-nav');
+    // Course nav (hamburger toggle) — usa #left-side como Canvas LMS
+    var courseNav = document.getElementById('left-side');
     var projectPages = document.getElementById('project-pages');
     var btnToggleCourse = document.getElementById('btn-toggle-course');
     var courseOverlay = document.getElementById('course-overlay');
@@ -41,11 +41,14 @@
     var courseNavVisible = true; // visible por defecto en desktop
 
     // ── Init ──
-    // Mostrar course nav por defecto en desktop
+    // #left-side: display:block (visible) o display:none (oculto), como Canvas LMS
     if (window.innerWidth >= 768) {
-        courseNav.classList.add('course-visible');
+        courseNav.style.display = 'block';
         btnToggleCourse.setAttribute('aria-expanded', 'true');
         courseNavVisible = true;
+    } else {
+        courseNav.style.display = 'none';
+        courseNavVisible = false;
     }
 
     loadProjects().then(function () {
@@ -278,17 +281,16 @@
     }
 
     function openCourseNav() {
-        courseNav.classList.add('course-visible');
+        courseNav.style.display = 'block';
         courseNavVisible = true;
         btnToggleCourse.setAttribute('aria-expanded', 'true');
-        // Overlay solo en mobile
         if (window.innerWidth < 768) {
             courseOverlay.classList.add('visible');
         }
     }
 
     function closeCourseNav() {
-        courseNav.classList.remove('course-visible');
+        courseNav.style.display = 'none';
         courseNavVisible = false;
         btnToggleCourse.setAttribute('aria-expanded', 'false');
         courseOverlay.classList.remove('visible');
