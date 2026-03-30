@@ -1,6 +1,7 @@
 /* ============================================
    SkinLab – Dashboard Canvas LMS
    Mobile First approach
+   Media queries consolidados al final de cada sección
    ============================================ */
 
 /* ── Variables del dashboard ── */
@@ -10,19 +11,22 @@
     --sl-nav-width-open: 5.25rem;   /* 84px expandido */
     --sl-course-nav-width: 12rem;   /* 192px */
     --sl-sidebar-width: 18rem;      /* 288px */
-    --sl-canvas-nav-bg: #394B58;
-    --sl-canvas-nav-text: rgba(255, 255, 255, 0.8);
-    --sl-canvas-nav-active: #FFFFFF;
-    --sl-canvas-nav-hover: rgba(255, 255, 255, 0.1);
+    --sl-canvas-nav-bg: var(--sl-secondary-light);
+    --sl-canvas-nav-text: color-mix(in srgb, var(--sl-white) 80%, transparent);
+    --sl-canvas-nav-active: var(--sl-white);
+    --sl-canvas-nav-hover: color-mix(in srgb, var(--sl-white) 10%, transparent);
 }
 
-/* ── Toolbar SkinLab (barra superior) ── */
+/* ══════════════════════════════════════════════
+   TOOLBAR SKINLAB
+   ══════════════════════════════════════════════ */
+
 .sl-toolbar {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     background: var(--sl-secondary);
-    color: #FFFFFF;
+    color: var(--sl-white);
     height: var(--sl-toolbar-height);
     padding: 0 0.75rem;
     position: fixed;
@@ -39,7 +43,7 @@
     gap: 0.375rem;
     font-weight: 700;
     font-size: 0.875rem;
-    color: #FFFFFF;
+    color: var(--sl-white);
     margin-right: 0.5rem;
     flex-shrink: 0;
 }
@@ -48,19 +52,20 @@
     font-size: 1rem;
 }
 
-/* Selector de proyecto */
+/* Selector de proyecto — alineado a la derecha */
 .sl-toolbar-project {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     flex: 1;
     min-width: 0;
 }
 
 .sl-project-select {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: color-mix(in srgb, var(--sl-white) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--sl-white) 20%, transparent);
     border-radius: var(--sl-radius);
-    color: #FFFFFF;
+    color: var(--sl-white);
     font-size: 0.8125rem;
     font-family: var(--sl-font);
     padding: 0.25rem 0.5rem;
@@ -72,13 +77,13 @@
 
 .sl-project-select:hover,
 .sl-project-select:focus {
-    background: rgba(255, 255, 255, 0.2);
+    background: color-mix(in srgb, var(--sl-white) 20%, transparent);
     outline: none;
 }
 
 .sl-project-select option {
     background: var(--sl-secondary);
-    color: #FFFFFF;
+    color: var(--sl-white);
 }
 
 /* Grupo de herramientas */
@@ -92,7 +97,7 @@
 .sl-toolbar-sep {
     width: 1px;
     height: 1.25rem;
-    background: rgba(255, 255, 255, 0.2);
+    background: color-mix(in srgb, var(--sl-white) 20%, transparent);
     margin: 0 0.25rem;
 }
 
@@ -105,25 +110,25 @@
     border: none;
     border-radius: var(--sl-radius);
     background: transparent;
-    color: rgba(255, 255, 255, 0.7);
+    color: color-mix(in srgb, var(--sl-white) 70%, transparent);
     cursor: pointer;
     transition: all var(--sl-transition-fast);
     font-size: 0.875rem;
 }
 
 .sl-tool-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: #FFFFFF;
+    background: color-mix(in srgb, var(--sl-white) 10%, transparent);
+    color: var(--sl-white);
 }
 
 .sl-tool-btn:focus-visible {
-    outline: 2px solid #FFFFFF;
+    outline: 2px solid var(--sl-white);
     outline-offset: 1px;
 }
 
 .sl-tool-btn.active {
-    background: rgba(255, 255, 255, 0.2);
-    color: #FFFFFF;
+    background: color-mix(in srgb, var(--sl-white) 20%, transparent);
+    color: var(--sl-white);
 }
 
 /* Link de herramienta (admin, logout) */
@@ -134,59 +139,47 @@
     width: 2rem;
     height: 2rem;
     border-radius: var(--sl-radius);
-    color: rgba(255, 255, 255, 0.7);
+    color: color-mix(in srgb, var(--sl-white) 70%, transparent);
     transition: all var(--sl-transition-fast);
     font-size: 0.875rem;
 }
 
 .sl-tool-link:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: #FFFFFF;
+    background: color-mix(in srgb, var(--sl-white) 10%, transparent);
+    color: var(--sl-white);
 }
 
 .sl-tool-link:focus-visible {
-    outline: 2px solid #FFFFFF;
+    outline: 2px solid var(--sl-white);
     outline-offset: 1px;
 }
 
-/* Usuario en toolbar */
+/* Usuario y herramientas extendidas — ocultos en mobile */
 .sl-toolbar-user {
     display: none;
     align-items: center;
     gap: 0.375rem;
     font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: color-mix(in srgb, var(--sl-white) 70%, transparent);
     margin-left: 0.25rem;
     flex-shrink: 0;
 }
 
-@media (min-width: 768px) {
-    .sl-toolbar-user {
-        display: flex;
-    }
-}
-
-/* Herramientas ocultas en mobile, visibles desde md */
 .sl-toolbar-tools-extended {
     display: none;
 }
 
-@media (min-width: 768px) {
-    .sl-toolbar-tools-extended {
-        display: flex;
-        align-items: center;
-        gap: 0.125rem;
-    }
-}
+/* ══════════════════════════════════════════════
+   LAYOUT PRINCIPAL
+   ══════════════════════════════════════════════ */
 
-/* ── Layout principal ── */
 .sl-dashboard {
     display: flex;
     flex-direction: column;
     height: 100vh;
     padding-top: var(--sl-toolbar-height);
     overflow: hidden;
-    background: #FFFFFF;
+    background: var(--sl-bg-white);
 }
 
 .sl-canvas-area {
@@ -196,7 +189,10 @@
     overflow: hidden;
 }
 
-/* ── Col 1: Nav global Canvas ── */
+/* ══════════════════════════════════════════════
+   COL 1: NAV GLOBAL CANVAS
+   ══════════════════════════════════════════════ */
+
 .sl-canvas-nav {
     display: none;
     flex-direction: column;
@@ -209,24 +205,17 @@
     transition: width var(--sl-transition);
 }
 
-@media (min-width: 768px) {
-    .sl-canvas-nav {
-        display: flex;
-    }
-}
-
 .sl-canvas-nav.nav-expanded {
     width: var(--sl-nav-width-open);
 }
 
-/* Logo Canvas sobre fondo claro */
 .sl-canvas-nav-logo {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 3.375rem;
     flex-shrink: 0;
-    background: #FFFFFF;
+    background: var(--sl-bg-white);
     padding: 0.5rem;
 }
 
@@ -256,7 +245,7 @@
 }
 
 .sl-canvas-nav-item a i {
-    font-size: 1.5625rem; /* 25px */
+    font-size: 1.5625rem;
 }
 
 .sl-canvas-nav-item a:hover {
@@ -269,7 +258,6 @@
     border-left-color: var(--sl-primary);
 }
 
-/* Labels: ocultos cuando colapsado, visibles cuando expandido */
 .sl-canvas-nav-label {
     display: none;
     white-space: nowrap;
@@ -282,14 +270,13 @@
     display: block;
 }
 
-/* Botón toggle nav */
 .sl-canvas-nav-toggle {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 2.5rem;
     border: none;
-    background: rgba(255, 255, 255, 0.05);
+    background: color-mix(in srgb, var(--sl-white) 5%, transparent);
     color: var(--sl-canvas-nav-text);
     cursor: pointer;
     transition: background var(--sl-transition-fast);
@@ -297,10 +284,13 @@
 }
 
 .sl-canvas-nav-toggle:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: color-mix(in srgb, var(--sl-white) 10%, transparent);
 }
 
-/* ── Barra breadcrumb + hamburguesa ── */
+/* ══════════════════════════════════════════════
+   BARRA BREADCRUMB + HAMBURGUESA
+   ══════════════════════════════════════════════ */
+
 .sl-content-header {
     display: flex;
     align-items: center;
@@ -323,7 +313,7 @@
     cursor: pointer;
     border-radius: var(--sl-radius);
     flex-shrink: 0;
-    font-size: 1.5625rem; /* 25px */
+    font-size: 1.5625rem;
     transition: color var(--sl-transition-fast);
 }
 
@@ -357,36 +347,16 @@
     text-overflow: ellipsis;
 }
 
-/* ── Col 2: Nav páginas del proyecto (#left-side) ──
-   Canvas LMS usa style="display:none" / "display:block" en #left-side.
-   Los temas CSS usan body:has(#left-side:not([style*="display: none"])) */
+/* ══════════════════════════════════════════════
+   COL 2: NAV PÁGINAS (#left-side)
+   Canvas LMS usa style="display:none/block"
+   ══════════════════════════════════════════════ */
+
 #left-side {
     flex-direction: column;
     width: var(--sl-course-nav-width);
     flex-shrink: 0;
     overflow-y: auto;
-    /* display se controla con inline style (block/none) desde JS */
-}
-
-/* Mobile: flotante con fondo cuando está visible */
-@media (max-width: 767px) {
-    #left-side[style*="display: block"] {
-        position: fixed;
-        top: var(--sl-toolbar-height);
-        left: 0;
-        bottom: 0;
-        z-index: 150;
-        background: #FFFFFF;
-        box-shadow: var(--sl-shadow);
-        display: flex !important;
-    }
-}
-
-/* Desktop: inline dentro del layout */
-@media (min-width: 768px) {
-    #left-side[style*="display: block"] {
-        display: flex !important;
-    }
 }
 
 .sl-course-items {
@@ -410,7 +380,7 @@
 }
 
 .sl-course-item a:hover {
-    background: rgba(0, 0, 0, 0.03);
+    background: color-mix(in srgb, black 3%, transparent);
     color: var(--sl-text);
 }
 
@@ -427,7 +397,10 @@
     text-align: center;
 }
 
-/* ── Área de contenido (Col 2 + Col 3 + Col 4) ── */
+/* ══════════════════════════════════════════════
+   CONTENIDO WRAPPER + COL 3 + COL 4
+   ══════════════════════════════════════════════ */
+
 .sl-content-wrapper {
     display: flex;
     flex-direction: column;
@@ -436,7 +409,6 @@
     overflow: hidden;
 }
 
-/* ── Col 3: Contenido principal ── */
 .sl-content {
     flex: 1;
     min-width: 0;
@@ -456,7 +428,7 @@
 .sl-page-title {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #666666;
+    color: var(--sl-page-title);
     padding: 1rem 1rem 0.5rem;
     margin: 0;
     flex-shrink: 0;
@@ -466,22 +438,10 @@
     display: none;
 }
 
-@media (min-width: 768px) {
-    .sl-page-title {
-        padding: 1.5rem 1.5rem 0.75rem;
-    }
-}
-
 .sl-content-body {
     flex: 1;
     min-width: 0;
     padding: 0.5rem 1rem 1rem;
-}
-
-@media (min-width: 768px) {
-    .sl-content-body {
-        padding: 0.5rem 1.5rem 1.5rem;
-    }
 }
 
 .sl-placeholder {
@@ -513,12 +473,6 @@
     padding: 1rem;
 }
 
-@media (min-width: 1200px) {
-    .sl-sidebar {
-        display: flex;
-    }
-}
-
 .sl-sidebar-section {
     margin-bottom: 1.5rem;
 }
@@ -547,7 +501,7 @@
 
 .sl-sidebar-item i {
     color: var(--sl-text-muted);
-    font-size: 1rem; /* 16px */
+    font-size: 1rem;
     margin-top: 0.125rem;
     flex-shrink: 0;
 }
@@ -564,18 +518,21 @@
     margin-top: 0.125rem;
 }
 
-/* ── Estado: vista home vs content ── */
+/* Vista home vs content */
 .sl-dashboard.view-content .sl-sidebar {
     display: none;
 }
 
-/* ── Overlay para cerrar course nav en mobile ── */
+/* ══════════════════════════════════════════════
+   OVERLAY COURSE NAV (mobile)
+   ══════════════════════════════════════════════ */
+
 .sl-course-overlay {
     display: none;
     position: fixed;
     inset: 0;
     top: var(--sl-toolbar-height);
-    background: rgba(0, 0, 0, 0.3);
+    background: color-mix(in srgb, black 30%, transparent);
     z-index: 145;
 }
 
@@ -583,8 +540,65 @@
     display: block;
 }
 
+/* ── #left-side mobile: flotante cuando visible (base = mobile) ── */
+#left-side[style*="display: block"] {
+    position: fixed;
+    top: var(--sl-toolbar-height);
+    left: 0;
+    bottom: 0;
+    z-index: 150;
+    background: var(--sl-bg-white);
+    box-shadow: var(--sl-shadow);
+    display: flex !important;
+}
+
+/* ══════════════════════════════════════════════
+   MEDIA QUERIES CONSOLIDADOS
+   ══════════════════════════════════════════════ */
+
+/* ── min-width: 768px (md) ── */
 @media (min-width: 768px) {
+    /* Toolbar */
+    .sl-toolbar-user {
+        display: flex;
+    }
+
+    .sl-toolbar-tools-extended {
+        display: flex;
+        align-items: center;
+        gap: 0.125rem;
+    }
+
+    /* Col 1: Canvas nav visible */
+    .sl-canvas-nav {
+        display: flex;
+    }
+
+    /* Col 2: #left-side reset a inline en desktop */
+    #left-side[style*="display: block"] {
+        position: static;
+        box-shadow: none;
+        background: transparent;
+    }
+
+    /* Contenido: más padding */
+    .sl-page-title {
+        padding: 1.5rem 1.5rem 0.75rem;
+    }
+
+    .sl-content-body {
+        padding: 0.5rem 1.5rem 1.5rem;
+    }
+
+    /* Overlay desactivado */
     .sl-course-overlay {
         display: none !important;
+    }
+}
+
+/* ── min-width: 1200px (xl) ── */
+@media (min-width: 1200px) {
+    .sl-sidebar {
+        display: flex;
     }
 }
