@@ -1,12 +1,12 @@
 /**
  * SkinLab – Admin JavaScript
- * Sidebar toggle + gestión de usuarios completa.
+ * Sidebar toggle + gestión de usuarios.
  */
 
 (function () {
     'use strict';
 
-    var L = window.LANG || {};
+    var L = getLang();
 
     // ── Sidebar mobile toggle ──
     var sidebar = document.getElementById('admin-sidebar');
@@ -32,49 +32,8 @@
         if (menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
     }
 
-    // ── Toast system ──
-    var toastContainer = document.getElementById('toast-container');
-
-    function showToast(message, type) {
-        if (!toastContainer) return;
-        var toast = document.createElement('div');
-        toast.className = 'toast toast-' + (type || 'success');
-        toast.innerHTML = '<i class="bi ' + (type === 'error' ? 'bi-x-circle' : 'bi-check-circle') + '" aria-hidden="true"></i> ' + escapeHtml(message);
-        toastContainer.appendChild(toast);
-        setTimeout(function () {
-            toast.style.animation = 'toastOut 0.3s ease forwards';
-            setTimeout(function () { toast.remove(); }, 300);
-        }, 3500);
-    }
-
-    // ── Dropdown menus ──
-    document.addEventListener('click', function (e) {
-        // Close all dropdowns
-        document.querySelectorAll('.dropdown-menu.open').forEach(function (menu) {
-            if (!menu.parentElement.contains(e.target)) {
-                menu.classList.remove('open');
-                menu.parentElement.querySelector('.btn-dropdown-toggle').setAttribute('aria-expanded', 'false');
-            }
-        });
-
-        // Toggle clicked dropdown
-        var toggleBtn = e.target.closest('.btn-dropdown-toggle');
-        if (toggleBtn) {
-            e.stopPropagation();
-            var menu = toggleBtn.nextElementSibling;
-            var isOpen = menu.classList.contains('open');
-            // Close all first
-            document.querySelectorAll('.dropdown-menu.open').forEach(function (m) {
-                m.classList.remove('open');
-            });
-            if (!isOpen) {
-                menu.classList.add('open');
-                toggleBtn.setAttribute('aria-expanded', 'true');
-            } else {
-                toggleBtn.setAttribute('aria-expanded', 'false');
-            }
-        }
-    });
+    // ── Si no estamos en la página de usuarios, salir ──
+    if (!document.getElementById('users-grid')) return;
 
     // ── Search & Filter ──
     var searchInput = document.getElementById('user-search');
@@ -133,6 +92,7 @@
     var pendingConfirmCallback = null;
 
     function showConfirm(html, btnText, btnClass, callback) {
+        if (!confirmModal || !confirmBody) return;
         confirmBody.innerHTML = html;
         btnConfirmAction.textContent = btnText;
         btnConfirmAction.className = 'btn ' + (btnClass || 'btn-danger');
@@ -141,7 +101,7 @@
     }
 
     function hideConfirm() {
-        confirmModal.classList.add('hidden');
+        if (confirmModal) confirmModal.classList.add('hidden');
         pendingConfirmCallback = null;
     }
 
@@ -202,26 +162,18 @@
             }
 
             btnCreate.disabled = true;
-            var body = { username: username, password: password, role: role, email: email };
-
             api('/api/users/create', {
                 method: 'POST',
-                body: JSON.stringify(body)
+                body: JSON.stringify({ username: username, password: password, role: role, email: email })
             }).then(function (data) {
                 showToast(data.message, 'success');
                 btnCreate.disabled = false;
-
-                // Show credentials panel
                 document.getElementById('cred-username').textContent = username;
                 document.getElementById('cred-password').textContent = password;
                 credentialsPanel.classList.remove('hidden');
-
-                // Hide form fields
                 document.getElementById('new-username').value = '';
                 document.getElementById('new-email').value = '';
                 document.getElementById('new-password').value = '';
-
-                // Reload to show new user (after a moment to read credentials)
             }).catch(function (err) {
                 showToast(err.message, 'error');
                 btnCreate.disabled = false;
@@ -248,7 +200,7 @@
         btnCloseCred.addEventListener('click', function () {
             credentialsPanel.classList.add('hidden');
             userForm.classList.add('hidden');
-            location.reload(); // reload to show new card
+            location.reload();
         });
     }
 
@@ -265,10 +217,6 @@
         document.getElementById('edit-role').value = btn.dataset.role;
         editModal.classList.remove('hidden');
         document.getElementById('edit-username').focus();
-
-        // Close dropdown
-        var menu = btn.closest('.dropdown-menu');
-        if (menu) menu.classList.remove('open');
     });
 
     var btnSaveEdit = document.getElementById('btn-save-edit');
@@ -316,9 +264,6 @@
         document.getElementById('pw-new').value = '';
         pwModal.classList.remove('hidden');
         document.getElementById('pw-current').focus();
-
-        var menu = btn.closest('.dropdown-menu');
-        if (menu) menu.classList.remove('open');
     });
 
     var btnSavePw = document.getElementById('btn-save-password');
@@ -372,9 +317,6 @@
         var warning = isActive ? '<br><small>' + (L.confirm_toggle_deactivate || '') + '</small>' : '';
         var html = (L.confirm_toggle || '').replace(':action', action).replace(':name', escapeHtml(username)) + warning;
 
-        var menu = btn.closest('.dropdown-menu');
-        if (menu) menu.classList.remove('open');
-
         showConfirm(html, action, isActive ? 'btn-danger' : 'btn-primary', function (done) {
             api('/api/users/toggle', {
                 method: 'POST',
@@ -382,12 +324,10 @@
             }).then(function (data) {
                 showToast(data.message, 'success');
                 done();
-                // Update card in DOM
                 var card = document.querySelector('.user-card[data-user-id="' + userId + '"]');
                 if (card) {
                     card.dataset.active = data.is_active ? '1' : '0';
                     card.classList.toggle('user-card-inactive', !data.is_active);
-                    // Update toggle button
                     var toggleBtn = card.querySelector('.btn-toggle-user');
                     if (toggleBtn) {
                         toggleBtn.dataset.active = data.is_active ? '1' : '0';
@@ -396,7 +336,6 @@
                         toggleBtn.childNodes[toggleBtn.childNodes.length - 1].textContent =
                             ' ' + (data.is_active ? (L.deactivate || 'Desactivar') : (L.activate || 'Activar'));
                     }
-                    // Update badge
                     var badges = card.querySelector('.user-card-badges');
                     var inactiveBadge = badges.querySelector('.status-inactive');
                     if (!data.is_active && !inactiveBadge) {
@@ -416,16 +355,13 @@
         });
     });
 
-    // ── Delete user (with confirmation) ──
+    // ── Delete user ──
     document.addEventListener('click', function (e) {
         var btn = e.target.closest('.btn-delete-user');
         if (!btn) return;
 
         var userId = parseInt(btn.dataset.userId);
         var username = btn.dataset.username;
-
-        var menu = btn.closest('.dropdown-menu');
-        if (menu) menu.classList.remove('open');
 
         showConfirm(
             (L.confirm_delete || '').replace(':name', escapeHtml(username)),
@@ -481,9 +417,6 @@
             hideConfirm();
             if (editModal && !editModal.classList.contains('hidden')) editModal.classList.add('hidden');
             if (pwModal && !pwModal.classList.contains('hidden')) pwModal.classList.add('hidden');
-            document.querySelectorAll('.dropdown-menu.open').forEach(function (m) {
-                m.classList.remove('open');
-            });
         }
     });
 

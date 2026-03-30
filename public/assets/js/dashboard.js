@@ -26,6 +26,7 @@
     var courseOverlay = document.getElementById('course-overlay');
 
     // Content
+    var pageTitle = document.getElementById('page-title');
     var contentBody = document.getElementById('content-body');
     var breadcrumbProject = document.getElementById('breadcrumb-project');
     var breadcrumbPage = document.getElementById('breadcrumb-page');
@@ -52,9 +53,18 @@
     }
 
     loadProjects().then(function () {
+        // 1. Primero intentar desde la URL (/project/slug)
         var state = readState();
+        // 2. Si no hay URL, intentar sessionStorage
+        if (!state) {
+            var saved = sessionStorage.getItem('sl_project');
+            var savedPage = sessionStorage.getItem('sl_page');
+            if (saved) {
+                state = { project: saved, page: savedPage || 'index' };
+            }
+        }
         if (state && state.project) {
-            var proj = projectsData.find(function (p) { return p.slug === state.project; });
+            var proj = projectsData.find(function (p) { return p.slug === state.project && parseInt(p.is_active) === 1; });
             if (proj) {
                 selectProject(proj, state.page || 'index');
             }
@@ -75,7 +85,7 @@
         while (projectSelect.options.length > 1) {
             projectSelect.remove(1);
         }
-        var active = projectsData.filter(function (p) { return p.active !== false; });
+        var active = projectsData.filter(function (p) { return parseInt(p.is_active) === 1; });
         active.forEach(function (proj) {
             var opt = document.createElement('option');
             opt.value = proj.slug;
@@ -116,6 +126,8 @@
         currentPageName = null;
         projectSelect.value = '';
         btnExport.classList.add('hidden');
+        sessionStorage.removeItem('sl_project');
+        sessionStorage.removeItem('sl_page');
 
         unloadProjectAssets();
 
@@ -129,6 +141,7 @@
 
         breadcrumbProject.textContent = i18n('general.app_name');
         breadcrumbPage.textContent = i18n('nav.breadcrumb_home');
+        pageTitle.textContent = '';
         switchView('home');
         history.replaceState(null, '', '/dashboard');
     }
@@ -184,6 +197,7 @@
 
             breadcrumbProject.textContent = currentProject.name;
             breadcrumbPage.textContent = currentPageName;
+            pageTitle.textContent = currentPageName;
 
             switchView(pageSlug === 'index' ? 'home' : 'content');
             updateState();
@@ -243,7 +257,7 @@
         dashboard.classList.add('view-' + view);
     }
 
-    // ── URL State ──
+    // ── URL State + sessionStorage ──
     function updateState() {
         if (currentProject && currentPageSlug) {
             var url = '/project/' + encodeURIComponent(currentProject.slug);
@@ -251,6 +265,8 @@
                 url += '#' + encodeURIComponent(currentPageSlug);
             }
             history.replaceState(null, '', url);
+            sessionStorage.setItem('sl_project', currentProject.slug);
+            sessionStorage.setItem('sl_page', currentPageSlug);
         }
     }
 

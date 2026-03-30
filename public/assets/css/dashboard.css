@@ -238,7 +238,7 @@
 
 .sl-canvas-nav-items {
     list-style: none;
-    padding: 0.25rem 0;
+    padding: 0;
     flex: 1;
 }
 
@@ -391,7 +391,8 @@
 
 .sl-course-items {
     list-style: none;
-    padding: 0.5rem 0;
+    margin: 1rem 0 0 .5rem;
+    padding: 0;
     flex: 1;
     overflow-y: auto;
 }
@@ -400,9 +401,10 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 1rem 0.5rem .5rem;
     color: var(--sl-text-light);
     font-size: 0.8125rem;
+    text-decoration: none;
     transition: background var(--sl-transition-fast), color var(--sl-transition-fast);
     border-left: 2px solid transparent;
 }
@@ -442,16 +444,43 @@
     overflow: hidden;
 }
 
-.sl-content-body {
+.sl-content-main {
     flex: 1;
     min-width: 0;
     overflow-y: auto;
-    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Título de página — capa separada, no editable por el tema */
+.sl-page-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #666666;
+    padding: 1rem 1rem 0.5rem;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.sl-page-title:empty {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .sl-page-title {
+        padding: 1.5rem 1.5rem 0.75rem;
+    }
+}
+
+.sl-content-body {
+    flex: 1;
+    min-width: 0;
+    padding: 0.5rem 1rem 1rem;
 }
 
 @media (min-width: 768px) {
     .sl-content-body {
-        padding: 1.5rem;
+        padding: 0.5rem 1.5rem 1.5rem;
     }
 }
 

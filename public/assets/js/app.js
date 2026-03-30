@@ -1,6 +1,6 @@
 /**
  * SkinLab – Base JavaScript
- * Utilidades globales y configuración.
+ * Utilidades globales, dropdowns, toasts.
  */
 
 (function () {
@@ -12,9 +12,6 @@
 
     /**
      * Wrapper para fetch con CSRF automático.
-     * @param {string} url
-     * @param {object} options
-     * @returns {Promise<Response>}
      */
     window.api = function (url, options) {
         options = options || {};
@@ -36,15 +33,11 @@
 
     /**
      * Copiar texto al portapapeles.
-     * @param {string} text
-     * @returns {Promise<void>}
      */
     window.copyToClipboard = function (text) {
         if (navigator.clipboard && window.isSecureContext) {
             return navigator.clipboard.writeText(text);
         }
-
-        // Fallback
         var ta = document.createElement('textarea');
         ta.value = text;
         ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none;';
@@ -58,13 +51,68 @@
 
     /**
      * Escapar HTML.
-     * @param {string} str
-     * @returns {string}
      */
     window.escapeHtml = function (str) {
         var div = document.createElement('div');
         div.textContent = str;
         return div.innerHTML;
     };
+
+    /**
+     * Leer traducciones desde #js-lang data attributes.
+     */
+    window.getLang = function () {
+        var el = document.getElementById('js-lang');
+        return el ? el.dataset : {};
+    };
+
+    /**
+     * Toast notification.
+     */
+    window.showToast = function (message, type) {
+        var container = document.getElementById('toast-container');
+        if (!container) return;
+        var toast = document.createElement('div');
+        toast.className = 'toast toast-' + (type || 'success');
+        toast.innerHTML = '<i class="bi ' + (type === 'error' ? 'bi-x-circle' : 'bi-check-circle') + '" aria-hidden="true"></i> ' + escapeHtml(message);
+        container.appendChild(toast);
+        setTimeout(function () {
+            toast.style.animation = 'toastOut 0.3s ease forwards';
+            setTimeout(function () { toast.remove(); }, 300);
+        }, 3500);
+    };
+
+    // ── Dropdown menus (global) ──
+    document.addEventListener('click', function (e) {
+        var toggleBtn = e.target.closest('.btn-dropdown-toggle');
+
+        // Cerrar todos los dropdowns que no contienen el target
+        document.querySelectorAll('.dropdown-menu.open').forEach(function (menu) {
+            if (!menu.parentElement.contains(e.target)) {
+                menu.classList.remove('open');
+                var tb = menu.parentElement.querySelector('.btn-dropdown-toggle');
+                if (tb) tb.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Toggle dropdown del botón clickeado
+        if (toggleBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            var menu = toggleBtn.nextElementSibling;
+            if (!menu) return;
+            var isOpen = menu.classList.contains('open');
+            // Cerrar todos primero
+            document.querySelectorAll('.dropdown-menu.open').forEach(function (m) {
+                m.classList.remove('open');
+            });
+            if (!isOpen) {
+                menu.classList.add('open');
+                toggleBtn.setAttribute('aria-expanded', 'true');
+            } else {
+                toggleBtn.setAttribute('aria-expanded', 'false');
+            }
+        }
+    });
 
 })();

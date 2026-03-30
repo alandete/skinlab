@@ -55,6 +55,12 @@ return [
     'compile_success'       => 'CSS compiled successfully.',
     'compile_error'         => 'Error compiling CSS.',
 
+    // Project validations
+    'invalid_slug'          => 'The identifier contains invalid characters.',
+    'project_exists'        => 'A project with that identifier already exists.',
+    'project_create_error'  => 'Error creating the project directory.',
+    'project_protected'     => 'This project is protected and cannot be deleted.',
+
     // Users
     'users_title'           => 'Users',
     'add_user'              => 'Add User',

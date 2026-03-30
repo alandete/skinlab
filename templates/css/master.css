@@ -1,0 +1,203 @@
+@charset "UTF-8";
+{{IMPORTS}}
+
+:root {
+
+  /* ══════════════════════════════════════════════════════════════════════
+     1. FUENTE — Solo editar estos 2 colores
+     ══════════════════════════════════════════════════════════════════════ */
+  --ct-primary-base: #0374B5;
+  --ct-secondary-base: #2D3B45;
+
+  /* ══════════════════════════════════════════════════════════════════════
+     2. PALETA DERIVADA — No editar manualmente
+     ══════════════════════════════════════════════════════════════════════ */
+
+  /* ── Escala primario ── */
+  --ct-primary-light: color-mix(in oklch, var(--ct-primary-base) 30%, white);
+  --ct-primary:       var(--ct-primary-base);
+  --ct-primary-dark:  color-mix(in oklch, var(--ct-primary-base) 70%, black);
+
+  /* ── Escala secundario ── */
+  --ct-secondary-light: color-mix(in oklch, var(--ct-secondary-base) 30%, white);
+  --ct-secondary:       var(--ct-secondary-base);
+  --ct-secondary-dark:  color-mix(in oklch, var(--ct-secondary-base) 70%, black);
+
+  /* ── Neutros tintados ── */
+  --ct-neutral-000: color-mix(in oklch, var(--ct-secondary-base) 4%, white);
+  --ct-neutral-050: color-mix(in oklch, var(--ct-secondary-base) 4%, color-mix(in oklch, black  3%, white));
+  --ct-neutral-100: color-mix(in oklch, var(--ct-secondary-base) 4%, color-mix(in oklch, black  7%, white));
+  --ct-neutral-200: color-mix(in oklch, var(--ct-secondary-base) 3%, color-mix(in oklch, black 14%, white));
+  --ct-neutral-300: color-mix(in oklch, var(--ct-secondary-base) 3%, color-mix(in oklch, black 25%, white));
+  --ct-neutral-400: color-mix(in oklch, var(--ct-secondary-base) 2%, color-mix(in oklch, black 40%, white));
+  --ct-neutral-500: color-mix(in oklch, var(--ct-secondary-base) 2%, color-mix(in oklch, black 55%, white));
+  --ct-neutral-600: color-mix(in oklch, var(--ct-secondary-base) 2%, color-mix(in oklch, black 68%, white));
+  --ct-neutral-700: color-mix(in oklch, var(--ct-secondary-base) 3%, color-mix(in oklch, black 78%, white));
+  --ct-neutral-800: color-mix(in oklch, var(--ct-secondary-base) 3%, color-mix(in oklch, black 87%, white));
+  --ct-neutral-900: color-mix(in oklch, var(--ct-secondary-base) 4%, color-mix(in oklch, black 93%, white));
+  --ct-neutral-950: color-mix(in oklch, var(--ct-secondary-base) 4%, color-mix(in oklch, black 97%, white));
+
+  /* ══════════════════════════════════════════════════════════════════════
+     3. TOKENS SEMÁNTICOS
+     ══════════════════════════════════════════════════════════════════════ */
+
+  --ct-bg:        var(--ct-neutral-000);
+  --ct-bg-raised: var(--ct-neutral-000);
+  --ct-bg-subtle: var(--ct-neutral-050);
+  --ct-bg-muted:  var(--ct-neutral-100);
+  --ct-bg-accent: color-mix(in oklch, var(--ct-primary) 8%, var(--ct-bg));
+
+  --ct-text:           var(--ct-neutral-950);
+  --ct-text-secondary: var(--ct-neutral-600);
+  --ct-text-muted:     var(--ct-neutral-400);
+  --ct-text-inverse:   var(--ct-neutral-000);
+
+  --ct-link:       var(--ct-primary);
+  --ct-link-hover: var(--ct-primary-dark);
+
+  --ct-border:        var(--ct-neutral-200);
+  --ct-border-strong: var(--ct-neutral-300);
+
+  --ct-btn-primary-bg:     var(--ct-primary);
+  --ct-btn-primary-text:   var(--ct-neutral-000);
+  --ct-btn-primary-hover:  color-mix(in oklch, var(--ct-primary) 82%, black);
+  --ct-btn-primary-active: color-mix(in oklch, var(--ct-primary) 70%, black);
+
+  --ct-btn-secondary-bg:     var(--ct-secondary);
+  --ct-btn-secondary-text:   var(--ct-neutral-000);
+  --ct-btn-secondary-hover:  color-mix(in oklch, var(--ct-secondary) 82%, black);
+  --ct-btn-secondary-active: color-mix(in oklch, var(--ct-secondary) 70%, black);
+
+  --ct-focus-ring: color-mix(in oklch, var(--ct-primary) 50%, transparent);
+
+  --bs-body-bg:    var(--ct-bg);
+  --bs-body-color: var(--ct-text);
+
+  /* ══════════════════════════════════════════════════════════════════════
+     4. UTILIDADES
+     ══════════════════════════════════════════════════════════════════════ */
+
+  --ct-radius-sm:   0.25rem;
+  --ct-radius:      0.5rem;
+  --ct-radius-lg:   1rem;
+  --ct-radius-full: 9999px;
+
+  --ct-space-xs:  0.25rem;
+  --ct-space-sm:  0.5rem;
+  --ct-space-md:  1rem;
+  --ct-space-lg:  1.5rem;
+  --ct-space-xl:  2rem;
+  --ct-space-2xl: 3rem;
+
+  --ct-shadow-soft: 0 4px 6px -2px color-mix(in oklch, var(--ct-neutral-950) 10%, transparent);
+  --ct-shadow-hard: 0 8px 16px -4px color-mix(in oklch, var(--ct-neutral-950) 25%, transparent);
+
+  --ct-transition-fast: 0.15s ease;
+  --ct-transition:      0.25s ease;
+  --ct-transition-slow: 0.4s ease;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   DARK MODE — Canvas real (móvil + desktop)
+══════════════════════════════════════════════════════════════════════════ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ct-primary-light: color-mix(in oklch, var(--ct-primary-base) 50%, white);
+    --ct-primary:       color-mix(in oklch, var(--ct-primary-base) 65%, white);
+    --ct-primary-dark:  color-mix(in oklch, var(--ct-primary-base) 85%, white);
+
+    --ct-secondary-light: color-mix(in oklch, var(--ct-secondary-base) 40%, white);
+    --ct-secondary:       color-mix(in oklch, var(--ct-secondary-base) 55%, white);
+    --ct-secondary-dark:  color-mix(in oklch, var(--ct-secondary-base) 75%, white);
+
+    --ct-bg:        var(--ct-neutral-900);
+    --ct-bg-raised: var(--ct-neutral-800);
+    --ct-bg-subtle: var(--ct-neutral-800);
+    --ct-bg-muted:  var(--ct-neutral-700);
+
+    --ct-text:           var(--ct-neutral-050);
+    --ct-text-secondary: var(--ct-neutral-300);
+    --ct-text-muted:     var(--ct-neutral-500);
+    --ct-text-inverse:   var(--ct-neutral-950);
+
+    --ct-link:       var(--ct-primary);
+    --ct-link-hover: var(--ct-primary-light);
+
+    --ct-border:        var(--ct-neutral-700);
+    --ct-border-strong: var(--ct-neutral-600);
+
+    --bs-body-bg:    var(--ct-bg);
+    --bs-body-color: var(--ct-text);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   DARK MODE — Ambiente de pruebas (Se elimina al compilar)
+══════════════════════════════════════════════════════════════════════════ */
+html[data-theme="dark"] {
+  --ct-primary-light: color-mix(in oklch, var(--ct-primary-base) 50%, white);
+  --ct-primary:       color-mix(in oklch, var(--ct-primary-base) 65%, white);
+  --ct-primary-dark:  color-mix(in oklch, var(--ct-primary-base) 85%, white);
+
+  --ct-secondary-light: color-mix(in oklch, var(--ct-secondary-base) 40%, white);
+  --ct-secondary:       color-mix(in oklch, var(--ct-secondary-base) 55%, white);
+  --ct-secondary-dark:  color-mix(in oklch, var(--ct-secondary-base) 75%, white);
+
+  --ct-bg:        var(--ct-neutral-900);
+  --ct-bg-raised: var(--ct-neutral-800);
+  --ct-bg-subtle: var(--ct-neutral-800);
+  --ct-bg-muted:  var(--ct-neutral-700);
+
+  --ct-text:           var(--ct-neutral-050);
+  --ct-text-secondary: var(--ct-neutral-300);
+  --ct-text-muted:     var(--ct-neutral-500);
+  --ct-text-inverse:   var(--ct-neutral-950);
+
+  --ct-link:       var(--ct-primary);
+  --ct-link-hover: var(--ct-primary-light);
+
+  --ct-border:        var(--ct-neutral-700);
+  --ct-border-strong: var(--ct-neutral-600);
+
+  --bs-body-bg:    var(--ct-bg);
+  --bs-body-color: var(--ct-text);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ESTILOS BASE HTML
+══════════════════════════════════════════════════════════════════════════ */
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   TIPOGRAFIA
+══════════════════════════════════════════════════════════════════════════ */
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   LAYOUT
+══════════════════════════════════════════════════════════════════════════ */
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   MODULOS / COMPONENTES
+══════════════════════════════════════════════════════════════════════════ */
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   MEDIA QUERIES (mobile first)
+══════════════════════════════════════════════════════════════════════════ */
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {}
+
+/* X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {}
+
+/* XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) {}

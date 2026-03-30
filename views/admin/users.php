@@ -9,28 +9,26 @@ $currentUserId = (int) ($_SESSION['user_id'] ?? 0);
 ?>
 
 <!-- Traducciones para JS -->
-<script>
-window.LANG = {
-    confirm: '<?= e(__('general.confirm')) ?>',
-    cancel: '<?= e(__('general.cancel')) ?>',
-    delete: '<?= e(__('general.delete')) ?>',
-    save: '<?= e(__('general.save')) ?>',
-    create: '<?= e(__('general.create')) ?>',
-    required: '<?= e(__('general.field_required')) ?>',
-    password_min: '<?= e(__('auth.password_min')) ?>',
-    password_max: '<?= e(__('auth.password_max')) ?>',
-    copy_password: '<?= e(__('admin.copy_password')) ?>',
-    credentials_created: '<?= e(__('admin.credentials_created')) ?>',
-    confirm_toggle: '<?= e(__('admin.confirm_toggle')) ?>',
-    confirm_toggle_deactivate: '<?= e(__('admin.confirm_toggle_deactivate')) ?>',
-    activate: '<?= e(__('admin.activate')) ?>',
-    deactivate: '<?= e(__('admin.deactivate')) ?>',
-    current_password_hint: '<?= e(__('admin.current_password_hint')) ?>',
-    no_users_found: '<?= e(__('admin.no_users_found')) ?>',
-    confirm_delete: '<?= e(__('admin.confirm_delete_msg')) ?>',
-    badge_inactive: '<?= e(__('admin.badge_inactive')) ?>'
-};
-</script>
+<div id="js-lang" class="hidden"
+    data-confirm="<?= e(__('general.confirm')) ?>"
+    data-cancel="<?= e(__('general.cancel')) ?>"
+    data-delete="<?= e(__('general.delete')) ?>"
+    data-save="<?= e(__('general.save')) ?>"
+    data-create="<?= e(__('general.create')) ?>"
+    data-required="<?= e(__('general.field_required')) ?>"
+    data-password_min="<?= e(__('auth.password_min')) ?>"
+    data-password_max="<?= e(__('auth.password_max')) ?>"
+    data-copy_password="<?= e(__('admin.copy_password')) ?>"
+    data-credentials_created="<?= e(__('admin.credentials_created')) ?>"
+    data-confirm_toggle="<?= e(__('admin.confirm_toggle')) ?>"
+    data-confirm_toggle_deactivate="<?= e(__('admin.confirm_toggle_deactivate')) ?>"
+    data-activate="<?= e(__('admin.activate')) ?>"
+    data-deactivate="<?= e(__('admin.deactivate')) ?>"
+    data-current_password_hint="<?= e(__('admin.current_password_hint')) ?>"
+    data-no_users_found="<?= e(__('admin.no_users_found')) ?>"
+    data-confirm_delete="<?= e(__('admin.confirm_delete_msg')) ?>"
+    data-badge_inactive="<?= e(__('admin.badge_inactive')) ?>"
+></div>
 
 <!-- Toast container -->
 <div id="toast-container" class="toast-container" aria-live="polite"></div>
@@ -239,7 +237,7 @@ window.LANG = {
 </section>
 
 <!-- Modal genérico de confirmación -->
-<dialog id="confirm-modal" class="overlay hidden" aria-labelledby="confirm-title">
+<div id="confirm-modal" class="overlay hidden" aria-labelledby="confirm-title">
     <div class="modal" role="alertdialog" aria-labelledby="confirm-title" aria-describedby="confirm-body">
         <div class="modal-icon" aria-hidden="true"><i class="bi bi-exclamation-triangle"></i></div>
         <h3 id="confirm-title"><?= e(__('general.confirm')) ?></h3>
@@ -249,10 +247,10 @@ window.LANG = {
             <button id="btn-cancel-action" class="btn btn-secondary"><?= e(__('general.cancel')) ?></button>
         </div>
     </div>
-</dialog>
+</div>
 
 <!-- Modal editar usuario -->
-<dialog id="edit-modal" class="overlay hidden" aria-labelledby="edit-title">
+<div id="edit-modal" class="overlay hidden" aria-labelledby="edit-title">
     <div class="modal modal-form" role="dialog" aria-labelledby="edit-title">
         <h3 id="edit-title"><i class="bi bi-pencil" aria-hidden="true"></i> <?= e(__('admin.edit_user')) ?></h3>
         <input type="hidden" id="edit-user-id">
@@ -280,10 +278,10 @@ window.LANG = {
             <button id="btn-cancel-edit" class="btn btn-secondary"><?= e(__('general.cancel')) ?></button>
         </div>
     </div>
-</dialog>
+</div>
 
 <!-- Modal cambiar contraseña -->
-<dialog id="password-modal" class="overlay hidden" aria-labelledby="pw-title">
+<div id="password-modal" class="overlay hidden" aria-labelledby="pw-title">
     <div class="modal modal-form" role="dialog" aria-labelledby="pw-title">
         <h3 id="pw-title"><i class="bi bi-key" aria-hidden="true"></i> <?= e(__('admin.change_password')) ?></h3>
         <p class="modal-subtitle" id="pw-username"></p>
@@ -305,4 +303,4 @@ window.LANG = {
             <button id="btn-cancel-password" class="btn btn-secondary"><?= e(__('general.cancel')) ?></button>
         </div>
     </div>
-</dialog>
+</div>

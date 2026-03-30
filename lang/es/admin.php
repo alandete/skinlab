@@ -55,6 +55,12 @@ return [
     'compile_success'       => 'CSS compilado correctamente.',
     'compile_error'         => 'Error al compilar CSS.',
 
+    // Validaciones de proyecto
+    'invalid_slug'          => 'El identificador contiene caracteres inválidos.',
+    'project_exists'        => 'Ya existe un proyecto con ese identificador.',
+    'project_create_error'  => 'Error al crear el directorio del proyecto.',
+    'project_protected'     => 'Este proyecto está protegido y no puede eliminarse.',
+
     // Usuarios
     'users_title'           => 'Usuarios',
     'add_user'              => 'Agregar Usuario',

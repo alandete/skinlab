@@ -131,20 +131,47 @@ Recreación limpia y modular de CanvasThemes para desarrollo de temas Canvas LMS
 
 ---
 
-## FASE 4: Gestión de Proyectos ⬜
-> Pendiente
+## FASE 4: Gestión de Proyectos ✅
+> Completada: 2026-03-29
 
-| # | Tarea | Estado |
-|---|-------|--------|
-| 4.1 | Modelo Project (CRUD con metadata en BD) | ⬜ |
-| 4.2 | API REST proyectos (listar, crear, editar, eliminar, toggle) | ⬜ |
-| 4.3 | Templates para nuevos proyectos (HTML, CSS, JS) | ⬜ |
-| 4.4 | Sistema de compilación CSS (master → mobile + desktop) | ⬜ |
-| 4.5 | Panel admin de proyectos (formularios crear/editar, lista con acciones) | ⬜ |
-| 4.6 | Selección de colores con paleta auto-generada | ⬜ |
-| 4.7 | Organización por semanas/módulos/unidades | ⬜ |
-| 4.8 | Selección de CDNs | ⬜ |
-| 4.9 | Permisos por rol (admin todo, editor proyectos propios, guest lectura) | ⬜ |
+### Tareas completadas
+
+| # | Tarea | Fecha | Detalles |
+|---|-------|-------|----------|
+| 4.1 | Modelo Project | 2026-03-29 | CRUD completo, allWithPages() escanea filesystem, scanPages() detecta organización, slugExists() |
+| 4.2 | API REST proyectos | 2026-03-29 | 8 endpoints: list, create, edit, delete, toggle, compile, content, source. Rate limiting en mutaciones |
+| 4.3 | Templates | 2026-03-29 | index, tarea, quiz, foros, organization, palette, snippets, CSS master con paleta derivada (color-mix oklch), JS con cleanup |
+| 4.4 | Compilación CSS | 2026-03-29 | CssCompiler: master → mobile (sin @media ≥1200px) + desktop (sin dark mode test). Elimina html[data-theme="dark"] |
+| 4.5 | Panel admin proyectos | 2026-03-29 | Grid con cards, dropdown acciones (abrir, editar, compilar, toggle, eliminar), formulario crear con nombre/slug preview/colores/org/CDNs |
+| 4.6 | Colores con paleta | 2026-03-29 | Color pickers sincronizados con hex input. Master CSS usa --ct-primary-base y --ct-secondary-base con paleta derivada automática |
+| 4.7 | Organización | 2026-03-29 | Semanas/módulos/unidades con cantidad configurable. Crear y editar. Solo agrega páginas nuevas, no elimina existentes |
+| 4.8 | CDNs en crear y editar | 2026-03-29 | Bootstrap, Bootstrap Icons, Font Awesome, Animate.css. Pre-carga en editar. Actualiza @import en master CSS |
+| 4.9 | Dashboard conectado | 2026-03-29 | Selector de proyectos filtra activos (is_active=1). Persistencia con sessionStorage al navegar a Admin. H1 título de página separado |
+| 4.10 | CSP fix | 2026-03-29 | Eliminados scripts inline, traducciones vía data-* attributes (#js-lang). Dropdown y toast movidos a app.js global |
+
+### Archivos creados
+
+- `app/Models/Project.php` — Modelo con CRUD, scanPages, allWithPages
+- `app/Controllers/Api/ProjectApiController.php` — 8 endpoints API
+- `app/Controllers/AdminController.php` — Ruta projects con vista
+- `app/Helpers/CssCompiler.php` — Compilación master → mobile + desktop
+- `views/admin/projects.php` — Panel completo con crear/editar/grid
+- `public/assets/js/admin-projects.js` — JS para CRUD de proyectos
+- `templates/` — 9 archivos template (HTML, CSS master, JS)
+
+### Archivos modificados
+
+- `config/routes.php` — 8 rutas de proyectos + admin/projects
+- `views/layouts/admin.php` — Tab Proyectos activa, admin-projects.js
+- `public/assets/js/app.js` — Dropdown global, showToast global, getLang()
+- `public/assets/js/admin.js` — Limpiado: usa funciones globales, guard para página usuarios
+- `public/assets/js/dashboard.js` — Filtro is_active, sessionStorage, pageTitle
+- `public/assets/css/admin.css` — Estilos proyectos, modal-form-lg, color inputs, CDN grid
+- `public/assets/css/dashboard.css` — sl-page-title, sl-content-main
+- `views/dashboard/index.php` — H1 page-title separado del contenido
+- `views/admin/users.php` — js-lang data attributes (sin script inline)
+- `.htaccess` — Acceso a storage/projects CSS/JS/img
+- `lang/es/admin.php` + `lang/en/admin.php` — Traducciones de proyectos
 
 ---
 

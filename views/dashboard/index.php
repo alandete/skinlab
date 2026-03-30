@@ -150,11 +150,14 @@
                 <div class="sl-course-overlay" id="course-overlay" aria-hidden="true"></div>
 
                 <!-- COL 3: Contenido principal -->
-                <main class="sl-content-body" id="content-body">
-                    <div class="sl-placeholder">
-                        <i class="bi bi-easel" aria-hidden="true"></i>
-                        <h2><?= e(__('dashboard.welcome_title')) ?></h2>
-                        <p><?= __('dashboard.welcome_message') ?></p>
+                <main class="sl-content-main" id="content-main">
+                    <h1 class="sl-page-title" id="page-title"></h1>
+                    <div class="sl-content-body" id="content-body">
+                        <div class="sl-placeholder">
+                            <i class="bi bi-easel" aria-hidden="true"></i>
+                            <h2><?= e(__('dashboard.welcome_title')) ?></h2>
+                            <p><?= __('dashboard.welcome_message') ?></p>
+                        </div>
                     </div>
                 </main>
 

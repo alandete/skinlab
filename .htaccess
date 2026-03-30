@@ -4,6 +4,9 @@
     # Acceso directo a assets públicos
     RewriteRule ^assets/(.*)$ public/assets/$1 [L]
 
+    # Assets de proyectos (CSS, JS, imágenes)
+    RewriteRule ^storage/projects/([a-z0-9\-]+)/(css|js|img)/(.+)$ storage/projects/$1/$2/$3 [L]
+
     # Todo lo demás va al front controller
     RewriteRule ^$ public/index.php [L]
     RewriteCond %{REQUEST_FILENAME} !-f
@@ -13,7 +16,11 @@
 
 # Bloquear acceso directo a carpetas sensibles
 <IfModule mod_rewrite.c>
-    RewriteRule ^(app|config|database|storage|lang|views|templates)/ - [F,L]
+    RewriteRule ^(app|config|database|lang|views|templates)/ - [F,L]
+    # storage/projects CSS/JS/img ya permitidos arriba; bloquear el resto de storage
+    RewriteCond %{REQUEST_URI} ^/storage/
+    RewriteCond %{REQUEST_URI} !^/storage/projects/[a-z0-9\-]+/(css|js|img)/
+    RewriteRule ^ - [F,L]
 </IfModule>
 
 # Deshabilitar directory listing

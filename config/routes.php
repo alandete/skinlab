@@ -8,6 +8,7 @@ use App\Controllers\AuthController;
 use App\Controllers\DashboardController;
 use App\Controllers\AdminController;
 use App\Controllers\Api\UserApiController;
+use App\Controllers\Api\ProjectApiController;
 
 /**
  * Definición de rutas de la aplicación.
@@ -53,15 +54,16 @@ return function (Router $router): void {
     // ── Dashboard: URL limpia de proyecto ──
     $router->get('/project/{slug}', [DashboardController::class, 'project'], ['auth']);
 
-    // ── Fase 4: Proyectos ──
-    // $router->get('/admin/projects', [AdminController::class, 'projects'], ['auth', 'role:admin']);
-    // $router->post('/api/projects',         [ApiProjectController::class, 'create'],  ['auth', 'role:editor']);
-    // $router->post('/api/projects/edit',    [ApiProjectController::class, 'edit'],    ['auth', 'role:editor']);
-    // $router->post('/api/projects/delete',  [ApiProjectController::class, 'delete'],  ['auth', 'role:admin']);
-    // $router->post('/api/projects/toggle',  [ApiProjectController::class, 'toggle'],  ['auth', 'role:admin']);
-    // $router->get('/api/projects',          [ApiProjectController::class, 'list'],    ['auth']);
-    // $router->get('/api/content',           [ApiProjectController::class, 'content'], ['auth']);
-    // $router->get('/api/source',            [ApiProjectController::class, 'source'],  ['auth']);
-    // $router->post('/api/compile',          [ApiProjectController::class, 'compile'], ['auth', 'role:editor']);
-    // $router->get('/api/export/{slug}',     [ApiProjectController::class, 'export'],  ['auth']);
+    // ── Admin: Proyectos ──
+    $router->get('/admin/projects', [AdminController::class, 'projects'], ['auth', 'role:admin']);
+
+    // ── API: Proyectos ──
+    $router->get('/api/projects', [ProjectApiController::class, 'list'], ['auth']);
+    $router->post('/api/projects/create', [ProjectApiController::class, 'create'], ['auth', 'role:editor']);
+    $router->post('/api/projects/edit', [ProjectApiController::class, 'edit'], ['auth', 'role:editor']);
+    $router->post('/api/projects/delete', [ProjectApiController::class, 'delete'], ['auth', 'role:admin']);
+    $router->post('/api/projects/toggle', [ProjectApiController::class, 'toggle'], ['auth', 'role:admin']);
+    $router->post('/api/projects/compile', [ProjectApiController::class, 'compile'], ['auth', 'role:editor']);
+    $router->get('/api/content', [ProjectApiController::class, 'content'], ['auth']);
+    $router->get('/api/source', [ProjectApiController::class, 'source'], ['auth']);
 };

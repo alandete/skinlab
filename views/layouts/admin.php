@@ -40,10 +40,10 @@
                         </a>
                     </li>
                     <li>
-                        <span class="admin-nav-disabled" title="Fase 4">
+                        <a href="/admin/projects" class="<?= ($activeTab ?? '') === 'projects' ? 'active' : '' ?>">
                             <i class="bi bi-folder" aria-hidden="true"></i>
                             <span><?= e(__('admin.tab_projects')) ?></span>
-                        </span>
+                        </a>
                     </li>
                     <li>
                         <span class="admin-nav-disabled">
@@ -106,5 +106,6 @@
 
     <script src="<?= asset('js/app.js') ?>"></script>
     <script src="<?= asset('js/admin.js') ?>"></script>
+    <script src="<?= asset('js/admin-projects.js') ?>"></script>
 </body>
 </html>
