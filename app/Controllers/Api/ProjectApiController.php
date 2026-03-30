@@ -253,8 +253,10 @@ class ProjectApiController
 
             // Imports de CDNs
             if (is_array($newCdns)) {
-                // Eliminar imports existentes
-                $css = preg_replace('/^@import url\([^\)]+\);\s*\n/m', '', $css);
+                // Eliminar TODOS los @import existentes
+                $css = preg_replace('/^@import\s+url\(.+?\);\s*$/m', '', $css);
+                // Limpiar líneas vacías extras después del @charset
+                $css = preg_replace('/(@charset\s+"[^"]+";)\s*\n+/', '$1' . "\n", $css);
 
                 // Regenerar imports
                 $cdnUrls = App::config('cdns', []);
@@ -267,7 +269,7 @@ class ProjectApiController
 
                 // Insertar después de @charset
                 if ($imports) {
-                    $css = preg_replace('/(@charset "[^"]+";)\s*\n/', '$1' . "\n" . $imports, $css);
+                    $css = preg_replace('/(@charset\s+"[^"]+";)\n/', '$1' . "\n" . $imports, $css);
                 }
             }
 
