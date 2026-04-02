@@ -31,7 +31,7 @@ $currentUserId = (int) ($_SESSION['user_id'] ?? 0);
 ></div>
 
 <!-- Toast container -->
-<div id="toast-container" class="toast-container" aria-live="polite"></div>
+<div id="toast-container" class="sl-toast-container" aria-live="polite"></div>
 
 <!-- Panel header -->
 <header class="panel-header">

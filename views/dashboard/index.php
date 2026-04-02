@@ -1,5 +1,8 @@
 <?php $title = __('dashboard.title') . ' — ' . __('general.app_name'); ?>
 
+<!-- Toast notifications (fuera del dashboard para z-index correcto) -->
+<div id="toast-container" class="sl-toast-container" aria-live="polite"></div>
+
 <div class="sl-dashboard view-home" id="sl-dashboard">
 
     <!-- ==================== TOOLBAR SKINLAB ==================== -->
@@ -29,7 +32,7 @@
                 <?php if (has_role('editor')): ?>
                 <button id="btn-compile" class="sl-tool-btn" title="<?= e(__('nav.compile')) ?>"
                         aria-label="<?= e(__('nav.compile')) ?>">
-                    <i class="bi bi-gear" aria-hidden="true"></i>
+                    <i class="bi bi-box-seam" aria-hidden="true"></i>
                 </button>
                 <?php endif; ?>
 
@@ -216,5 +219,174 @@
         </div><!-- /.sl-content-wrapper -->
 
     </div><!-- /.sl-canvas-area -->
+
+    <!-- ==================== CODE VIEWER ==================== -->
+    <div id="code-viewer" class="code-viewer hidden" aria-label="<?= e(__('dashboard.code_viewer')) ?>">
+        <header class="code-viewer-header">
+            <h3><i class="bi bi-code-slash" aria-hidden="true"></i> <?= e(__('dashboard.code_viewer')) ?></h3>
+            <button id="btn-close-code" class="code-viewer-close" title="<?= e(__('general.close')) ?>"
+                    aria-label="<?= e(__('general.close')) ?>">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+            </button>
+        </header>
+        <nav class="code-viewer-tabs" role="tablist">
+            <button class="code-tab active" data-tab="html" role="tab" aria-selected="true"><?= e(__('dashboard.tab_html')) ?></button>
+            <button class="code-tab" data-tab="cssmaster" role="tab"><?= e(__('dashboard.tab_css_master')) ?></button>
+            <button class="code-tab" data-tab="css" role="tab"><?= e(__('dashboard.tab_css_mobile')) ?></button>
+            <button class="code-tab" data-tab="cssdesktop" role="tab"><?= e(__('dashboard.tab_css_desktop')) ?></button>
+            <button class="code-tab" data-tab="js" role="tab"><?= e(__('dashboard.tab_js')) ?></button>
+        </nav>
+        <div class="code-viewer-body">
+            <div class="code-pane active" id="pane-html">
+                <div class="code-pane-bar">
+                    <span class="code-filename" id="filename-html">index.html</span>
+                    <button class="code-copy-btn" data-target="code-html" aria-label="<?= e(__('dashboard.copy')) ?>">
+                        <i class="bi bi-clipboard" aria-hidden="true"></i> <?= e(__('dashboard.copy')) ?>
+                    </button>
+                </div>
+                <pre><code id="code-html"></code></pre>
+            </div>
+            <div class="code-pane" id="pane-cssmaster">
+                <div class="code-pane-bar">
+                    <span class="code-filename" id="filename-cssmaster"></span>
+                    <button class="code-copy-btn" data-target="code-cssmaster" aria-label="<?= e(__('dashboard.copy')) ?>">
+                        <i class="bi bi-clipboard" aria-hidden="true"></i> <?= e(__('dashboard.copy')) ?>
+                    </button>
+                </div>
+                <pre><code id="code-cssmaster"></code></pre>
+            </div>
+            <div class="code-pane" id="pane-css">
+                <div class="code-pane-bar">
+                    <span class="code-filename" id="filename-css"></span>
+                    <button class="code-copy-btn" data-target="code-css" aria-label="<?= e(__('dashboard.copy')) ?>">
+                        <i class="bi bi-clipboard" aria-hidden="true"></i> <?= e(__('dashboard.copy')) ?>
+                    </button>
+                </div>
+                <pre><code id="code-css"></code></pre>
+            </div>
+            <div class="code-pane" id="pane-cssdesktop">
+                <div class="code-pane-bar">
+                    <span class="code-filename" id="filename-cssdesktop"></span>
+                    <button class="code-copy-btn" data-target="code-cssdesktop" aria-label="<?= e(__('dashboard.copy')) ?>">
+                        <i class="bi bi-clipboard" aria-hidden="true"></i> <?= e(__('dashboard.copy')) ?>
+                    </button>
+                </div>
+                <pre><code id="code-cssdesktop"></code></pre>
+            </div>
+            <div class="code-pane" id="pane-js">
+                <div class="code-pane-bar">
+                    <span class="code-filename" id="filename-js"></span>
+                    <button class="code-copy-btn" data-target="code-js" aria-label="<?= e(__('dashboard.copy')) ?>">
+                        <i class="bi bi-clipboard" aria-hidden="true"></i> <?= e(__('dashboard.copy')) ?>
+                    </button>
+                </div>
+                <pre><code id="code-js"></code></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MOBILE SIMULATOR ==================== -->
+    <div id="mobile-frame" class="mobile-frame hidden" aria-label="<?= e(__('nav.mobile_view')) ?>">
+        <header class="mobile-toolbar">
+            <select id="mobile-device-select" class="mobile-device-select" aria-label="Dispositivo">
+                <option value="android-360" selected>Android — 360 x 800</option>
+                <option value="iphone-14">iPhone 14/15 — 390 x 844</option>
+                <option value="ipad-classic">iPad Mini — 768 x 1024</option>
+                <option value="ipad-10">iPad 10a gen — 810 x 1080</option>
+            </select>
+            <span class="mobile-sep" aria-hidden="true"></span>
+            <button id="btn-orient" class="mobile-tool-btn" title="<?= e(__('dashboard.rotate')) ?>"
+                    aria-label="<?= e(__('dashboard.rotate')) ?>">
+                <i class="bi bi-phone" id="orient-icon" aria-hidden="true"></i>
+            </button>
+            <span class="mobile-sep" aria-hidden="true"></span>
+            <button id="btn-mobile-reload" class="mobile-tool-btn" title="<?= e(__('nav.reload')) ?>"
+                    aria-label="<?= e(__('nav.reload')) ?>">
+                <i class="bi bi-arrow-clockwise" aria-hidden="true"></i>
+            </button>
+            <span class="mobile-sep" aria-hidden="true"></span>
+            <button id="btn-dark" class="mobile-tool-btn" title="<?= e(__('nav.dark_mode')) ?>"
+                    aria-label="<?= e(__('nav.dark_mode')) ?>">
+                <i class="bi bi-moon" aria-hidden="true"></i>
+            </button>
+            <span class="mobile-spacer" aria-hidden="true"></span>
+            <button id="btn-mobile-info" class="mobile-tool-btn" title="Estadísticas de viewports"
+                    aria-label="Estadísticas de viewports" aria-expanded="false" aria-controls="mobile-info-panel">
+                <i class="bi bi-info-circle" aria-hidden="true"></i>
+            </button>
+            <span class="mobile-sep" aria-hidden="true"></span>
+            <button id="btn-exit-mobile" class="mobile-tool-btn mobile-exit" title="<?= e(__('dashboard.exit_mobile')) ?>"
+                    aria-label="<?= e(__('dashboard.exit_mobile')) ?>">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+            </button>
+        </header>
+
+        <!-- Panel de estadísticas -->
+        <aside id="mobile-info-panel" class="mobile-info-panel hidden" aria-label="Estadísticas de viewports">
+            <header class="mobile-info-header">
+                <h4><i class="bi bi-bar-chart-line" aria-hidden="true"></i> Viewports más usados (2026)</h4>
+                <button id="btn-close-info" class="mobile-tool-btn" aria-label="Cerrar">
+                    <i class="bi bi-x-lg" aria-hidden="true"></i>
+                </button>
+            </header>
+            <div class="mobile-info-body">
+                <section class="mobile-info-section">
+                    <h5><i class="bi bi-phone" aria-hidden="true"></i> Móviles</h5>
+                    <table class="mobile-info-table">
+                        <thead><tr><th>Viewport</th><th>Dispositivos</th><th>Tráfico</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>360 x 800</strong></td><td>Samsung Galaxy S21/S22/S23, Xiaomi, Motorola</td><td>~25%</td></tr>
+                            <tr><td><strong>390 x 844</strong></td><td>iPhone 14, iPhone 15, iPhone 16</td><td>~18%</td></tr>
+                            <tr><td>393 x 873</td><td>iPhone 14 Pro, Pixel 7/8</td><td>~10%</td></tr>
+                            <tr><td>430 x 932</td><td>iPhone 14/15/16 Pro Max</td><td>~8%</td></tr>
+                            <tr><td>412 x 915</td><td>Samsung Galaxy S24, Pixel 9</td><td>~7%</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+                <section class="mobile-info-section">
+                    <h5><i class="bi bi-tablet" aria-hidden="true"></i> Tablets</h5>
+                    <table class="mobile-info-table">
+                        <thead><tr><th>Viewport</th><th>Dispositivos</th><th>Tráfico</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>768 x 1024</strong></td><td>iPad Mini, iPad 9a gen</td><td>~45%</td></tr>
+                            <tr><td><strong>810 x 1080</strong></td><td>iPad 10a gen</td><td>~15%</td></tr>
+                            <tr><td>820 x 1180</td><td>iPad Air</td><td>~12%</td></tr>
+                            <tr><td>1024 x 1366</td><td>iPad Pro 12.9"</td><td>~8%</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+                <section class="mobile-info-section">
+                    <h5><i class="bi bi-lightbulb" aria-hidden="true"></i> Recomendaciones</h5>
+                    <ul class="mobile-info-list">
+                        <li>Probar siempre en <strong>360px</strong> (móvil más común) y <strong>768px</strong> (tablet más común)</li>
+                        <li>Los breakpoints de Bootstrap (576, 768, 992, 1200) cubren el 95% de los dispositivos</li>
+                        <li>Canvas LMS oculta <code>#left-side</code> con <code>max-width: 768px</code> — no se ve en móviles ni en tablets en portrait</li>
+                    </ul>
+                </section>
+                <section class="mobile-info-section">
+                    <h5><i class="bi bi-link-45deg" aria-hidden="true"></i> Fuentes</h5>
+                    <ul class="mobile-info-list">
+                        <li><a href="https://gs.statcounter.com/screen-resolution-stats/mobile-tablet/worldwide/" target="_blank" rel="noopener">StatCounter — Screen Resolution Stats</a></li>
+                        <li><a href="https://www.browserstack.com/guide/common-screen-resolutions" target="_blank" rel="noopener">BrowserStack — Common Screen Resolutions 2026</a></li>
+                        <li><a href="https://phone-simulator.com/blog/most-popular-mobile-screen-resolutions-in-2026" target="_blank" rel="noopener">Phone Simulator — Popular Resolutions 2026</a></li>
+                    </ul>
+                </section>
+            </div>
+        </aside>
+        <div id="mobile-device" class="mobile-device portrait phone">
+            <div class="mobile-status-bar">
+                <span>9:41</span>
+                <span><i class="bi bi-reception-4" aria-hidden="true"></i> <i class="bi bi-wifi" aria-hidden="true"></i> <i class="bi bi-battery-full" aria-hidden="true"></i></span>
+            </div>
+            <iframe id="mobile-iframe" title="Mobile preview"></iframe>
+            <nav class="mobile-bottom-nav" aria-label="Canvas mobile">
+                <span class="mobile-tab active"><i class="bi bi-speedometer2" aria-hidden="true"></i><small><?= e(__('nav.dashboard')) ?></small></span>
+                <span class="mobile-tab"><i class="bi bi-book" aria-hidden="true"></i><small><?= e(__('nav.courses')) ?></small></span>
+                <span class="mobile-tab"><i class="bi bi-calendar3" aria-hidden="true"></i><small><?= e(__('nav.calendar')) ?></small></span>
+                <span class="mobile-tab"><i class="bi bi-inbox" aria-hidden="true"></i><small><?= e(__('nav.inbox')) ?></small></span>
+                <span class="mobile-tab"><i class="bi bi-bell" aria-hidden="true"></i><small>Alertas</small></span>
+            </nav>
+        </div>
+    </div>
 
 </div><!-- /.sl-dashboard -->

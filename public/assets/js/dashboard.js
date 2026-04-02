@@ -389,37 +389,138 @@
         icon.className = 'bi bi-arrow-repeat';
         loadPage(currentProject.slug, currentPageSlug, currentPageName).then(function () {
             setTimeout(function () { icon.className = 'bi bi-arrow-clockwise'; }, 500);
+            showToast('Contenido recargado', 'success');
         });
     });
 
     // ── Toolbar: Compile CSS ──
     if (btnCompile) {
-        btnCompile.addEventListener('click', function () {
+        btnCompile.addEventListener('click', function (e) {
+            e.preventDefault();
             if (!currentProject) return;
             btnCompile.disabled = true;
             var icon = btnCompile.querySelector('i');
+            var origClass = icon.className;
             icon.className = 'bi bi-arrow-repeat';
 
-            api('/api/compile', {
+            api('/api/projects/compile', {
                 method: 'POST',
                 body: JSON.stringify({ project: currentProject.slug })
-            }).then(function () {
+            }).then(function (data) {
                 icon.className = 'bi bi-check-lg';
-                btnCompile.classList.add('active');
-                unloadProjectAssets();
-                projectStyleEl = null;
-                loadPage(currentProject.slug, currentPageSlug, currentPageName);
+                if (typeof showToast === 'function') {
+                    showToast(data.message || 'CSS compilado correctamente', 'success');
+                }
                 setTimeout(function () {
-                    icon.className = 'bi bi-gear';
-                    btnCompile.classList.remove('active');
+                    icon.className = 'bi bi-box-seam';
                     btnCompile.disabled = false;
                 }, 2000);
             }).catch(function (err) {
-                alert(err.message);
-                icon.className = 'bi bi-gear';
+                if (typeof showToast === 'function') {
+                    showToast(err.message, 'error');
+                }
+                icon.className = 'bi bi-box-seam';
                 btnCompile.disabled = false;
             });
         });
+    }
+
+    // ── Toolbar: Code Viewer ──
+    var btnEditor = document.getElementById('btn-editor');
+    var codeViewer = document.getElementById('code-viewer');
+    var btnCloseCode = document.getElementById('btn-close-code');
+    var codeTabs = document.querySelectorAll('.code-tab');
+    var codePanes = document.querySelectorAll('.code-pane');
+
+    if (btnEditor) {
+        btnEditor.addEventListener('click', function () {
+            if (!currentProject || !currentPageSlug) {
+                showToast('Selecciona un proyecto primero', 'error');
+                return;
+            }
+            openCodeViewer();
+        });
+    }
+
+    if (btnCloseCode) {
+        btnCloseCode.addEventListener('click', closeCodeViewer);
+    }
+
+    if (codeViewer) {
+        codeViewer.addEventListener('click', function (e) {
+            if (e.target === codeViewer) closeCodeViewer();
+        });
+    }
+
+    function closeCodeViewer() {
+        codeViewer.classList.add('hidden');
+    }
+
+    // Tabs
+    codeTabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            codeTabs.forEach(function (t) { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+            codePanes.forEach(function (p) { p.classList.remove('active'); });
+            tab.classList.add('active');
+            tab.setAttribute('aria-selected', 'true');
+            var pane = document.getElementById('pane-' + tab.dataset.tab);
+            if (pane) pane.classList.add('active');
+        });
+    });
+
+    // Copy buttons
+    document.querySelectorAll('.code-copy-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var codeEl = document.getElementById(btn.dataset.target);
+            if (!codeEl) return;
+            var text = codeEl.textContent;
+            if (!text || text === '(vacío)' || text === '(sin estilos)' || text === '(sin scripts)') return;
+
+            copyToClipboard(text).then(function () {
+                btn.classList.add('copied');
+                var origHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="bi bi-check-lg" aria-hidden="true"></i> Copiado';
+                setTimeout(function () {
+                    btn.innerHTML = origHTML;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        });
+    });
+
+    function openCodeViewer() {
+        codeViewer.classList.remove('hidden');
+        var slug = currentProject.slug;
+
+        // Filenames
+        document.getElementById('filename-html').textContent = currentPageSlug === 'index' ? 'index.html' : 'pages/' + currentPageSlug + '.html';
+        document.getElementById('filename-cssmaster').textContent = 'css/' + slug + '-master.css';
+        document.getElementById('filename-css').textContent = 'css/' + slug + '-mobile.css';
+        document.getElementById('filename-cssdesktop').textContent = 'css/' + slug + '-desktop.css';
+        document.getElementById('filename-js').textContent = 'js/' + slug + '-scripts.js';
+
+        // Cargar código fuente
+        api('/api/source?project=' + encodeURIComponent(slug) + '&page=' + encodeURIComponent(currentPageSlug))
+            .then(function (data) {
+                document.getElementById('code-html').textContent = data.html || '(vacío)';
+                document.getElementById('code-cssmaster').textContent = data.cssMaster || '(sin estilos)';
+                document.getElementById('code-css').textContent = cleanCssForCanvas(data.css) || '(sin estilos)';
+                document.getElementById('code-cssdesktop').textContent = cleanCssForCanvas(data.cssDesktop) || '(sin estilos)';
+                document.getElementById('code-js').textContent = data.js || '(sin scripts)';
+            })
+            .catch(function (err) {
+                document.getElementById('code-html').textContent = 'Error: ' + err.message;
+            });
+    }
+
+    // Limpiar CSS para Canvas: quitar bloque dark mode de pruebas
+    function cleanCssForCanvas(css) {
+        if (!css) return css;
+        return css
+            .replace(/\/\*[\s\S]*?Ambiente de pruebas[\s\S]*?\*\/\s*/g, '')
+            .replace(/html\[data-theme="dark"\]\s*\{[^}]*\}/g, '')
+            .replace(/\n{3,}/g, '\n\n')
+            .trim();
     }
 
     // ── Toolbar: Export ──
@@ -428,14 +529,174 @@
         window.location.href = '/api/export/' + encodeURIComponent(currentProject.slug);
     });
 
+    // ── Toolbar: Mobile Simulator ──
+    var btnMobile = document.getElementById('btn-mobile');
+    var mobileFrame = document.getElementById('mobile-frame');
+    var mobileIframe = document.getElementById('mobile-iframe');
+    var mobileDevice = document.getElementById('mobile-device');
+    // mobileSize se muestra en el select
+    var btnOrient = document.getElementById('btn-orient');
+    var orientIcon = document.getElementById('orient-icon');
+    var btnDark = document.getElementById('btn-dark');
+    var btnExitMobile = document.getElementById('btn-exit-mobile');
+    var btnMobileReload = document.getElementById('btn-mobile-reload');
+    var deviceSelect = document.getElementById('mobile-device-select');
+
+    var mobileCurrentDevice = 'android-360';
+    var mobileIsPortrait = true;
+    var mobileIsDark = false;
+    var devices = {
+        'android-360':  { name: 'Android',        pw: 360, ph: 800,  type: 'phone' },
+        'iphone-14':    { name: 'iPhone 14/15',   pw: 390, ph: 844,  type: 'phone' },
+        'ipad-classic': { name: 'iPad Mini',      pw: 768, ph: 1024, type: 'tablet' },
+        'ipad-10':      { name: 'iPad 10a gen',   pw: 810, ph: 1080, type: 'tablet' }
+    };
+
+    if (btnMobile) {
+        btnMobile.addEventListener('click', function () {
+            if (!currentProject || !currentPageSlug) {
+                showToast('Selecciona un proyecto primero', 'error');
+                return;
+            }
+            mobileFrame.classList.remove('hidden');
+            btnMobile.classList.add('active');
+            updateMobileDevice();
+            syncMobileContent();
+        });
+    }
+
+    if (btnExitMobile) {
+        btnExitMobile.addEventListener('click', closeMobile);
+    }
+
+    function closeMobile() {
+        mobileFrame.classList.add('hidden');
+        if (btnMobile) btnMobile.classList.remove('active');
+        mobileIsDark = false;
+        if (btnDark) {
+            btnDark.classList.remove('active');
+            btnDark.querySelector('i').className = 'bi bi-moon';
+        }
+        // Cerrar panel info si está abierto
+        var infoPanel = document.getElementById('mobile-info-panel');
+        if (infoPanel) infoPanel.classList.add('hidden');
+        var infoBtn = document.getElementById('btn-mobile-info');
+        if (infoBtn) {
+            infoBtn.classList.remove('active');
+            infoBtn.setAttribute('aria-expanded', 'false');
+        }
+    }
+
+    if (deviceSelect) {
+        deviceSelect.addEventListener('change', function () {
+            mobileCurrentDevice = deviceSelect.value;
+            updateMobileDevice();
+            syncMobileContent();
+        });
+    }
+
+    if (btnOrient) {
+        btnOrient.addEventListener('click', function () {
+            mobileIsPortrait = !mobileIsPortrait;
+            updateMobileDevice();
+            syncMobileContent();
+        });
+    }
+
+    if (btnMobileReload) {
+        btnMobileReload.addEventListener('click', syncMobileContent);
+    }
+
+    // Info panel
+    var btnMobileInfo = document.getElementById('btn-mobile-info');
+    var mobileInfoPanel = document.getElementById('mobile-info-panel');
+    var btnCloseInfo = document.getElementById('btn-close-info');
+
+    if (btnMobileInfo) {
+        btnMobileInfo.addEventListener('click', function () {
+            var isOpen = !mobileInfoPanel.classList.contains('hidden');
+            mobileInfoPanel.classList.toggle('hidden', isOpen);
+            btnMobileInfo.classList.toggle('active', !isOpen);
+            btnMobileInfo.setAttribute('aria-expanded', String(!isOpen));
+        });
+    }
+    if (btnCloseInfo) {
+        btnCloseInfo.addEventListener('click', function () {
+            mobileInfoPanel.classList.add('hidden');
+            if (btnMobileInfo) {
+                btnMobileInfo.classList.remove('active');
+                btnMobileInfo.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
+
+    if (btnDark) {
+        btnDark.addEventListener('click', function () {
+            mobileIsDark = !mobileIsDark;
+            btnDark.classList.toggle('active', mobileIsDark);
+            btnDark.querySelector('i').className = mobileIsDark ? 'bi bi-sun' : 'bi bi-moon';
+            syncMobileContent();
+        });
+    }
+
+    function updateMobileDevice() {
+        var dev = devices[mobileCurrentDevice];
+        if (!dev) return;
+
+        mobileDevice.className = 'mobile-device ' + dev.type + ' ' + (mobileIsPortrait ? 'portrait' : 'landscape');
+
+        // Tamaño dinámico con inline style
+        var w = mobileIsPortrait ? dev.pw : dev.ph;
+        var h = mobileIsPortrait ? dev.ph : dev.pw;
+        mobileDevice.style.width = w + 'px';
+        mobileDevice.style.height = h + 'px';
+
+        if (dev.type === 'phone') {
+            orientIcon.className = mobileIsPortrait ? 'bi bi-phone' : 'bi bi-phone-landscape';
+        } else {
+            orientIcon.className = mobileIsPortrait ? 'bi bi-tablet' : 'bi bi-tablet-landscape';
+        }
+
+        // Actualizar texto del select con dimensiones actuales (portrait/landscape)
+        if (deviceSelect) {
+            var opt = deviceSelect.querySelector('option[value="' + mobileCurrentDevice + '"]');
+            if (opt) opt.textContent = dev.name + ' — ' + w + ' x ' + h;
+        }
+    }
+
+    function syncMobileContent() {
+        if (!currentProject || !currentPageSlug) return;
+        var theme = mobileIsDark ? 'dark' : 'light';
+        var url = '/api/preview?project=' + encodeURIComponent(currentProject.slug)
+            + '&page=' + encodeURIComponent(currentPageSlug)
+            + '&theme=' + theme
+            + '&t=' + Date.now();
+        mobileIframe.src = url;
+    }
+
     // ── Keyboard shortcuts ──
     document.addEventListener('keydown', function (e) {
+        // Ctrl+R — Recargar
         if (e.ctrlKey && e.key === 'r') {
             e.preventDefault();
             btnReload.click();
         }
+        // Ctrl+E — Toggle code viewer
+        if (e.ctrlKey && e.key === 'e') {
+            e.preventDefault();
+            if (codeViewer.classList.contains('hidden')) {
+                if (currentProject && currentPageSlug) openCodeViewer();
+            } else {
+                closeCodeViewer();
+            }
+        }
+        // Escape — Cerrar paneles
         if (e.key === 'Escape') {
-            if (courseNavVisible && window.innerWidth < 768) {
+            if (!codeViewer.classList.contains('hidden')) {
+                closeCodeViewer();
+            } else if (!mobileFrame.classList.contains('hidden')) {
+                closeMobile();
+            } else if (courseNavVisible && window.innerWidth < 768) {
                 closeCourseNav();
             }
         }

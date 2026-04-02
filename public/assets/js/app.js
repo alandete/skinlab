@@ -73,13 +73,13 @@
         var container = document.getElementById('toast-container');
         if (!container) return;
         var toast = document.createElement('div');
-        toast.className = 'toast toast-' + (type || 'success');
+        toast.className = 'sl-toast sl-toast-' + (type || 'success');
         toast.innerHTML = '<i class="bi ' + (type === 'error' ? 'bi-x-circle' : 'bi-check-circle') + '" aria-hidden="true"></i> ' + escapeHtml(message);
         container.appendChild(toast);
         setTimeout(function () {
-            toast.style.animation = 'toastOut 0.3s ease forwards';
-            setTimeout(function () { toast.remove(); }, 300);
-        }, 3500);
+            toast.style.animation = 'toastOut 0.35s ease forwards';
+            setTimeout(function () { toast.remove(); }, 350);
+        }, 3000);
     };
 
     // ── Dropdown menus (global) ──

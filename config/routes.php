@@ -9,6 +9,8 @@ use App\Controllers\DashboardController;
 use App\Controllers\AdminController;
 use App\Controllers\Api\UserApiController;
 use App\Controllers\Api\ProjectApiController;
+use App\Controllers\Api\PreviewController;
+use App\Controllers\Api\ExportController;
 
 /**
  * Definición de rutas de la aplicación.
@@ -67,4 +69,6 @@ return function (Router $router): void {
     $router->post('/api/projects/compile', [ProjectApiController::class, 'compile'], ['auth', 'role:editor']);
     $router->get('/api/content', [ProjectApiController::class, 'content'], ['auth']);
     $router->get('/api/source', [ProjectApiController::class, 'source'], ['auth']);
+    $router->get('/api/preview', [PreviewController::class, 'render'], ['auth']);
+    $router->get('/api/export/{slug}', [ExportController::class, 'download'], ['auth']);
 };

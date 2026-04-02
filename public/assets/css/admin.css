@@ -647,44 +647,7 @@
     font-size: 0.8125rem;
 }
 
-/* ── Toast notifications ── */
-.toast-container {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    z-index: 2000;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    pointer-events: none;
-}
-
-.toast {
-    padding: 0.75rem 1rem;
-    border-radius: var(--sl-radius);
-    font-size: 0.875rem;
-    font-weight: 600;
-    box-shadow: var(--sl-shadow);
-    pointer-events: auto;
-    animation: toastIn 0.3s ease;
-    max-width: 22rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.toast-success { background: var(--sl-success); color: var(--sl-white); }
-.toast-error   { background: var(--sl-danger); color: var(--sl-white); }
-
-@keyframes toastIn {
-    from { opacity: 0; transform: translateX(1rem); }
-    to   { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes toastOut {
-    from { opacity: 1; transform: translateX(0); }
-    to   { opacity: 0; transform: translateX(1rem); }
-}
+/* Toast: estilos globales en app.css */
 
 /* ── Recovery section ── */
 .recovery-section h3 {
