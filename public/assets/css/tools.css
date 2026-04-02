@@ -1,0 +1,270 @@
+/* ============================================
+   SkinLab – Tool Pages (Colors, Accessibility)
+   ============================================ */
+
+/* ── Secciones ── */
+.tool-section {
+    margin-bottom: 2rem;
+}
+
+.tool-section h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--sl-text);
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--sl-border-light);
+}
+
+.tool-desc {
+    color: var(--sl-text-light);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.tool-loading {
+    color: var(--sl-text-muted);
+    font-style: italic;
+}
+
+.tool-error {
+    color: var(--sl-danger);
+}
+
+/* ══════════════════════════════════════════════
+   COLORES
+   ══════════════════════════════════════════════ */
+
+.color-swatches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.tool-swatch {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid var(--sl-border-light);
+    border-radius: var(--sl-radius-lg);
+    min-width: 10rem;
+}
+
+.tool-swatch-color {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--sl-radius);
+    flex-shrink: 0;
+    border: 1px solid color-mix(in srgb, black 10%, transparent);
+}
+
+.tool-swatch-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+.tool-swatch-info code {
+    font-size: 0.75rem;
+    color: var(--sl-text);
+    font-weight: 600;
+}
+
+.tool-swatch-info small {
+    font-size: 0.6875rem;
+    color: var(--sl-text-muted);
+}
+
+/* ── Preview cards ── */
+.tool-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.tool-preview-card {
+    border: 1px solid var(--sl-border-light);
+    border-radius: var(--sl-radius-lg);
+    overflow: hidden;
+}
+
+.tool-preview-card h3 {
+    font-size: 0.875rem;
+    font-weight: 700;
+    padding: 0.625rem 1rem;
+    background: var(--sl-bg);
+    color: var(--sl-text);
+    border-bottom: 1px solid var(--sl-border-light);
+}
+
+.tool-preview-dark h3 {
+    background: #2A2A3E;
+    color: #E0E0E0;
+    border-color: rgba(255,255,255,0.1);
+}
+
+.tool-preview-body {
+    padding: 1.25rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+
+.tool-preview-body h4 {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+}
+
+.tool-preview-body p {
+    margin-bottom: 0.5rem;
+}
+
+.tool-preview-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.tool-btn {
+    display: inline-block;
+    padding: 0.4375rem 1rem;
+    border-radius: var(--sl-radius);
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+.tool-btn-outline {
+    background: transparent;
+    border: 2px solid;
+}
+
+.tool-preview-card-sample {
+    border: 1px solid;
+    border-radius: var(--sl-radius);
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.tool-preview-card-sample h5 {
+    font-size: 0.9375rem;
+    margin-bottom: 0.375rem;
+}
+
+.tool-preview-card-sample p {
+    font-size: 0.8125rem;
+    margin: 0;
+}
+
+/* ── Tabla de contraste ── */
+.tool-contrast-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8125rem;
+}
+
+.tool-contrast-table th {
+    background: var(--sl-bg);
+    font-weight: 700;
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid var(--sl-border-light);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--sl-text-muted);
+}
+
+.tool-contrast-table td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--sl-border-light);
+    vertical-align: middle;
+}
+
+.tool-contrast-sample {
+    display: inline-block;
+    padding: 0.25rem 0.625rem;
+    border-radius: var(--sl-radius);
+    font-weight: 600;
+    font-size: 0.75rem;
+    border: 1px solid color-mix(in srgb, black 10%, transparent);
+}
+
+.tool-badge {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.625rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+}
+
+.tool-badge-pass {
+    background: var(--sl-success-bg);
+    color: var(--sl-success);
+}
+
+.tool-badge-fail {
+    background: var(--sl-danger-bg);
+    color: var(--sl-danger);
+}
+
+/* ══════════════════════════════════════════════
+   ACCESIBILIDAD
+   ══════════════════════════════════════════════ */
+
+.a11y-pages {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.a11y-page-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 0.875rem;
+    border: 1px solid var(--sl-border-light);
+    border-radius: var(--sl-radius);
+    background: var(--sl-bg-white);
+    color: var(--sl-text-light);
+    font-size: 0.8125rem;
+    font-family: var(--sl-font);
+    cursor: pointer;
+    transition: all var(--sl-transition-fast);
+}
+
+.a11y-page-btn:hover {
+    border-color: var(--sl-border);
+    color: var(--sl-text);
+}
+
+.a11y-page-btn.active {
+    background: var(--sl-primary);
+    border-color: var(--sl-primary);
+    color: var(--sl-white);
+}
+
+
+/* ── Content area para Sa11y ── */
+.a11y-content-area {
+    min-height: 10rem;
+}
+
+.a11y-check-area {
+    border: 1px dashed var(--sl-border-light);
+    border-radius: var(--sl-radius-lg);
+    padding: 1.5rem;
+    position: relative;
+}
+
+/* Sa11y genera su propio panel visual y tooltips via CDN */
+
+/* ══════════════════════════════════════════════
+   MEDIA QUERIES
+   ══════════════════════════════════════════════ */
+
+@media (min-width: 768px) {
+    .tool-row {
+        grid-template-columns: 1fr 1fr;
+    }
+}

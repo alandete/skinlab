@@ -155,8 +155,20 @@
     function renderProjectPages(proj, activeSlug) {
         projectPages.innerHTML = '';
         proj.pages.forEach(function (page) {
+            // Separador visual antes de herramientas
+            if (page.separator) {
+                var sep = document.createElement('li');
+                sep.className = 'sl-course-separator';
+                sep.setAttribute('aria-hidden', 'true');
+                var label = document.createElement('span');
+                label.textContent = 'Herramientas';
+                sep.appendChild(label);
+                projectPages.appendChild(sep);
+            }
+
             var li = document.createElement('li');
             li.className = 'sl-course-item';
+            if (page.type === 'tool') li.classList.add('sl-course-item-tool');
             if (page.slug === activeSlug) li.classList.add('active');
             li.dataset.page = page.slug;
 
@@ -187,14 +199,28 @@
                 return;
             }
 
-            contentBody.innerHTML = data.html;
-
-            var needsAssets = !currentPageSlug || projectStyleEl === null;
-            if (needsAssets) {
-                unloadProjectAssets();
-                loadProjectAssets(data);
+            // Páginas de herramientas: renderizar dinámicamente
+            if (data.toolPage) {
+                if (pageSlug === 'colors' && window.renderColorsPage) {
+                    window.renderColorsPage(contentBody, data.projectData);
+                } else if (pageSlug === 'accessibility' && window.renderAccessibilityPage) {
+                    window.renderAccessibilityPage(contentBody, projectSlug, data.contentPages || []);
+                } else {
+                    contentBody.innerHTML = '<div class="sl-placeholder"><p>Herramienta no disponible</p></div>';
+                }
             } else {
-                document.dispatchEvent(new Event('contentLoaded'));
+                contentBody.innerHTML = data.html;
+            }
+
+            // Cargar assets del proyecto solo para páginas de contenido
+            if (!data.toolPage) {
+                var needsAssets = !currentPageSlug || projectStyleEl === null;
+                if (needsAssets) {
+                    unloadProjectAssets();
+                    loadProjectAssets(data);
+                } else {
+                    document.dispatchEvent(new Event('contentLoaded'));
+                }
             }
 
             var pageData = currentProject.pages.find(function (p) { return p.slug === pageSlug; });

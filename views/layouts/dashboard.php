@@ -14,6 +14,7 @@
     <!-- SkinLab CSS -->
     <link rel="stylesheet" href="<?= asset('css/app.css') ?>">
     <link rel="stylesheet" href="<?= asset('css/dashboard.css') ?>">
+    <link rel="stylesheet" href="<?= asset('css/tools.css') ?>">
 
     <!-- CSRF Token para JS -->
     <meta name="csrf-token" content="<?= e(csrf_token()) ?>">
@@ -23,6 +24,8 @@
 
     <!-- SkinLab JS -->
     <script src="<?= asset('js/app.js') ?>"></script>
+    <script src="<?= asset('js/tool-colors.js') ?>"></script>
+    <script src="<?= asset('js/tool-accessibility.js') ?>"></script>
     <script src="<?= asset('js/dashboard.js') ?>"></script>
 </body>
 </html>

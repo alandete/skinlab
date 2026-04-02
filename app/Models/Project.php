@@ -171,15 +171,18 @@ class Project
             $pages = array_merge($pages, $orgPages, $actPages);
         }
 
-        // Palette
-        if (file_exists($projectPath . '/palette.html')) {
-            $pages[] = ['slug' => 'palette', 'name' => 'Paleta de colores'];
-        }
-
-        // Snippets al final
+        // Snippets (contenido del proyecto, no herramienta)
         if (file_exists($projectPath . '/snippets.html')) {
             $pages[] = ['slug' => 'snippets', 'name' => 'Snippets'];
         }
+
+        // ── Herramientas (separadas visualmente en la nav) ──
+        $tools = [
+            ['slug' => 'colors', 'name' => 'Colores', 'type' => 'tool', 'separator' => true],
+            ['slug' => 'accessibility', 'name' => 'Accesibilidad', 'type' => 'tool'],
+        ];
+
+        $pages = array_merge($pages, $tools);
 
         return $pages;
     }

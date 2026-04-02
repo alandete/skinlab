@@ -398,22 +398,33 @@ class ProjectApiController
             Response::json(['error' => __('general.not_found')], 404);
         }
 
-        // Resolver ruta del archivo
-        if ($page === 'index') {
-            $filePath = $projectPath . '/index.html';
-        } elseif ($page === 'snippets') {
-            $filePath = $projectPath . '/snippets.html';
-        } elseif ($page === 'palette') {
-            $filePath = $projectPath . '/palette.html';
+        // Páginas dinámicas (herramientas del proyecto)
+        $project = Project::findBySlug($projectSlug);
+        if ($page === 'colors' || $page === 'accessibility') {
+            $html = '';
+            $toolPage = true;
+            $projectData = $project;
         } else {
-            $filePath = $projectPath . '/pages/' . $page . '.html';
-        }
+            $toolPage = false;
+            $projectData = null;
 
-        if (!file_exists($filePath)) {
-            Response::json(['error' => __('general.not_found')], 404);
-        }
+            // Resolver ruta del archivo
+            if ($page === 'index') {
+                $filePath = $projectPath . '/index.html';
+            } elseif ($page === 'snippets') {
+                $filePath = $projectPath . '/snippets.html';
+            } elseif ($page === 'palette') {
+                $filePath = $projectPath . '/palette.html';
+            } else {
+                $filePath = $projectPath . '/pages/' . $page . '.html';
+            }
 
-        $html = file_get_contents($filePath);
+            if (!file_exists($filePath)) {
+                Response::json(['error' => __('general.not_found')], 404);
+            }
+
+            $html = file_get_contents($filePath);
+        }
         $basePath = '/storage/projects/' . $projectSlug;
         $masterFile = $projectPath . '/css/' . $projectSlug . '-master.css';
         $mobileFile = $projectPath . '/css/' . $projectSlug . '-mobile.css';
@@ -430,14 +441,46 @@ class ProjectApiController
 
         $jsFile = $projectPath . '/js/' . $projectSlug . '-scripts.js';
 
-        Response::json([
+        $result = [
             'html'           => $html,
             'project'        => $projectSlug,
             'page'           => $page,
             'cssPath'        => $cssPath,
             'cssDesktopPath' => $cssDesktopPath,
             'jsPath'         => file_exists($jsFile) ? $basePath . '/js/' . $projectSlug . '-scripts.js' : null,
-        ]);
+            'toolPage'       => $toolPage,
+        ];
+
+        // Datos extra para páginas de herramientas
+        if ($toolPage && $projectData) {
+            $result['projectData'] = [
+                'name'            => $projectData['name'],
+                'color_primary'   => $projectData['color_primary'],
+                'color_secondary' => $projectData['color_secondary'],
+                'nav_bg_color'    => $projectData['nav_bg_color'],
+                'nav_text_color'  => $projectData['nav_text_color'],
+            ];
+            // Para accesibilidad: lista de páginas con contenido HTML
+            if ($page === 'accessibility') {
+                $contentPages = [];
+                $pagesDir = $projectPath . '/pages';
+                if (file_exists($projectPath . '/index.html')) {
+                    $contentPages[] = ['slug' => 'index', 'name' => 'Inicio'];
+                }
+                if (is_dir($pagesDir)) {
+                    foreach (glob($pagesDir . '/*.html') ?: [] as $f) {
+                        $fn = basename($f, '.html');
+                        $contentPages[] = ['slug' => $fn, 'name' => ucwords(str_replace(['-', '_'], ' ', $fn))];
+                    }
+                }
+                if (file_exists($projectPath . '/snippets.html')) {
+                    $contentPages[] = ['slug' => 'snippets', 'name' => 'Snippets'];
+                }
+                $result['contentPages'] = $contentPages;
+            }
+        }
+
+        Response::json($result);
     }
 
     /**
