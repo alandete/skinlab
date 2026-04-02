@@ -44,25 +44,28 @@
     }
 
     // ── Color sync (picker ↔ hex) ──
-    function syncColors(prefix) {
-        ['primary', 'secondary'].forEach(function (id) {
-            var picker = document.getElementById(prefix + 'color-' + id + '-picker');
-            var hex = document.getElementById(prefix + 'color-' + id);
-            if (!picker || !hex) return;
+    // Busca cada .color-field y vincula el input[type=color] con el input.color-hex
+    document.querySelectorAll('.color-field').forEach(function (field) {
+        var picker = field.querySelector('input[type="color"]');
+        var hex = field.querySelector('.color-hex');
+        if (!picker || !hex) return;
 
-            picker.addEventListener('input', function () {
-                hex.value = picker.value.toUpperCase();
-            });
-            hex.addEventListener('input', function () {
-                var val = hex.value.trim();
-                if (!val.startsWith('#')) val = '#' + val;
-                hex.value = val.toUpperCase();
-                if (/^#[0-9A-F]{6}$/i.test(val)) picker.value = val;
-            });
+        picker.addEventListener('input', function () {
+            hex.value = picker.value.toUpperCase();
         });
-    }
-    syncColors('');
-    syncColors('edit-');
+
+        function hexToPicker() {
+            var val = hex.value.trim();
+            if (!val.startsWith('#')) val = '#' + val;
+            hex.value = val.toUpperCase();
+            if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
+                picker.value = val.toLowerCase();
+            }
+        }
+
+        hex.addEventListener('input', hexToPicker);
+        hex.addEventListener('change', hexToPicker);
+    });
 
     // ── Show/hide create form ──
     var btnNew = document.getElementById('btn-new-project');
@@ -116,6 +119,10 @@
                         primary: document.getElementById('color-primary').value,
                         secondary: document.getElementById('color-secondary').value
                     },
+                    navColors: {
+                        bg: document.getElementById('nav-bg-color').value,
+                        text: document.getElementById('nav-text-color').value
+                    },
                     orgType: orgType.value,
                     orgCount: orgType.value !== 'none' ? parseInt(orgCount.value || 0) : 0
                 })
@@ -162,6 +169,14 @@
         editOrgCount.value = ot !== 'none' ? oc : '';
         editOrgCount.disabled = ot === 'none';
 
+        // Pre-cargar nav colors
+        var navBg = btn.dataset.navBg || '#394B58';
+        var navText = btn.dataset.navText || '#FFFFFF';
+        document.getElementById('edit-nav-bg-color').value = navBg;
+        document.getElementById('edit-nav-bg-picker').value = navBg;
+        document.getElementById('edit-nav-text-color').value = navText;
+        document.getElementById('edit-nav-text-picker').value = navText;
+
         // Pre-cargar CDNs
         var activeCdns = (btn.dataset.cdns || '').split(',').filter(Boolean);
         document.querySelectorAll('#edit-cdn-grid input[type="checkbox"]').forEach(function (cb) {
@@ -197,6 +212,10 @@
                     colors: {
                         primary: document.getElementById('edit-color-primary').value,
                         secondary: document.getElementById('edit-color-secondary').value
+                    },
+                    navColors: {
+                        bg: document.getElementById('edit-nav-bg-color').value,
+                        text: document.getElementById('edit-nav-text-color').value
                     },
                     orgType: editOrgType.value,
                     orgCount: editOrgType.value !== 'none' ? parseInt(editOrgCount.value || 0) : 0,

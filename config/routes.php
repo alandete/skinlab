@@ -56,6 +56,7 @@ return function (Router $router): void {
 
     // ── Admin: Proyectos ──
     $router->get('/admin/projects', [AdminController::class, 'projects'], ['auth', 'role:admin']);
+    $router->get('/admin/docs', [AdminController::class, 'docs'], ['auth']);
 
     // ── API: Proyectos ──
     $router->get('/api/projects', [ProjectApiController::class, 'list'], ['auth']);

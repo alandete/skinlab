@@ -110,6 +110,9 @@
         projectSelect.value = proj.slug;
         btnExport.classList.remove('hidden');
 
+        // Aplicar colores institucionales al nav Canvas
+        applyNavColors(proj.nav_bg_color, proj.nav_text_color);
+
         var pageSlug = initialPage || 'index';
         renderProjectPages(proj, pageSlug);
         loadPage(proj.slug, pageSlug);
@@ -128,6 +131,9 @@
         btnExport.classList.add('hidden');
         sessionStorage.removeItem('sl_project');
         sessionStorage.removeItem('sl_page');
+
+        // Resetear colores del nav a los por defecto
+        resetNavColors();
 
         unloadProjectAssets();
 
@@ -255,6 +261,39 @@
     function switchView(view) {
         dashboard.classList.remove('view-home', 'view-content');
         dashboard.classList.add('view-' + view);
+    }
+
+    // ── Colores institucionales del nav Canvas ──
+    function applyNavColors(bgColor, textColor) {
+        if (!canvasNav) return;
+        // Aplicar directamente al nav y como variables CSS
+        if (bgColor) {
+            canvasNav.style.background = bgColor;
+            document.documentElement.style.setProperty('--sl-canvas-nav-bg', bgColor);
+        }
+        if (textColor) {
+            canvasNav.style.color = textColor;
+            document.documentElement.style.setProperty('--sl-canvas-nav-text', textColor);
+            document.documentElement.style.setProperty('--sl-canvas-nav-active', textColor);
+            // Aplicar a los íconos y labels
+            canvasNav.querySelectorAll('.sl-canvas-nav-item a').forEach(function (a) {
+                a.style.color = textColor;
+            });
+            canvasNav.querySelector('.sl-canvas-nav-toggle').style.color = textColor;
+        }
+    }
+
+    function resetNavColors() {
+        if (!canvasNav) return;
+        canvasNav.style.background = '';
+        canvasNav.style.color = '';
+        canvasNav.querySelectorAll('.sl-canvas-nav-item a').forEach(function (a) {
+            a.style.color = '';
+        });
+        canvasNav.querySelector('.sl-canvas-nav-toggle').style.color = '';
+        document.documentElement.style.removeProperty('--sl-canvas-nav-bg');
+        document.documentElement.style.removeProperty('--sl-canvas-nav-text');
+        document.documentElement.style.removeProperty('--sl-canvas-nav-active');
     }
 
     // ── URL State + sessionStorage ──

@@ -60,8 +60,8 @@ class Project
     public static function create(array $data): int
     {
         return Database::insert(
-            "INSERT INTO projects (slug, name, description, user_id, color_primary, color_secondary, org_type, org_count, cdns)
-             VALUES (:slug, :name, :desc, :uid, :cp, :cs, :ot, :oc, :cdns)",
+            "INSERT INTO projects (slug, name, description, user_id, color_primary, color_secondary, nav_bg_color, nav_text_color, org_type, org_count, cdns)
+             VALUES (:slug, :name, :desc, :uid, :cp, :cs, :nbg, :ntx, :ot, :oc, :cdns)",
             [
                 ':slug'  => $data['slug'],
                 ':name'  => $data['name'],
@@ -69,6 +69,8 @@ class Project
                 ':uid'   => $data['user_id'] ?? null,
                 ':cp'    => $data['color_primary'] ?? '#0374B5',
                 ':cs'    => $data['color_secondary'] ?? '#2D3B45',
+                ':nbg'   => $data['nav_bg_color'] ?? '#394B58',
+                ':ntx'   => $data['nav_text_color'] ?? '#FFFFFF',
                 ':ot'    => $data['org_type'] ?? 'none',
                 ':oc'    => $data['org_count'] ?? 0,
                 ':cdns'  => json_encode($data['cdns'] ?? []),
@@ -78,7 +80,7 @@ class Project
 
     public static function update(int $id, array $fields): void
     {
-        $allowed = ['name', 'description', 'color_primary', 'color_secondary', 'org_type', 'org_count', 'cdns'];
+        $allowed = ['name', 'description', 'color_primary', 'color_secondary', 'nav_bg_color', 'nav_text_color', 'org_type', 'org_count', 'cdns'];
         $sets = [];
         $params = [':id' => $id];
 

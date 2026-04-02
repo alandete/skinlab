@@ -44,4 +44,13 @@ class AdminController
             'cdns'       => App::config('cdns', []),
         ], 'layouts.admin');
     }
+
+    public function docs(Request $request, array $params = []): void
+    {
+        View::render('admin.docs', [
+            'title'      => __('admin.tab_docs') . ' — ' . __('admin.title'),
+            'activeTab'  => 'docs',
+            'breadcrumb' => __('admin.tab_docs'),
+        ], 'layouts.admin');
+    }
 }

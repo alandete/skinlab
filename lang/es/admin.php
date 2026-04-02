@@ -39,6 +39,12 @@ return [
     'color_primary'         => 'Primario',
     'color_secondary'       => 'Secundario',
 
+    // Colores del nav Canvas
+    'nav_colors'            => 'Colores del menú Canvas',
+    'nav_colors_hint'       => 'Fondo y texto de la barra lateral de Canvas.',
+    'nav_bg_color'          => 'Fondo',
+    'nav_text_color'        => 'Texto / Íconos',
+
     // CDNs
     'external_libs'         => 'Librerías externas (@import en CSS)',
     'cdn_bootstrap'         => 'Bootstrap 5 CSS',

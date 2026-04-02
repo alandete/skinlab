@@ -69,6 +69,23 @@ $cdnDescs = [
         </div>
 
         <div class="form-group">
+            <label><?= e(__('admin.nav_colors')) ?></label>
+            <p class="form-hint mb-1"><?= e(__('admin.nav_colors_hint')) ?></p>
+            <div class="color-inputs">
+                <div class="color-field">
+                    <input type="color" id="nav-bg-picker" value="#394B58">
+                    <input type="text" id="nav-bg-color" class="form-input form-input-sm color-hex" value="#394B58" maxlength="7">
+                    <small><?= e(__('admin.nav_bg_color')) ?></small>
+                </div>
+                <div class="color-field">
+                    <input type="color" id="nav-text-picker" value="#FFFFFF">
+                    <input type="text" id="nav-text-color" class="form-input form-input-sm color-hex" value="#FFFFFF" maxlength="7">
+                    <small><?= e(__('admin.nav_text_color')) ?></small>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label><?= e(__('admin.organization')) ?></label>
             <div class="org-row">
                 <select id="org-type" class="form-input">
@@ -141,7 +158,9 @@ $cdnDescs = [
                             data-secondary="<?= e($proj['color_secondary']) ?>"
                             data-org-type="<?= e($proj['org_type']) ?>"
                             data-org-count="<?= (int)$proj['org_count'] ?>"
-                            data-cdns="<?= e(is_array($proj['cdns']) ? implode(',', $proj['cdns']) : '') ?>">
+                            data-cdns="<?= e(is_array($proj['cdns']) ? implode(',', $proj['cdns']) : '') ?>"
+                            data-nav-bg="<?= e($proj['nav_bg_color']) ?>"
+                            data-nav-text="<?= e($proj['nav_text_color']) ?>">
                         <i class="bi bi-pencil" aria-hidden="true"></i> <?= e(__('general.edit')) ?>
                     </button>
                     <button class="dropdown-item btn-compile-project" role="menuitem"
@@ -209,6 +228,25 @@ $cdnDescs = [
                     </div>
                 </div>
             </div>
+            <div class="form-group">
+                <label><?= e(__('admin.nav_colors')) ?></label>
+                <p class="form-hint mb-1"><?= e(__('admin.nav_colors_hint')) ?></p>
+                <div class="color-inputs">
+                    <div class="color-field">
+                        <input type="color" id="edit-nav-bg-picker" value="#394B58">
+                        <input type="text" id="edit-nav-bg-color" class="form-input form-input-sm color-hex" value="#394B58" maxlength="7">
+                        <small><?= e(__('admin.nav_bg_color')) ?></small>
+                    </div>
+                    <div class="color-field">
+                        <input type="color" id="edit-nav-text-picker" value="#FFFFFF">
+                        <input type="text" id="edit-nav-text-color" class="form-input form-input-sm color-hex" value="#FFFFFF" maxlength="7">
+                        <small><?= e(__('admin.nav_text_color')) ?></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
             <div class="form-group">
                 <label><?= e(__('admin.organization')) ?></label>
                 <p class="form-hint mb-1"><?= e(__('admin.org_add_hint')) ?></p>

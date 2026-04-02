@@ -52,10 +52,10 @@
                         </span>
                     </li>
                     <li>
-                        <span class="admin-nav-disabled" title="Fase 6">
+                        <a href="/admin/docs" class="<?= ($activeTab ?? '') === 'docs' ? 'active' : '' ?>">
                             <i class="bi bi-book" aria-hidden="true"></i>
                             <span><?= e(__('admin.tab_docs')) ?></span>
-                        </span>
+                        </a>
                     </li>
                 </ul>
             </nav>

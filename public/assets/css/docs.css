@@ -1,0 +1,434 @@
+/* ============================================
+   SkinLab – Documentación Canvas LMS
+   Mobile First
+   ============================================ */
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* ── Layout docs: TOC sidebar + contenido ── */
+.docs-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+/* ── TOC Sidebar ── */
+.docs-toc {
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--sl-border-light);
+    flex-shrink: 0;
+}
+
+.toc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    list-style: none;
+    padding: 0;
+}
+
+.toc-title {
+    width: 100%;
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--sl-text-muted);
+    font-weight: 700;
+    padding: 0.5rem 0.5rem 0.25rem;
+}
+
+.toc-title:first-child {
+    padding-top: 0;
+}
+
+.toc-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.3rem 0.625rem;
+    font-size: 0.8125rem;
+    color: var(--sl-text-light);
+    border-radius: var(--sl-radius);
+    transition: background var(--sl-transition-fast), color var(--sl-transition-fast);
+    text-decoration: none;
+}
+
+.toc-link:hover {
+    background: var(--sl-bg);
+    color: var(--sl-text);
+    text-decoration: none;
+}
+
+.toc-link.active {
+    background: color-mix(in srgb, var(--sl-primary) 8%, transparent);
+    color: var(--sl-primary);
+    font-weight: 600;
+}
+
+.toc-link i {
+    font-size: 0.75rem;
+    width: 1rem;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* ── Contenido ── */
+.docs-body {
+    flex: 1;
+    padding: 2rem 1.5rem;
+    max-width: 56rem;
+    overflow-x: auto;
+}
+
+.docs-body section {
+    margin-bottom: 3rem;
+    scroll-margin-top: 5rem;
+}
+
+.docs-body section h2 {
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: var(--sl-text);
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.625rem;
+    border-bottom: 2px solid var(--sl-border-light);
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+.docs-body section h2 i {
+    color: var(--sl-primary);
+    font-size: 1.125rem;
+}
+
+.docs-body section h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--sl-text);
+    margin: 1.25rem 0 0.625rem;
+}
+
+.docs-body section h4 {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.docs-body section p {
+    color: var(--sl-text-light);
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+}
+
+/* ── Tag Grid ── */
+.tag-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin-bottom: 1rem;
+}
+
+.tag {
+    display: inline-block;
+    padding: 0.25rem 0.625rem;
+    border-radius: var(--sl-radius);
+    font-size: 0.75rem;
+    font-family: 'Consolas', monospace;
+    font-weight: 600;
+}
+
+.tag.allowed {
+    background: var(--sl-success-bg);
+    color: var(--sl-success);
+    border: 1px solid color-mix(in srgb, var(--sl-success) 20%, transparent);
+}
+
+.tag.blocked {
+    background: var(--sl-danger-bg);
+    color: var(--sl-danger);
+    border: 1px solid color-mix(in srgb, var(--sl-danger) 20%, transparent);
+}
+
+.tag.attr {
+    background: color-mix(in srgb, var(--sl-primary) 8%, transparent);
+    color: var(--sl-primary);
+    border: 1px solid color-mix(in srgb, var(--sl-primary) 15%, transparent);
+}
+
+/* ── Tables ── */
+.docs-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    font-size: 0.8125rem;
+}
+
+.docs-table th {
+    background: var(--sl-bg);
+    font-weight: 700;
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid var(--sl-border-light);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--sl-text-muted);
+}
+
+.docs-table td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--sl-border-light);
+    color: var(--sl-text-light);
+}
+
+.docs-table code {
+    background: var(--sl-bg);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.1875rem;
+    font-size: 0.75rem;
+    color: var(--sl-primary);
+}
+
+/* ── Callouts ── */
+.callout {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.875rem 1.125rem;
+    border-radius: var(--sl-radius-lg);
+    margin: 1rem 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+}
+
+.callout > i {
+    font-size: 1rem;
+    margin-top: 0.125rem;
+    flex-shrink: 0;
+}
+
+.callout.warning {
+    background: var(--sl-warning-bg);
+    border: 1px solid color-mix(in srgb, var(--sl-warning) 30%, transparent);
+    color: #795500;
+}
+
+.callout.warning > i { color: var(--sl-warning); }
+
+.callout.danger {
+    background: var(--sl-danger-bg);
+    border: 1px solid color-mix(in srgb, var(--sl-danger) 20%, transparent);
+    color: #7F1D1D;
+}
+
+.callout.danger > i { color: var(--sl-danger); }
+
+.callout.info {
+    background: color-mix(in srgb, var(--sl-primary) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--sl-primary) 15%, transparent);
+    color: #1A4971;
+}
+
+.callout.info > i { color: var(--sl-primary); }
+
+/* ── CSS Grid ── */
+.css-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.css-group {
+    background: var(--sl-bg-white);
+    border: 1px solid var(--sl-border-light);
+    border-radius: var(--sl-radius-lg);
+    padding: 1rem;
+}
+
+.css-group h4 {
+    color: var(--sl-primary);
+    margin-bottom: 0.625rem;
+    font-size: 0.8125rem;
+}
+
+.css-group ul { list-style: none; }
+
+.css-group li {
+    font-size: 0.75rem;
+    color: var(--sl-text-light);
+    padding: 0.1875rem 0;
+}
+
+.css-group code {
+    background: var(--sl-bg);
+    padding: 0.0625rem 0.3125rem;
+    border-radius: 0.1875rem;
+    font-size: 0.6875rem;
+    color: var(--sl-primary);
+}
+
+/* ── Practice Cards ── */
+.practice-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.practice-card {
+    border-radius: var(--sl-radius-lg);
+    padding: 1.125rem;
+    border: 1px solid;
+}
+
+.practice-card h4 {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.9375rem;
+}
+
+.practice-card.good {
+    background: color-mix(in srgb, var(--sl-success) 5%, var(--sl-bg-white));
+    border-color: color-mix(in srgb, var(--sl-success) 20%, transparent);
+}
+
+.practice-card.good h4 { color: var(--sl-success); }
+
+.practice-card.bad {
+    background: color-mix(in srgb, var(--sl-danger) 5%, var(--sl-bg-white));
+    border-color: color-mix(in srgb, var(--sl-danger) 20%, transparent);
+}
+
+.practice-card.bad h4 { color: var(--sl-danger); }
+
+.practice-card ul {
+    list-style: disc;
+    padding-left: 1.125rem;
+}
+
+.practice-card li {
+    font-size: 0.8125rem;
+    color: var(--sl-text-light);
+    padding: 0.1875rem 0;
+    line-height: 1.5;
+}
+
+.practice-card code {
+    background: color-mix(in srgb, black 5%, transparent);
+    padding: 0.0625rem 0.3125rem;
+    border-radius: 0.1875rem;
+    font-size: 0.75rem;
+}
+
+/* ── Code Blocks ── */
+pre {
+    background: #1E1E2E;
+    border-radius: var(--sl-radius-lg);
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 0.75rem 0 1rem;
+}
+
+pre code {
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: #D4D4D4;
+}
+
+/* ── Inline code ── */
+.docs-body section > p code,
+.docs-list code,
+.callout code {
+    background: var(--sl-bg);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.1875rem;
+    font-size: 0.75rem;
+    color: var(--sl-primary);
+    font-family: 'Consolas', monospace;
+}
+
+/* ── Lists ── */
+.docs-list {
+    list-style: disc;
+    padding-left: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.docs-list li {
+    font-size: 0.8125rem;
+    color: var(--sl-text-light);
+    padding: 0.25rem 0;
+    line-height: 1.5;
+}
+
+.docs-list.sources li { padding: 0.375rem 0; }
+
+/* ── Badges docs ── */
+.badge-doc {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.625rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+}
+
+.badge-doc.yes { background: var(--sl-success-bg); color: var(--sl-success); }
+.badge-doc.no { background: var(--sl-danger-bg); color: var(--sl-danger); }
+.badge-doc.partial { background: var(--sl-warning-bg); color: #B77D00; }
+
+/* ══════════════════════════════════════════════
+   MEDIA QUERIES
+   ══════════════════════════════════════════════ */
+
+@media (min-width: 576px) {
+    .css-grid {
+        grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    }
+
+    .practice-grid {
+        grid-template-columns: repeat(auto-fill, minmax(17.5rem, 1fr));
+    }
+}
+
+@media (min-width: 768px) {
+    .docs-layout {
+        flex-direction: row;
+    }
+
+    .docs-toc {
+        width: 12rem;
+        min-width: 12rem;
+        position: sticky;
+        top: 0;
+        height: calc(100vh - 3rem);
+        overflow-y: auto;
+        border-bottom: none;
+        border-right: 1px solid var(--sl-border-light);
+        padding: 1.25rem 0;
+    }
+
+    .toc {
+        flex-direction: column;
+        padding: 0 0.75rem;
+    }
+
+    .toc-title {
+        width: auto;
+        padding: 1rem 0.75rem 0.375rem;
+    }
+
+    .toc-link {
+        display: flex;
+        width: 100%;
+        padding: 0.4375rem 0.75rem;
+    }
+
+    .docs-body {
+        padding: 2rem 1.5rem;
+    }
+}

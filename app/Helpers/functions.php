@@ -59,7 +59,9 @@ function url(string $path = '/'): string
  */
 function asset(string $path): string
 {
-    return '/assets/' . ltrim($path, '/');
+    $file = PUBLIC_PATH . '/assets/' . ltrim($path, '/');
+    $version = file_exists($file) ? filemtime($file) : time();
+    return '/assets/' . ltrim($path, '/') . '?v=' . $version;
 }
 
 // ── Sesión ──

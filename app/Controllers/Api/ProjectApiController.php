@@ -63,8 +63,14 @@ class ProjectApiController
 
         $colorPrimary = $colors['primary'] ?? '#0374B5';
         $colorSecondary = $colors['secondary'] ?? '#2D3B45';
+        $navColors = $request->input('navColors', []);
+        $navBgColor = $navColors['bg'] ?? '#394B58';
+        $navTextColor = $navColors['text'] ?? '#FFFFFF';
 
         if (!is_hex_color($colorPrimary) || !is_hex_color($colorSecondary)) {
+            Response::json(['error' => __('general.invalid_format')], 400);
+        }
+        if (!is_hex_color($navBgColor) || !is_hex_color($navTextColor)) {
             Response::json(['error' => __('general.invalid_format')], 400);
         }
 
@@ -153,6 +159,8 @@ class ProjectApiController
             'user_id'         => AuthMiddleware::userId(),
             'color_primary'   => $colorPrimary,
             'color_secondary' => $colorSecondary,
+            'nav_bg_color'    => $navBgColor,
+            'nav_text_color'  => $navTextColor,
             'org_type'        => $orgType,
             'org_count'       => $orgCount,
             'cdns'            => $cdns,
@@ -201,6 +209,17 @@ class ProjectApiController
             }
             if (!empty($colors['secondary']) && is_hex_color($colors['secondary'])) {
                 $fields['color_secondary'] = $colors['secondary'];
+            }
+        }
+
+        // Colores del nav Canvas
+        $navColors = $request->input('navColors');
+        if ($navColors !== null) {
+            if (!empty($navColors['bg']) && is_hex_color($navColors['bg'])) {
+                $fields['nav_bg_color'] = $navColors['bg'];
+            }
+            if (!empty($navColors['text']) && is_hex_color($navColors['text'])) {
+                $fields['nav_text_color'] = $navColors['text'];
             }
         }
 

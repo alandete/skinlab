@@ -24,6 +24,8 @@ CREATE TABLE IF NOT EXISTS projects (
     user_id         INT UNSIGNED DEFAULT NULL,
     color_primary   VARCHAR(7)   NOT NULL DEFAULT '#0374B5',
     color_secondary VARCHAR(7)   NOT NULL DEFAULT '#2D3B45',
+    nav_bg_color    VARCHAR(7)   NOT NULL DEFAULT '#394B58',
+    nav_text_color  VARCHAR(7)   NOT NULL DEFAULT '#FFFFFF',
     org_type        ENUM('none','semanas','modulos','unidades') NOT NULL DEFAULT 'none',
     org_count       TINYINT UNSIGNED NOT NULL DEFAULT 0,
     cdns            JSON         DEFAULT NULL,

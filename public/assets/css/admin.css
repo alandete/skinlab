@@ -26,7 +26,7 @@
 .admin-sidebar {
     display: none;
     flex-direction: column;
-    width: 15rem;
+    width: 12rem;
     background: var(--sl-secondary);
     color: var(--sl-white);
     flex-shrink: 0;
@@ -249,7 +249,7 @@
 .admin-main {
     flex: 1;
     overflow-y: auto;
-    padding: 1.5rem 1rem;
+    padding: 1rem;
 }
 
 /* ══════════════════════════════════════════════
@@ -967,10 +967,6 @@
 
 /* ── min-width: 576px (sm) ── */
 @media (min-width: 576px) {
-    .admin-main {
-        padding: 1.5rem;
-    }
-
     .panel-header {
         flex-direction: row;
         align-items: center;
@@ -1021,6 +1017,6 @@
 /* ── min-width: 1200px (xl) ── */
 @media (min-width: 1200px) {
     .admin-main {
-        padding: 2rem 2.5rem;
+        padding: 1.5rem;
     }
 }
