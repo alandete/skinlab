@@ -207,71 +207,80 @@ $cdnDescs = [
         <h3 id="edit-project-title"><i class="bi bi-pencil" aria-hidden="true"></i> <?= e(__('admin.edit_project')) ?></h3>
         <input type="hidden" id="edit-project-id">
 
+        <!-- Nombre -->
         <div class="form-group">
             <label for="edit-project-name"><?= e(__('admin.project_name')) ?></label>
             <input type="text" id="edit-project-name" class="form-input" autocomplete="off">
         </div>
 
-        <div class="form-row">
-            <div class="form-group">
-                <label><?= e(__('admin.brand_colors')) ?></label>
-                <div class="color-inputs">
-                    <div class="color-field">
-                        <input type="color" id="edit-color-primary-picker" value="#0374B5">
-                        <input type="text" id="edit-color-primary" class="form-input form-input-sm color-hex" value="#0374B5" maxlength="7">
-                        <small><?= e(__('admin.color_primary')) ?></small>
-                    </div>
-                    <div class="color-field">
-                        <input type="color" id="edit-color-secondary-picker" value="#2D3B45">
-                        <input type="text" id="edit-color-secondary" class="form-input form-input-sm color-hex" value="#2D3B45" maxlength="7">
-                        <small><?= e(__('admin.color_secondary')) ?></small>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label><?= e(__('admin.nav_colors')) ?></label>
-                <p class="form-hint mb-1"><?= e(__('admin.nav_colors_hint')) ?></p>
-                <div class="color-inputs">
-                    <div class="color-field">
-                        <input type="color" id="edit-nav-bg-picker" value="#394B58">
-                        <input type="text" id="edit-nav-bg-color" class="form-input form-input-sm color-hex" value="#394B58" maxlength="7">
-                        <small><?= e(__('admin.nav_bg_color')) ?></small>
-                    </div>
-                    <div class="color-field">
-                        <input type="color" id="edit-nav-text-picker" value="#FFFFFF">
-                        <input type="text" id="edit-nav-text-color" class="form-input form-input-sm color-hex" value="#FFFFFF" maxlength="7">
-                        <small><?= e(__('admin.nav_text_color')) ?></small>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group">
-                <label><?= e(__('admin.organization')) ?></label>
-                <p class="form-hint mb-1"><?= e(__('admin.org_add_hint')) ?></p>
-                <div class="org-row">
-                    <select id="edit-org-type" class="form-input">
-                        <option value="none"><?= e(__('admin.org_none')) ?></option>
-                        <option value="semanas"><?= e(__('admin.org_weeks')) ?></option>
-                        <option value="modulos"><?= e(__('admin.org_modules')) ?></option>
-                        <option value="unidades"><?= e(__('admin.org_units')) ?></option>
-                    </select>
-                    <input type="number" id="edit-org-count" class="form-input form-input-sm" min="1" max="30" value="4" disabled placeholder="<?= e(__('admin.org_count')) ?>">
-                </div>
-            </div>
-        </div>
-
+        <!-- Colores -->
         <div class="form-group">
-            <label><?= e(__('admin.external_libs')) ?></label>
-            <div class="cdn-grid" id="edit-cdn-grid">
+            <label class="form-label"><?= e(__('admin.brand_colors')) ?></label>
+            <div class="edit-colors-grid">
+                <div class="edit-color-group">
+                    <span class="edit-color-context"><?= e(__('admin.brand_colors')) ?></span>
+                    <div class="edit-color-pair">
+                        <div class="color-field">
+                            <small><?= e(__('admin.color_primary')) ?></small>
+                            <div class="color-input-row">
+                                <input type="color" id="edit-color-primary-picker" value="#0374B5">
+                                <input type="text" id="edit-color-primary" class="form-input form-input-sm color-hex" value="#0374B5" maxlength="7">
+                            </div>
+                        </div>
+                        <div class="color-field">
+                            <small><?= e(__('admin.color_secondary')) ?></small>
+                            <div class="color-input-row">
+                                <input type="color" id="edit-color-secondary-picker" value="#2D3B45">
+                                <input type="text" id="edit-color-secondary" class="form-input form-input-sm color-hex" value="#2D3B45" maxlength="7">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="edit-color-group">
+                    <span class="edit-color-context"><?= e(__('admin.nav_colors')) ?></span>
+                    <div class="edit-color-pair">
+                        <div class="color-field">
+                            <small><?= e(__('admin.nav_bg_color')) ?></small>
+                            <div class="color-input-row">
+                                <input type="color" id="edit-nav-bg-picker" value="#394B58">
+                                <input type="text" id="edit-nav-bg-color" class="form-input form-input-sm color-hex" value="#394B58" maxlength="7">
+                            </div>
+                        </div>
+                        <div class="color-field">
+                            <small><?= e(__('admin.nav_text_color')) ?></small>
+                            <div class="color-input-row">
+                                <input type="color" id="edit-nav-text-picker" value="#FFFFFF">
+                                <input type="text" id="edit-nav-text-color" class="form-input form-input-sm color-hex" value="#FFFFFF" maxlength="7">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Organización -->
+        <div class="form-group">
+            <label class="form-label"><?= e(__('admin.organization')) ?></label>
+            <div class="org-row">
+                <select id="edit-org-type" class="form-input">
+                    <option value="none"><?= e(__('admin.org_none')) ?></option>
+                    <option value="semanas"><?= e(__('admin.org_weeks')) ?></option>
+                    <option value="modulos"><?= e(__('admin.org_modules')) ?></option>
+                    <option value="unidades"><?= e(__('admin.org_units')) ?></option>
+                </select>
+                <input type="number" id="edit-org-count" class="form-input form-input-sm" min="1" max="30" value="4" disabled placeholder="<?= e(__('admin.org_count')) ?>">
+            </div>
+            <p class="form-hint"><?= e(__('admin.org_add_hint')) ?></p>
+        </div>
+
+        <!-- Librerías externas -->
+        <div class="form-group">
+            <label class="form-label"><?= e(__('admin.external_libs')) ?></label>
+            <div class="cdn-inline" id="edit-cdn-grid">
                 <?php foreach ($cdns as $key => $url): ?>
-                <label class="cdn-option">
+                <label class="cdn-chip">
                     <input type="checkbox" name="edit_cdns[]" value="<?= e($key) ?>">
-                    <span class="cdn-option-label">
-                        <strong><?= e($cdnNames[$key] ?? $key) ?></strong>
-                        <small><?= e($cdnDescs[$key] ?? '') ?></small>
-                    </span>
+                    <span><?= e($cdnNames[$key] ?? $key) ?></span>
                 </label>
                 <?php endforeach; ?>
             </div>

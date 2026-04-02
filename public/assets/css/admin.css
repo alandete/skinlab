@@ -763,6 +763,12 @@
     margin-bottom: 1.25rem;
 }
 
+.modal-form .form-hint {
+    font-size: 0.6875rem;
+    color: var(--sl-text-muted);
+    margin-bottom: 0;
+}
+
 .modal-form .modal-actions {
     justify-content: flex-end;
     margin-top: 1.5rem;
@@ -909,6 +915,95 @@
 .cdn-option-label strong { font-size: 0.875rem; color: var(--sl-text); }
 .cdn-option-label small { font-size: 0.75rem; color: var(--sl-text-muted); }
 
+/* ── Edit modal: colors grid ── */
+.edit-colors-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.edit-color-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+
+.edit-color-context {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--sl-text-muted);
+}
+
+.edit-color-pair {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+/* Color field: label arriba, picker + hex abajo */
+.edit-color-pair .color-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.edit-color-pair .color-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.edit-color-pair .color-field small {
+    font-size: 0.6875rem;
+    color: var(--sl-text-light);
+}
+
+.edit-color-pair .color-field .color-input-row {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+}
+
+/* ── CDN chips (compact inline) ── */
+.cdn-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+}
+
+.cdn-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.3125rem 0.625rem;
+    border: 1px solid var(--sl-border-light);
+    border-radius: 2rem;
+    font-size: 0.75rem;
+    color: var(--sl-text-light);
+    cursor: pointer;
+    transition: all var(--sl-transition-fast);
+}
+
+.cdn-chip:hover {
+    border-color: var(--sl-border);
+    color: var(--sl-text);
+}
+
+.cdn-chip:has(input:checked) {
+    background: color-mix(in srgb, var(--sl-primary) 10%, transparent);
+    border-color: var(--sl-primary);
+    color: var(--sl-primary);
+}
+
+.cdn-chip input[type="checkbox"] {
+    width: 0.875rem;
+    height: 0.875rem;
+    flex-shrink: 0;
+    accent-color: var(--sl-primary);
+}
+
 /* ── Empty state ── */
 .empty-state {
     text-align: center;
@@ -930,6 +1025,10 @@
 
 /* ── min-width: 576px (sm) ── */
 @media (min-width: 576px) {
+    .edit-colors-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
     .panel-header {
         flex-direction: row;
         align-items: center;
