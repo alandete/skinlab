@@ -7,7 +7,7 @@ return [
 
     // Initial placeholder
     'welcome_title'     => 'SkinLab — Development Environment',
-    'welcome_message'   => 'Select a project from the <strong>Projects</strong> menu in the sidebar to get started.',
+    'welcome_message'   => 'Select a project from the top bar to get started.',
 
     // Status panel
     'course_status'     => 'Course Status',

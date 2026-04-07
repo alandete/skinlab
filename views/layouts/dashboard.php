@@ -26,6 +26,7 @@
     <script src="<?= asset('js/app.js') ?>"></script>
     <script src="<?= asset('js/tool-colors.js') ?>"></script>
     <script src="<?= asset('js/tool-accessibility.js') ?>"></script>
+    <script src="<?= asset('js/sa11y-toolbar.js') ?>"></script>
     <script src="<?= asset('js/dashboard.js') ?>"></script>
 </body>
 </html>

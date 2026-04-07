@@ -22,7 +22,7 @@ class SecurityMiddleware
             "script-src 'self' https://cdn.jsdelivr.net",
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com",
             "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com",
-            "img-src 'self' data:",
+            "img-src 'self' data: https:",
             "connect-src 'self' https://www.thecolorapi.com https://cdn.jsdelivr.net",
             "frame-src 'self'",
             "base-uri 'self'",

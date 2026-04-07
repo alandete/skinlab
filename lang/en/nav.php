@@ -21,7 +21,7 @@ return [
     // Course navigation
     'select_project'    => 'Select a project',
     'available_projects'=> 'Available projects',
-    'no_active_projects'=> 'No active projects. Create one from Admin.',
+    'no_active_projects'=> 'Select a project from the top bar.',
     'projects'          => 'Projects',
     'home'              => 'Home',
 

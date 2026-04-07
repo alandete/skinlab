@@ -110,7 +110,7 @@ class ProjectApiController
         // HTML
         file_put_contents($projectPath . '/index.html', $tpl('index.html', ['PROJECT_NAME' => $escName]));
         file_put_contents($projectPath . '/pages/tarea.html', $tpl('pages/tarea.html'));
-        file_put_contents($projectPath . '/pages/quiz.html', $tpl('pages/quiz.html'));
+        file_put_contents($projectPath . '/pages/pagina-interna.html', $tpl('pages/pagina-interna.html'));
         file_put_contents($projectPath . '/pages/foros.html', $tpl('pages/foros.html'));
         file_put_contents($projectPath . '/palette.html', $tpl('palette.html'));
         file_put_contents($projectPath . '/snippets.html', $tpl('snippets.html'));

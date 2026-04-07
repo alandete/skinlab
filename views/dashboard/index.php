@@ -50,6 +50,11 @@
                         aria-label="<?= e(__('nav.export')) ?>">
                     <i class="bi bi-file-earmark-zip" aria-hidden="true"></i>
                 </button>
+
+                <button id="btn-a11y" class="sl-tool-btn" title="Accesibilidad (Sa11y)"
+                        aria-label="Evaluar accesibilidad">
+                    <i class="bi bi-universal-access" aria-hidden="true"></i>
+                </button>
             </div>
 
             <span class="sl-toolbar-sep" aria-hidden="true"></span>

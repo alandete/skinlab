@@ -245,19 +245,182 @@
 }
 
 
-/* ── Content area para Sa11y ── */
-.a11y-content-area {
+/* ── Status badges en botones ── */
+.a11y-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    font-size: 0.625rem;
+    font-weight: 700;
+    margin-left: 0.25rem;
+}
+
+.a11y-status-pass {
+    color: var(--sl-success);
+}
+
+.a11y-status-fail {
+    background: var(--sl-danger);
+    color: var(--sl-white);
+}
+
+/* ── Report area ── */
+.a11y-report-area {
     min-height: 10rem;
 }
 
-.a11y-check-area {
-    border: 1px dashed var(--sl-border-light);
-    border-radius: var(--sl-radius-lg);
-    padding: 1.5rem;
-    position: relative;
+.a11y-report {
+    font-size: 0.875rem;
 }
 
-/* Sa11y genera su propio panel visual y tooltips via CDN */
+/* ── Summary badges ── */
+.a11y-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.a11y-badge-pass,
+.a11y-badge-fail,
+.a11y-badge-info,
+.a11y-badge-warn {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 0.875rem;
+    border-radius: var(--sl-radius);
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+.a11y-badge-pass { background: var(--sl-success-bg); color: var(--sl-success); }
+.a11y-badge-fail { background: var(--sl-danger-bg); color: var(--sl-danger); }
+.a11y-badge-info { background: var(--sl-bg); color: var(--sl-text-light); }
+.a11y-badge-warn { background: var(--sl-warning-bg); color: var(--sl-warning); }
+
+/* ── Section title ── */
+.a11y-section-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--sl-text);
+    margin: 1.5rem 0 0.75rem;
+}
+
+/* ── Detail (accordion) ── */
+.a11y-detail {
+    border: 1px solid var(--sl-border-light);
+    border-radius: var(--sl-radius);
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+}
+
+.a11y-detail summary {
+    padding: 0.625rem 1rem;
+    font-size: 0.8125rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background var(--sl-transition-fast);
+}
+
+.a11y-detail summary:hover {
+    background: var(--sl-bg);
+}
+
+.a11y-count {
+    color: var(--sl-text-muted);
+    font-weight: 400;
+}
+
+.a11y-impact {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.625rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.a11y-impact-critical { background: var(--sl-danger-bg); color: var(--sl-danger); }
+.a11y-impact-serious { background: var(--sl-warning-bg); color: var(--sl-warning); }
+.a11y-impact-moderate { background: color-mix(in srgb, var(--sl-warning) 10%, transparent); color: var(--sl-warning-dark); }
+.a11y-impact-minor { background: var(--sl-bg); color: var(--sl-text-muted); }
+
+/* ── Detail body ── */
+.a11y-detail-body {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--sl-border-light);
+}
+
+.a11y-description {
+    font-size: 0.8125rem;
+    color: var(--sl-text-light);
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+.a11y-tags {
+    margin-bottom: 0.75rem;
+}
+
+.a11y-tag {
+    display: inline-block;
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-size: 0.625rem;
+    background: var(--sl-bg);
+    color: var(--sl-text-muted);
+    margin-right: 0.25rem;
+}
+
+/* ── Nodes table ── */
+.a11y-nodes-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.75rem;
+}
+
+.a11y-nodes-table th {
+    background: var(--sl-bg);
+    font-weight: 700;
+    text-align: left;
+    padding: 0.375rem 0.625rem;
+    border-bottom: 1px solid var(--sl-border-light);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--sl-text-muted);
+}
+
+.a11y-nodes-table td {
+    padding: 0.5rem 0.625rem;
+    border-bottom: 1px solid var(--sl-border-light);
+    vertical-align: top;
+}
+
+.a11y-nodes-table code {
+    font-size: 0.6875rem;
+    word-break: break-all;
+    color: var(--sl-text-light);
+    background: var(--sl-bg);
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.1875rem;
+}
+
+.a11y-fix {
+    font-size: 0.75rem;
+    color: var(--sl-text);
+    line-height: 1.5;
+}
+
+.a11y-detail-warn {
+    border-color: color-mix(in srgb, var(--sl-warning) 30%, transparent);
+}
 
 /* ══════════════════════════════════════════════
    MEDIA QUERIES

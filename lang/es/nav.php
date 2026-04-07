@@ -21,7 +21,7 @@ return [
     // Navegación del curso
     'select_project'    => 'Selecciona un proyecto',
     'available_projects'=> 'Proyectos disponibles',
-    'no_active_projects'=> 'No hay proyectos activos. Crea uno desde Admin.',
+    'no_active_projects'=> 'Selecciona un proyecto en la barra superior.',
     'projects'          => 'Proyectos',
     'home'              => 'Inicio',
 
