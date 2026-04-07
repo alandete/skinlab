@@ -34,7 +34,7 @@ return function (Router $router): void {
     $router->post('/login', [AuthController::class, 'login']);
     $router->get('/setup', [AuthController::class, 'showSetup']);
     $router->post('/setup', [AuthController::class, 'setup']);
-    $router->get('/logout', [AuthController::class, 'logout']);
+    $router->post('/logout', [AuthController::class, 'logout']);
     $router->get('/reset-password', [AuthController::class, 'showResetPassword']);
     $router->post('/reset-password', [AuthController::class, 'resetPassword']);
 

@@ -20,7 +20,7 @@ return [
     'setup_confirm'         => 'Confirm password',
     'setup_guest_section'   => 'Guest User',
     'setup_guest_create'    => 'Create guest user with read-only access',
-    'setup_guest_hint'      => 'Username: guest / Password: guest2026. You can change them later.',
+    'setup_guest_hint'      => 'Username: guest. Password is auto-generated and shown after setup.',
     'setup_recovery_section'=> 'Recovery Email',
     'setup_recovery_hint'   => 'Used to reset passwords if you forget them.',
     'setup_btn'             => 'Start SkinLab',

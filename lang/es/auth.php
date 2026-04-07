@@ -20,7 +20,7 @@ return [
     'setup_confirm'         => 'Confirmar contraseña',
     'setup_guest_section'   => 'Usuario Invitado',
     'setup_guest_create'    => 'Crear usuario invitado con acceso de solo lectura',
-    'setup_guest_hint'      => 'Usuario: invitado / Contraseña: invitado2026. Puedes cambiarlos después.',
+    'setup_guest_hint'      => 'Usuario: invitado. La contraseña se genera automáticamente y se mostrará al completar el setup.',
     'setup_recovery_section'=> 'Correo de Recuperación',
     'setup_recovery_hint'   => 'Se usa para resetear contraseñas si las olvidas.',
     'setup_btn'             => 'Iniciar SkinLab',

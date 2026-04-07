@@ -11,8 +11,8 @@ return [
     'version'  => '1.0.0',
     'locale'   => 'es',
     'timezone' => 'America/Bogota',
-    'debug'    => true,
-    'url'      => 'http://skinlab.test',
+    'debug'    => App\Core\Env::get('APP_DEBUG', 'false') === 'true',
+    'url'      => App\Core\Env::get('APP_URL', 'https://skinlab.test'),
 
     // Sesión
     'session' => [
@@ -24,9 +24,11 @@ return [
     'security' => [
         'csrf_exempt' => [],
         'rate_limit'  => [
-            'login'   => ['max' => 5,  'window' => 60],
-            'api'     => ['max' => 60, 'window' => 60],
-            'default' => ['max' => 30, 'window' => 60],
+            'login'            => ['max' => 5,  'window' => 60],
+            'reset_password'   => ['max' => 3,  'window' => 60],
+            'user_management'  => ['max' => 20, 'window' => 60],
+            'api'              => ['max' => 60, 'window' => 60],
+            'default'          => ['max' => 30, 'window' => 60],
         ],
     ],
 

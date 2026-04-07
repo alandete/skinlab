@@ -112,14 +112,21 @@ class AuthController
             User::create($adminUser, $adminPass, 'admin', $email ?: null);
 
             if ($createGuest) {
-                User::create('invitado', 'invitado2026', 'guest');
+                $guestPass = bin2hex(random_bytes(4)); // 8 chars aleatorios
+                User::create('invitado', $guestPass, 'guest');
+                User::setSetting('guest_initial_password', $guestPass);
             }
 
             User::setSetting('recovery_email', $email);
             User::setSetting('app_installed', '1');
         });
 
-        set_flash('success', __('auth.setup_complete', ['name' => $adminUser]));
+        $guestInfo = '';
+        if ($createGuest) {
+            $savedGuestPass = User::getSetting('guest_initial_password');
+            $guestInfo = ' | Invitado: invitado / ' . $savedGuestPass;
+        }
+        set_flash('success', __('auth.setup_complete', ['name' => $adminUser]) . $guestInfo);
         Response::redirect('/login');
     }
 
@@ -163,7 +170,7 @@ class AuthController
             Response::redirect('/setup');
         }
 
-        RateLimitMiddleware::check($request, 'login');
+        RateLimitMiddleware::check($request, 'reset_password');
 
         $email = strtolower(trim($request->input('email', '')));
         $username = strtolower(trim($request->input('username', '')));

@@ -25,7 +25,9 @@ class PreviewController
         }
 
         $projectPath = STORAGE_PATH . '/projects/' . $project;
-        if (!is_dir($projectPath)) {
+        $realPath = realpath($projectPath);
+        $allowedBase = realpath(STORAGE_PATH . '/projects');
+        if (!$realPath || !$allowedBase || strpos($realPath, $allowedBase) !== 0 || !is_dir($projectPath)) {
             http_response_code(404);
             echo 'Proyecto no encontrado';
             exit;

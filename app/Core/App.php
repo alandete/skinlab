@@ -61,7 +61,7 @@ class App
         session_set_cookie_params([
             'lifetime' => $lifetime,
             'path'     => '/',
-            'secure'   => self::config('secure', false),
+            'secure'   => str_starts_with(self::config('url', ''), 'https'),
             'httponly'  => true,
             'samesite'  => 'Lax',
         ]);

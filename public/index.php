@@ -28,6 +28,9 @@ spl_autoload_register(function (string $class): void {
     }
 });
 
+// Cargar variables de entorno
+App\Core\Env::load(BASE_PATH);
+
 // Helpers globales
 require BASE_PATH . '/app/Helpers/functions.php';
 

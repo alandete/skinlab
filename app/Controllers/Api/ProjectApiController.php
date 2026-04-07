@@ -394,7 +394,11 @@ class ProjectApiController
         }
 
         $projectPath = STORAGE_PATH . '/projects/' . $projectSlug;
-        if (!is_dir($projectPath)) {
+
+        // Protección contra path traversal
+        $realPath = realpath($projectPath);
+        $allowedBase = realpath(STORAGE_PATH . '/projects');
+        if (!$realPath || !$allowedBase || strpos($realPath, $allowedBase) !== 0 || !is_dir($projectPath)) {
             Response::json(['error' => __('general.not_found')], 404);
         }
 
@@ -491,7 +495,20 @@ class ProjectApiController
         $projectSlug = $request->query('project', '');
         $page = $request->query('page', 'index');
 
+        // Validar inputs contra path traversal
+        if (!preg_match('/^[a-z0-9\-_]+$/i', $projectSlug) || !preg_match('/^[a-z0-9\-_]+$/i', $page)) {
+            Response::json(['error' => __('general.invalid_format')], 400);
+        }
+
         $projectPath = STORAGE_PATH . '/projects/' . $projectSlug;
+
+        // Verificar que la ruta resuelta está dentro de storage/projects
+        $realPath = realpath($projectPath);
+        $allowedBase = realpath(STORAGE_PATH . '/projects');
+        if (!$realPath || !$allowedBase || strpos($realPath, $allowedBase) !== 0) {
+            Response::json(['error' => __('general.not_found')], 404);
+        }
+
         if (!is_dir($projectPath)) {
             Response::json(['error' => __('general.not_found')], 404);
         }

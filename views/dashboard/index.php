@@ -66,10 +66,13 @@
             </a>
             <?php endif; ?>
 
-            <a href="/logout" class="sl-tool-link" title="<?= e(__('nav.logout')) ?>"
-               aria-label="<?= e(__('nav.logout')) ?> – <?= e(auth_user()) ?>">
-                <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
-            </a>
+            <form method="POST" action="/logout" style="display:inline;">
+                <?= csrf_field() ?>
+                <button type="submit" class="sl-tool-link" title="<?= e(__('nav.logout')) ?>"
+                        aria-label="<?= e(__('nav.logout')) ?> – <?= e(auth_user()) ?>">
+                    <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+                </button>
+            </form>
         </nav>
 
         <!-- Usuario (visible desde md) -->
@@ -383,7 +386,7 @@
                 <span>9:41</span>
                 <span><i class="bi bi-reception-4" aria-hidden="true"></i> <i class="bi bi-wifi" aria-hidden="true"></i> <i class="bi bi-battery-full" aria-hidden="true"></i></span>
             </div>
-            <iframe id="mobile-iframe" title="Mobile preview"></iframe>
+            <iframe id="mobile-iframe" title="Mobile preview" sandbox="allow-scripts" referrerpolicy="no-referrer"></iframe>
             <nav class="mobile-bottom-nav" aria-label="Canvas mobile">
                 <span class="mobile-tab active"><i class="bi bi-speedometer2" aria-hidden="true"></i><small><?= e(__('nav.dashboard')) ?></small></span>
                 <span class="mobile-tab"><i class="bi bi-book" aria-hidden="true"></i><small><?= e(__('nav.courses')) ?></small></span>
