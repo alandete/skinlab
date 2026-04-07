@@ -10,6 +10,10 @@ class Response
     {
         http_response_code($status);
         header('Content-Type: application/json; charset=utf-8');
+        // Incluir nuevo CSRF token para que el JS lo actualice
+        if (isset($_SESSION['_csrf_token'])) {
+            $data['_csrf'] = $_SESSION['_csrf_token'];
+        }
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
         exit;
     }

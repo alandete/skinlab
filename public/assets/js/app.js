@@ -24,10 +24,14 @@
         return fetch(url, options).then(function (resp) {
             if (!resp.ok) {
                 return resp.json().then(function (data) {
+                    if (data._csrf) updateCsrfToken(data._csrf);
                     throw new Error(data.error || 'Error ' + resp.status);
                 });
             }
-            return resp.json();
+            return resp.json().then(function (data) {
+                if (data._csrf) updateCsrfToken(data._csrf);
+                return data;
+            });
         });
     };
 
@@ -81,6 +85,11 @@
             setTimeout(function () { toast.remove(); }, 350);
         }, 3000);
     };
+
+    function updateCsrfToken(newToken) {
+        CSRF_TOKEN = newToken;
+        if (csrfMeta) csrfMeta.setAttribute('content', newToken);
+    }
 
     // ── Dropdown menus (global) ──
     document.addEventListener('click', function (e) {

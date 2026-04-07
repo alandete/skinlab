@@ -341,6 +341,7 @@ class ProjectApiController
      */
     public function toggle(Request $request, array $params = []): void
     {
+        RateLimitMiddleware::check($request, 'api');
         $projectId = (int) $request->input('project_id', 0);
         $project = Project::find($projectId);
         if (!$project) {
@@ -361,6 +362,7 @@ class ProjectApiController
      */
     public function compile(Request $request, array $params = []): void
     {
+        RateLimitMiddleware::check($request, 'api');
         $slug = $request->input('project', '');
         if ($slug === '') {
             Response::json(['error' => __('general.invalid_format')], 400);

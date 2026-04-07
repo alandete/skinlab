@@ -45,6 +45,9 @@ class CsrfMiddleware
         if (!hash_equals($_SESSION['_csrf_token'], $token)) {
             self::fail($request);
         }
+
+        // Rotar token después de validación exitosa
+        $_SESSION['_csrf_token'] = bin2hex(random_bytes(32));
     }
 
     private static function fail(Request $request): never
