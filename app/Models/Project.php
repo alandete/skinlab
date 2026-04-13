@@ -133,57 +133,91 @@ class Project
     }
 
     /**
-     * Escanea las páginas de un proyecto desde el filesystem.
+     * Escanea las páginas de un proyecto clasificadas por tipo.
+     * Orden: inicio → organización → adicionales → actividades → snippets → herramientas
      */
     private static function scanPages(string $projectPath, string $slug): array
     {
+        $classified = self::getProjectPages($projectPath);
+
         $pages = [];
 
-        if (!is_dir($projectPath)) {
-            return $pages;
-        }
-
-        // index.html siempre primero
+        // Inicio
         if (file_exists($projectPath . '/index.html')) {
             $pages[] = ['slug' => 'index', 'name' => 'Inicio'];
         }
 
-        // Páginas organizativas (semana-01, modulo-02, unidad-03)
-        $pagesDir = $projectPath . '/pages';
-        if (is_dir($pagesDir)) {
-            $orgPages = [];
-            $actPages = [];
+        // Organización (sin categoría, siempre arriba)
+        $pages = array_merge($pages, $classified['organization']);
 
-            $htmlFiles = glob($pagesDir . '/*.html') ?: [];
-            foreach ($htmlFiles as $f) {
-                $filename = basename($f, '.html');
-                $page = [
-                    'slug' => $filename,
-                    'name' => ucwords(str_replace(['-', '_'], ' ', $filename)),
-                ];
-                if (preg_match('/^(semana|modulo|unidad)-\d+$/', $filename)) {
-                    $orgPages[] = $page;
-                } else {
-                    $actPages[] = $page;
-                }
-            }
-
-            $pages = array_merge($pages, $orgPages, $actPages);
+        // Páginas adicionales (con categoría)
+        if (!empty($classified['custom'])) {
+            $classified['custom'][0]['separator'] = true;
+            $classified['custom'][0]['separatorLabel'] = 'Páginas';
+            $pages = array_merge($pages, $classified['custom']);
         }
 
-        // Snippets (contenido del proyecto, no herramienta)
+        // Actividades (con categoría)
+        if (!empty($classified['activities'])) {
+            $classified['activities'][0]['separator'] = true;
+            $classified['activities'][0]['separatorLabel'] = 'Actividades';
+            $pages = array_merge($pages, $classified['activities']);
+        }
+
+        // Herramientas (con línea separadora)
+        $tools = [];
         if (file_exists($projectPath . '/snippets.html')) {
-            $pages[] = ['slug' => 'snippets', 'name' => 'Snippets'];
+            $tools[] = ['slug' => 'snippets', 'name' => 'Snippets', 'type' => 'tool', 'separator' => true, 'separatorLabel' => 'Herramientas', 'separatorLine' => true];
+        } else {
+            $tools[] = ['slug' => 'colors', 'name' => 'Colores', 'type' => 'tool', 'separator' => true, 'separatorLabel' => 'Herramientas', 'separatorLine' => true];
         }
+        if (file_exists($projectPath . '/snippets.html')) {
+            $tools[] = ['slug' => 'colors', 'name' => 'Colores', 'type' => 'tool'];
+        }
+        $tools[] = ['slug' => 'accessibility', 'name' => 'Accesibilidad', 'type' => 'tool'];
 
-        // ── Herramientas (separadas visualmente en la nav) ──
-        $tools = [
-            ['slug' => 'colors', 'name' => 'Colores', 'type' => 'tool', 'separator' => true],
-            ['slug' => 'accessibility', 'name' => 'Accesibilidad', 'type' => 'tool'],
+        return array_merge($pages, $tools);
+    }
+
+    /**
+     * Devuelve las páginas del proyecto clasificadas por tipo.
+     * Usado por scanPages (dashboard) y por la página de edición (admin).
+     */
+    public static function getProjectPages(string $projectPath): array
+    {
+        $result = [
+            'organization' => [],
+            'custom'       => [],
+            'activities'   => [],
         ];
 
-        $pages = array_merge($pages, $tools);
+        $pagesDir = $projectPath . '/pages';
+        if (!is_dir($pagesDir)) {
+            return $result;
+        }
 
-        return $pages;
+        $activitySlugs = ['tarea', 'foros', 'quiz'];
+
+        $htmlFiles = glob($pagesDir . '/*.html') ?: [];
+        foreach ($htmlFiles as $f) {
+            $filename = basename($f, '.html');
+            $page = [
+                'slug' => $filename,
+                'name' => ucwords(str_replace(['-', '_'], ' ', $filename)),
+            ];
+
+            if (preg_match('/^(semana|modulo|unidad)-\d+$/', $filename)) {
+                $page['type'] = 'organization';
+                $result['organization'][] = $page;
+            } elseif (in_array($filename, $activitySlugs, true)) {
+                $page['type'] = 'activity';
+                $result['activities'][] = $page;
+            } else {
+                $page['type'] = 'custom';
+                $result['custom'][] = $page;
+            }
+        }
+
+        return $result;
     }
 }

@@ -16,18 +16,22 @@
             '<section class="tool-colors">' +
                 '<div class="tool-section">' +
                     '<h2>Colores del proyecto</h2>' +
+                    '<p class="tool-desc">Estos son los colores primario y secundario definidos en la configuración del proyecto y sus variantes derivadas automáticamente.</p>' +
                     '<div class="color-swatches" id="project-swatches"></div>' +
                 '</div>' +
                 '<div class="tool-section">' +
                     '<h2>Propuesta Light</h2>' +
+                    '<p class="tool-desc">Paleta sugerida para el modo claro, generada a partir del color primario vía <strong>The Color API</strong>. Estos colores son una referencia — no se aplican automáticamente al proyecto.</p>' +
                     '<div class="color-swatches" id="light-palette"></div>' +
                 '</div>' +
                 '<div class="tool-section">' +
                     '<h2>Propuesta Dark</h2>' +
+                    '<p class="tool-desc">Paleta sugerida para el modo oscuro, generada a partir del color secundario. Úsala como guía al definir las variables en el bloque <code>@media (prefers-color-scheme: dark)</code> del CSS master.</p>' +
                     '<div class="color-swatches" id="dark-palette"></div>' +
                 '</div>' +
                 '<div class="tool-section">' +
-                    '<h2>Tipografía y Botones</h2>' +
+                    '<h2>Preview de tipografía y botones</h2>' +
+                    '<p class="tool-desc">Ejemplo de cómo se verían los textos, enlaces y botones con los colores del proyecto en ambos modos. Permite evaluar la legibilidad antes de implementar.</p>' +
                     '<div class="tool-row">' +
                         '<div class="tool-preview-card" id="preview-light"></div>' +
                         '<div class="tool-preview-card tool-preview-dark" id="preview-dark"></div>' +
@@ -35,6 +39,7 @@
                 '</div>' +
                 '<div class="tool-section">' +
                     '<h2>Validación de contraste</h2>' +
+                    '<p class="tool-desc">Verifica si las combinaciones de color del proyecto cumplen con las normas de accesibilidad WCAG. <strong>AA</strong> requiere ratio 4.5:1 para texto y <strong>AAA</strong> requiere 7:1.</p>' +
                     '<div id="contrast-results"></div>' +
                 '</div>' +
             '</section>';

@@ -162,3 +162,25 @@ function is_valid_slug(string $slug): bool
 {
     return (bool) preg_match('/^[a-z0-9][a-z0-9\-]{0,63}$/', $slug);
 }
+
+/**
+ * Generar prefijo CSS corto a partir de un slug de proyecto.
+ * Ejemplo: 'upcanvas-30' → 'uc30', 'mi-curso' → 'mc', 'identificati' → 'iden'
+ */
+function css_prefix(string $slug): string
+{
+    $parts = explode('-', $slug);
+    if (count($parts) >= 2) {
+        // Tomar primera letra de cada parte + números
+        $prefix = '';
+        foreach ($parts as $part) {
+            if (is_numeric($part)) {
+                $prefix .= $part;
+            } else {
+                $prefix .= $part[0] ?? '';
+            }
+        }
+        return $prefix ?: substr($slug, 0, 4);
+    }
+    return substr($slug, 0, 4);
+}

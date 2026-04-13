@@ -109,24 +109,56 @@ class ProjectApiController
 
         // HTML
         file_put_contents($projectPath . '/index.html', $tpl('index.html', ['PROJECT_NAME' => $escName]));
-        file_put_contents($projectPath . '/pages/tarea.html', $tpl('pages/tarea.html'));
-        file_put_contents($projectPath . '/pages/pagina-interna.html', $tpl('pages/pagina-interna.html'));
-        file_put_contents($projectPath . '/pages/foros.html', $tpl('pages/foros.html'));
-        file_put_contents($projectPath . '/palette.html', $tpl('palette.html'));
         file_put_contents($projectPath . '/snippets.html', $tpl('snippets.html'));
 
-        // CSS master
+        // Actividades (solo las seleccionadas)
+        $activities = $request->input('activities', []);
+        $activityTemplates = ['tarea' => 'pages/tarea.html', 'foros' => 'pages/foros.html', 'quiz' => 'pages/quiz.html'];
+        if (is_array($activities)) {
+            foreach ($activities as $act) {
+                if (isset($activityTemplates[$act])) {
+                    file_put_contents($projectPath . '/pages/' . $act . '.html', $tpl($activityTemplates[$act]));
+                }
+            }
+        }
+
+        // Páginas adicionales
+        $customPages = $request->input('customPages', []);
+        if (is_array($customPages)) {
+            foreach ($customPages as $pageName) {
+                $pageName = trim($pageName);
+                if ($pageName === '') continue;
+                $pageSlug = to_slug($pageName);
+                if ($pageSlug === '' || !is_valid_slug($pageSlug)) continue;
+                $filePath = $projectPath . '/pages/' . $pageSlug . '.html';
+                if (!file_exists($filePath)) {
+                    $html = '<div class="custom-page">' . "\n" .
+                        '  <h2>' . htmlspecialchars($pageName, ENT_QUOTES, 'UTF-8') . '</h2>' . "\n" .
+                        '  <div class="page-content">' . "\n" .
+                        '    <p>Contenido de ' . htmlspecialchars($pageName, ENT_QUOTES, 'UTF-8') . '.</p>' . "\n" .
+                        '  </div>' . "\n" .
+                        '</div>' . "\n";
+                    file_put_contents($filePath, $html);
+                }
+            }
+        }
+
+        // CSS master — prefijo personalizado por proyecto
+        $cssPrefix = css_prefix($slug);
         $masterContent = $tpl('css/master.css', ['IMPORTS' => $imports]);
+
+        // Reemplazar prefijo --ct- por --{prefijo}-
+        $masterContent = str_replace('--ct-', '--' . $cssPrefix . '-', $masterContent);
 
         // Reemplazar colores base
         $masterContent = preg_replace(
-            '/--ct-primary-base:\s*#[0-9A-Fa-f]{6}/',
-            '--ct-primary-base: ' . $colorPrimary,
+            '/--' . preg_quote($cssPrefix, '/') . '-primary-base:\s*#[0-9A-Fa-f]{6}/',
+            '--' . $cssPrefix . '-primary-base: ' . $colorPrimary,
             $masterContent
         );
         $masterContent = preg_replace(
-            '/--ct-secondary-base:\s*#[0-9A-Fa-f]{6}/',
-            '--ct-secondary-base: ' . $colorSecondary,
+            '/--' . preg_quote($cssPrefix, '/') . '-secondary-base:\s*#[0-9A-Fa-f]{6}/',
+            '--' . $cssPrefix . '-secondary-base: ' . $colorSecondary,
             $masterContent
         );
         file_put_contents($projectPath . '/css/' . $slug . '-master.css', $masterContent);
@@ -262,12 +294,12 @@ class ProjectApiController
         if (file_exists($masterFile)) {
             $css = file_get_contents($masterFile);
 
-            // Colores
+            // Colores (prefijo genérico: detecta cualquier --xxx-primary-base)
             if (isset($fields['color_primary'])) {
-                $css = preg_replace('/--ct-primary-base:\s*#[0-9A-Fa-f]{6}/', '--ct-primary-base: ' . $fields['color_primary'], $css);
+                $css = preg_replace('/--[a-z0-9]+-primary-base:\s*#[0-9A-Fa-f]{6}/', '--' . css_prefix($slug) . '-primary-base: ' . $fields['color_primary'], $css);
             }
             if (isset($fields['color_secondary'])) {
-                $css = preg_replace('/--ct-secondary-base:\s*#[0-9A-Fa-f]{6}/', '--ct-secondary-base: ' . $fields['color_secondary'], $css);
+                $css = preg_replace('/--[a-z0-9]+-secondary-base:\s*#[0-9A-Fa-f]{6}/', '--' . css_prefix($slug) . '-secondary-base: ' . $fields['color_secondary'], $css);
             }
 
             // Imports de CDNs
@@ -527,6 +559,104 @@ class ProjectApiController
             'css'        => self::readFile($projectPath . '/css/' . $projectSlug . '-mobile.css'),
             'cssDesktop' => self::readFile($projectPath . '/css/' . $projectSlug . '-desktop.css'),
             'js'         => self::readFile($projectPath . '/js/' . $projectSlug . '-scripts.js'),
+        ]);
+    }
+
+    /**
+     * POST /api/projects/pages/add
+     * Agregar páginas adicionales a un proyecto.
+     */
+    public function addPages(Request $request, array $params = []): void
+    {
+        RateLimitMiddleware::check($request, 'api');
+
+        $slug = $request->input('slug', '');
+        $pages = $request->input('pages', []);
+
+        if (!preg_match('/^[a-z0-9\-]+$/', $slug)) {
+            Response::json(['error' => __('general.invalid_format')], 400);
+        }
+
+        $project = Project::findBySlug($slug);
+        if (!$project) {
+            Response::json(['error' => __('general.not_found')], 404);
+        }
+
+        $projectPath = STORAGE_PATH . '/projects/' . $slug;
+        $pagesDir = $projectPath . '/pages';
+        $created = [];
+
+        foreach ($pages as $pageName) {
+            $pageName = trim($pageName);
+            if ($pageName === '') {
+                continue;
+            }
+            $pageSlug = to_slug($pageName);
+            if ($pageSlug === '' || !is_valid_slug($pageSlug)) {
+                continue;
+            }
+            $filePath = $pagesDir . '/' . $pageSlug . '.html';
+            if (!file_exists($filePath)) {
+                $html = '<div class="custom-page">' . "\n" .
+                    '  <h2>' . htmlspecialchars($pageName, ENT_QUOTES, 'UTF-8') . '</h2>' . "\n" .
+                    '  <div class="page-content">' . "\n" .
+                    '    <p>Contenido de ' . htmlspecialchars($pageName, ENT_QUOTES, 'UTF-8') . '.</p>' . "\n" .
+                    '  </div>' . "\n" .
+                    '</div>' . "\n";
+                file_put_contents($filePath, $html);
+                $created[] = $pageSlug;
+            }
+        }
+
+        Response::json([
+            'success' => true,
+            'message' => count($created) . ' página(s) creada(s)',
+            'created' => $created,
+        ]);
+    }
+
+    /**
+     * POST /api/projects/pages/delete
+     * Eliminar una página de un proyecto.
+     */
+    public function deletePage(Request $request, array $params = []): void
+    {
+        RateLimitMiddleware::check($request, 'api');
+
+        $slug = $request->input('slug', '');
+        $pageSlug = $request->input('page', '');
+
+        if (!preg_match('/^[a-z0-9\-]+$/', $slug) || !preg_match('/^[a-z0-9\-]+$/', $pageSlug)) {
+            Response::json(['error' => __('general.invalid_format')], 400);
+        }
+
+        $project = Project::findBySlug($slug);
+        if (!$project) {
+            Response::json(['error' => __('general.not_found')], 404);
+        }
+
+        // No permitir eliminar index ni snippets
+        if (in_array($pageSlug, ['index', 'snippets'], true)) {
+            Response::json(['error' => 'No se puede eliminar esta página'], 400);
+        }
+
+        $projectPath = STORAGE_PATH . '/projects/' . $slug;
+        $filePath = $projectPath . '/pages/' . $pageSlug . '.html';
+
+        // Validar path traversal
+        $realFile = realpath($filePath);
+        $allowedBase = realpath($projectPath . '/pages');
+        if (!$realFile || !$allowedBase || strpos($realFile, $allowedBase) !== 0) {
+            Response::json(['error' => __('general.not_found')], 404);
+        }
+
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+
+        Response::json([
+            'success' => true,
+            'message' => 'Página eliminada',
         ]);
     }
 

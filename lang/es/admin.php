@@ -31,6 +31,20 @@ return [
     'org_modules'           => 'Módulos',
     'org_units'             => 'Unidades',
     'org_count'             => 'Cantidad',
+
+    // Páginas del proyecto
+    'custom_pages'          => 'Páginas adicionales',
+    'custom_pages_hint'     => 'Páginas de contenido personalizado, adicionales a la organización y actividades.',
+    'add_pages'             => 'Agregar páginas',
+    'page_name'             => 'Nombre de la página',
+    'add_more'              => 'Agregar otra',
+    'pages_section_org'     => 'Organización',
+    'pages_section_custom'  => 'Páginas adicionales',
+    'pages_section_act'     => 'Actividades',
+    'delete_page'           => 'Eliminar página',
+    'confirm_delete_page'   => '¿Eliminar la página <strong>:name</strong>? El archivo HTML se eliminará.',
+    'page_deleted'          => 'Página eliminada.',
+    'pages_created'         => 'Página(s) creada(s).',
     'org_add_hint'          => 'Solo agrega nuevas páginas. No elimina las existentes.',
 
     // Colores

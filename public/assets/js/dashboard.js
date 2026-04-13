@@ -155,13 +155,14 @@
     function renderProjectPages(proj, activeSlug) {
         projectPages.innerHTML = '';
         proj.pages.forEach(function (page) {
-            // Separador visual antes de herramientas
+            // Separador visual con label
             if (page.separator) {
                 var sep = document.createElement('li');
                 sep.className = 'sl-course-separator';
+                if (page.separatorLine) sep.classList.add('sl-course-separator-line');
                 sep.setAttribute('aria-hidden', 'true');
                 var label = document.createElement('span');
-                label.textContent = 'Herramientas';
+                label.textContent = page.separatorLabel || '';
                 sep.appendChild(label);
                 projectPages.appendChild(sep);
             }
@@ -169,6 +170,7 @@
             var li = document.createElement('li');
             li.className = 'sl-course-item';
             if (page.type === 'tool') li.classList.add('sl-course-item-tool');
+            if (page.type === 'activity' || page.type === 'custom') li.classList.add('sl-course-item-indented');
             if (page.slug === activeSlug) li.classList.add('active');
             li.dataset.page = page.slug;
 

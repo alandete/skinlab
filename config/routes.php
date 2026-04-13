@@ -58,6 +58,8 @@ return function (Router $router): void {
 
     // ── Admin: Proyectos ──
     $router->get('/admin/projects', [AdminController::class, 'projects'], ['auth', 'role:admin']);
+    $router->get('/admin/projects/new', [AdminController::class, 'projectNew'], ['auth', 'role:editor']);
+    $router->get('/admin/projects/{slug}/edit', [AdminController::class, 'projectEdit'], ['auth', 'role:editor']);
     $router->get('/admin/docs', [AdminController::class, 'docs'], ['auth']);
 
     // ── API: Proyectos ──
@@ -67,6 +69,8 @@ return function (Router $router): void {
     $router->post('/api/projects/delete', [ProjectApiController::class, 'delete'], ['auth', 'role:admin']);
     $router->post('/api/projects/toggle', [ProjectApiController::class, 'toggle'], ['auth', 'role:admin']);
     $router->post('/api/projects/compile', [ProjectApiController::class, 'compile'], ['auth', 'role:editor']);
+    $router->post('/api/projects/pages/add', [ProjectApiController::class, 'addPages'], ['auth', 'role:editor']);
+    $router->post('/api/projects/pages/delete', [ProjectApiController::class, 'deletePage'], ['auth', 'role:editor']);
     $router->get('/api/content', [ProjectApiController::class, 'content'], ['auth']);
     $router->get('/api/source', [ProjectApiController::class, 'source'], ['auth']);
     $router->get('/api/preview', [PreviewController::class, 'render'], ['auth']);

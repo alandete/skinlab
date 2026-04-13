@@ -31,6 +31,20 @@ return [
     'org_modules'           => 'Modules',
     'org_units'             => 'Units',
     'org_count'             => 'Count',
+
+    // Project pages
+    'custom_pages'          => 'Additional pages',
+    'custom_pages_hint'     => 'Custom content pages, in addition to organization and activities.',
+    'add_pages'             => 'Add pages',
+    'page_name'             => 'Page name',
+    'add_more'              => 'Add another',
+    'pages_section_org'     => 'Organization',
+    'pages_section_custom'  => 'Additional pages',
+    'pages_section_act'     => 'Activities',
+    'delete_page'           => 'Delete page',
+    'confirm_delete_page'   => 'Delete page <strong>:name</strong>? The HTML file will be removed.',
+    'page_deleted'          => 'Page deleted.',
+    'pages_created'         => 'Page(s) created.',
     'org_add_hint'          => 'Only adds new pages. Does not remove existing ones.',
 
     // Colors

@@ -1004,6 +1004,135 @@
     accent-color: var(--sl-primary);
 }
 
+.panel-header-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.form-actions-inline {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* ── Project edit page layout ── */
+.project-edit-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+.project-edit-main {
+    min-width: 0;
+}
+
+.project-edit-main > .form-group {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--sl-border-light);
+}
+
+.project-edit-main > .form-group:last-child {
+    border-bottom: none;
+}
+
+.project-edit-sidebar {
+    background: var(--sl-bg);
+    border-radius: var(--sl-radius-lg);
+    padding: 1.25rem;
+}
+
+.project-edit-sidebar h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--sl-text);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--sl-border-light);
+}
+
+.pages-section {
+    margin-bottom: 1.25rem;
+}
+
+.pages-section h4 {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--sl-text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.pages-list {
+    list-style: none;
+    padding: 0;
+}
+
+.pages-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.375rem 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--sl-text);
+    border-radius: var(--sl-radius);
+    transition: background var(--sl-transition-fast);
+}
+
+.pages-list-item:hover {
+    background: var(--sl-bg-white);
+}
+
+.pages-list-item .btn-delete-page {
+    color: var(--sl-text-muted);
+    border-color: transparent;
+}
+
+.pages-list-item .btn-delete-page:hover {
+    color: var(--sl-danger);
+    background: var(--sl-danger-bg);
+    border-color: var(--sl-danger);
+}
+
+.btn-icon-sm {
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 0.75rem;
+}
+
+/* ── New pages input rows ── */
+.new-pages-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.new-page-row {
+    display: flex;
+    gap: 0.375rem;
+    align-items: center;
+}
+
+.new-page-number {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--sl-text-muted);
+    width: 1.5rem;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.new-page-row .form-input {
+    flex: 1;
+}
+
+.new-page-row .btn-remove-page {
+    width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+}
+
 /* ── Empty state ── */
 .empty-state {
     text-align: center;
@@ -1073,6 +1202,10 @@
 
     .projects-grid {
         grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    }
+
+    .project-edit-layout {
+        grid-template-columns: 1fr 18rem;
     }
 }
 

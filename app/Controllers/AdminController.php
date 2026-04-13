@@ -45,6 +45,41 @@ class AdminController
         ], 'layouts.admin');
     }
 
+    public function projectNew(Request $request, array $params = []): void
+    {
+        View::render('admin.project-edit', [
+            'title'      => __('admin.create_project') . ' — ' . __('admin.title'),
+            'project'    => null,
+            'isNew'      => true,
+            'activeTab'  => 'projects',
+            'breadcrumb' => __('admin.create_project'),
+            'cdns'       => App::config('cdns', []),
+        ], 'layouts.admin');
+    }
+
+    public function projectEdit(Request $request, array $params = []): void
+    {
+        $slug = $params['slug'] ?? '';
+        $project = Project::findBySlug($slug);
+
+        if (!$project) {
+            Response::notFound();
+        }
+
+        $projectPath = STORAGE_PATH . '/projects/' . $slug;
+        $pages = Project::getProjectPages($projectPath);
+
+        View::render('admin.project-edit', [
+            'title'      => $project['name'] . ' — ' . __('admin.title'),
+            'project'    => $project,
+            'pages'      => $pages,
+            'isNew'      => false,
+            'activeTab'  => 'projects',
+            'breadcrumb' => $project['name'],
+            'cdns'       => App::config('cdns', []),
+        ], 'layouts.admin');
+    }
+
     public function docs(Request $request, array $params = []): void
     {
         View::render('admin.docs', [

@@ -93,6 +93,12 @@ a {
 
 a:hover {
     color: var(--sl-primary-hover);
+}
+
+/* Underline solo en enlaces de texto dentro de contenido */
+.sl-content-body a:hover,
+.docs-body a:hover,
+.docs-list a:hover {
     text-decoration: underline;
 }
 
@@ -315,7 +321,12 @@ img {
     font-weight: 600;
     font-family: var(--sl-font);
     cursor: pointer;
+    text-decoration: none;
     transition: background var(--sl-transition-fast), opacity var(--sl-transition-fast);
+}
+
+a.btn:hover {
+    text-decoration: none;
 }
 
 .btn:disabled {
@@ -325,7 +336,11 @@ img {
 
 .btn-primary {
     background: var(--sl-primary);
-    color: #FFFFFF;
+    color: var(--sl-white);
+}
+
+.btn-primary:hover {
+    color: var(--sl-white);
 }
 
 .btn-primary:hover:not(:disabled) {
