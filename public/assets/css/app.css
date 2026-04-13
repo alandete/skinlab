@@ -4,14 +4,47 @@
    Mobile First approach
    ============================================ */
 
-/* ── Variables globales ── */
+/* ── Design System Tokens ── */
 :root {
-    /* Canvas LMS Colors */
+    /* ── Typography ── */
+    --sl-font:          'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    --sl-font-mono:     'Consolas', 'Monaco', 'Courier New', monospace;
+
+    --sl-text-xs:       0.75rem;    /* 12px — badges, tags, uppercase labels */
+    --sl-text-sm:       0.8125rem;  /* 13px — hints, metadata */
+    --sl-text-base:     0.875rem;   /* 14px — body, inputs, buttons */
+    --sl-text-md:       1rem;       /* 16px — body principal */
+    --sl-text-lg:       1.25rem;    /* 20px — h3, títulos de sección */
+    --sl-text-xl:       1.5rem;     /* 24px — h2, títulos de página */
+    --sl-text-2xl:      2rem;       /* 32px — h1, hero */
+
+    --sl-weight-normal:   400;
+    --sl-weight-medium:   500;
+    --sl-weight-semibold: 600;
+    --sl-weight-bold:     700;
+
+    --sl-leading-tight:   1.25;
+    --sl-leading-normal:  1.5;
+    --sl-leading-relaxed: 1.7;
+
+    /* ── Spacing (múltiplos de 4px) ── */
+    --sl-space-1:  0.25rem;   /* 4px */
+    --sl-space-2:  0.5rem;    /* 8px */
+    --sl-space-3:  0.75rem;   /* 12px */
+    --sl-space-4:  1rem;      /* 16px */
+    --sl-space-5:  1.25rem;   /* 20px */
+    --sl-space-6:  1.5rem;    /* 24px */
+    --sl-space-8:  2rem;      /* 32px */
+    --sl-space-10: 2.5rem;    /* 40px */
+    --sl-space-12: 3rem;      /* 48px */
+
+    /* ── Colors ── */
     --sl-primary:       #0374B5;
     --sl-primary-hover: #0587D4;
     --sl-primary-dark:  #025E91;
     --sl-secondary:     #2D3B45;
     --sl-secondary-light: #394B58;
+    --sl-white:         #FFFFFF;
 
     /* Backgrounds */
     --sl-bg:            #F5F5F5;
@@ -22,6 +55,7 @@
     --sl-text:          #2D3B45;
     --sl-text-light:    #566069;
     --sl-text-muted:    #717B84;
+    --sl-page-title:    #666666;
 
     /* Borders */
     --sl-border:        #C7CDD1;
@@ -36,26 +70,21 @@
     --sl-warning-dark:  #E65100;
     --sl-warning-bg:    #FFF3E0;
 
-    /* Misc */
-    --sl-white:         #FFFFFF;
-    --sl-page-title:    #666666;
+    /* ── Borders & Radius ── */
+    --sl-radius:        0.375rem;   /* 6px — inputs, buttons */
+    --sl-radius-lg:     0.75rem;    /* 12px — cards, modals */
+    --sl-radius-full:   9999px;     /* pills, avatars */
+    --sl-border-width:  1px;
+    --sl-border-width-thick: 2px;
 
-    /* Transitions */
-    --sl-transition:    0.25s ease;
-    --sl-transition-fast: 0.15s ease;
-
-    /* Radius */
-    --sl-radius:        0.375rem;
-    --sl-radius-lg:     0.75rem;
-
-    /* Shadows */
+    /* ── Shadows ── */
     --sl-shadow-sm:     0 1px 3px color-mix(in srgb, black 8%, transparent);
     --sl-shadow:        0 0.25rem 0.75rem color-mix(in srgb, black 10%, transparent);
     --sl-shadow-lg:     0 1.25rem 3.75rem color-mix(in srgb, black 30%, transparent);
 
-    /* Font */
-    --sl-font:          'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    --sl-font-size:     1rem;
+    /* ── Transitions ── */
+    --sl-transition:      0.25s ease;
+    --sl-transition-fast: 0.15s ease;
 
     /* Canvas LMS Variables (heredadas por proyectos) */
     --ic-brand-primary:             #0374B5;
@@ -78,7 +107,8 @@
 html, body {
     height: 100%;
     font-family: var(--sl-font);
-    font-size: var(--sl-font-size);
+    font-size: var(--sl-text-base);
+    line-height: var(--sl-leading-normal);
     color: var(--sl-text);
     background: var(--sl-bg);
     -webkit-font-smoothing: antialiased;
@@ -254,24 +284,24 @@ img {
 
 /* ── Formularios ── */
 .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: var(--sl-space-4);
 }
 
 .form-group label,
 .form-label {
     display: block;
-    font-size: 0.8125rem;
-    font-weight: 600;
+    font-size: var(--sl-text-base);
+    font-weight: var(--sl-weight-semibold);
     color: var(--sl-text);
-    margin-bottom: 0.375rem;
+    margin-bottom: var(--sl-space-2);
 }
 
 .form-input {
     width: 100%;
-    padding: 0.625rem 0.75rem;
-    border: 1px solid var(--sl-border-light);
+    padding: var(--sl-space-3);
+    border: var(--sl-border-width) solid var(--sl-border-light);
     border-radius: var(--sl-radius);
-    font-size: 0.875rem;
+    font-size: var(--sl-text-base);
     font-family: var(--sl-font);
     color: var(--sl-text);
     background: var(--sl-bg-white);
@@ -281,16 +311,16 @@ img {
 .form-input:focus {
     outline: none;
     border-color: var(--sl-primary);
-    box-shadow: 0 0 0 0.1875rem color-mix(in srgb, var(--sl-primary) 15%, transparent);
+    box-shadow: 0 0 0 var(--sl-border-width-thick) color-mix(in srgb, var(--sl-primary) 15%, transparent);
 }
 
 .form-input-sm {
-    padding: 0.375rem 0.625rem;
-    font-size: 0.8125rem;
+    padding: var(--sl-space-2) var(--sl-space-3);
+    font-size: var(--sl-text-sm);
 }
 
 .form-hint {
-    font-size: 0.6875rem;
+    font-size: var(--sl-text-sm);
     color: var(--sl-text-muted);
     margin-top: 0.25rem;
 }
@@ -304,8 +334,8 @@ img {
 
 .form-actions {
     display: flex;
-    gap: 0.5rem;
-    margin-top: 1rem;
+    gap: var(--sl-space-2);
+    margin-top: var(--sl-space-4);
 }
 
 /* ── Botones ── */
@@ -313,16 +343,21 @@ img {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    padding: 0.625rem 1rem;
+    gap: var(--sl-space-2);
+    padding: var(--sl-space-3) var(--sl-space-4);
     border: none;
     border-radius: var(--sl-radius);
-    font-size: 0.875rem;
-    font-weight: 600;
+    font-size: var(--sl-text-base);
+    font-weight: var(--sl-weight-semibold);
     font-family: var(--sl-font);
     cursor: pointer;
     text-decoration: none;
     transition: background var(--sl-transition-fast), opacity var(--sl-transition-fast);
+}
+
+.btn-sm {
+    padding: var(--sl-space-2) var(--sl-space-3);
+    font-size: var(--sl-text-sm);
 }
 
 a.btn:hover {
@@ -371,13 +406,13 @@ a.btn:hover {
 
 /* ── Mensajes flash / alertas ── */
 .alert {
-    padding: 0.625rem 0.875rem;
+    padding: var(--sl-space-3) var(--sl-space-4);
     border-radius: var(--sl-radius);
-    font-size: 0.8125rem;
-    margin-bottom: 1rem;
+    font-size: var(--sl-text-sm);
+    margin-bottom: var(--sl-space-4);
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--sl-space-2);
 }
 
 .alert-error {
@@ -397,10 +432,10 @@ a.btn:hover {
 
 /* ── Badges ── */
 .badge {
-    font-size: 0.5625rem;
-    font-weight: 700;
-    padding: 0.125rem 0.375rem;
-    border-radius: 0.625rem;
+    font-size: var(--sl-text-xs);
+    font-weight: var(--sl-weight-bold);
+    padding: var(--sl-space-1) var(--sl-space-2);
+    border-radius: var(--sl-radius-full);
 }
 
 .badge-required {
@@ -606,29 +641,29 @@ select.form-input {
 /* ── Toast notifications (global) ── */
 .sl-toast-container {
     position: fixed;
-    bottom: 3rem;
+    bottom: var(--sl-space-12);
     left: 50%;
     transform: translateX(-50%);
     z-index: 2000;
     display: flex;
     flex-direction: column-reverse;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--sl-space-2);
     pointer-events: none;
 }
 
 .sl-toast {
-    padding: 0.75rem 1.25rem;
-    border-radius: 2rem;
-    font-size: 0.875rem;
-    font-weight: 600;
+    padding: var(--sl-space-3) var(--sl-space-5);
+    border-radius: var(--sl-radius-full);
+    font-size: var(--sl-text-base);
+    font-weight: var(--sl-weight-semibold);
     box-shadow: var(--sl-shadow);
     pointer-events: auto;
     animation: toastUp 0.35s ease;
     max-width: min(24rem, 90vw);
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--sl-space-2);
     white-space: nowrap;
 }
 
