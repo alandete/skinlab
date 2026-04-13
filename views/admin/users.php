@@ -45,6 +45,7 @@ $currentUserId = (int) ($_SESSION['user_id'] ?? 0);
 <section class="users-toolbar" aria-label="<?= e(__('admin.search_users')) ?>">
     <div class="users-search">
         <i class="bi bi-search" aria-hidden="true"></i>
+        <label for="user-search" class="sr-only"><?= e(__('admin.search_users')) ?></label>
         <input type="text" id="user-search" class="form-input" placeholder="<?= e(__('admin.search_users')) ?>">
     </div>
     <div class="users-filters">

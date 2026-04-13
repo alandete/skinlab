@@ -20,8 +20,8 @@
 
     /* Text */
     --sl-text:          #2D3B45;
-    --sl-text-light:    #6B7780;
-    --sl-text-muted:    #8B969E;
+    --sl-text-light:    #566069;
+    --sl-text-muted:    #717B84;
 
     /* Borders */
     --sl-border:        #C7CDD1;
@@ -112,6 +112,25 @@ img {
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+}
+
+.sr-only-focusable:focus {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    width: auto;
+    height: auto;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    background: var(--sl-primary);
+    color: var(--sl-white);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
 }
 
 :focus-visible {

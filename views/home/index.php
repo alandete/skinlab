@@ -3,7 +3,7 @@
 <div class="welcome-container">
     <div class="welcome-card">
         <div class="welcome-logo">
-            <i class="bi bi-brush"></i>
+            <i class="bi bi-brush" aria-hidden="true"></i>
         </div>
         <h1><?= e(__('general.app_name')) ?></h1>
         <p><?= e(__('general.app_description')) ?></p>

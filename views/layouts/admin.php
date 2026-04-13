@@ -13,6 +13,7 @@
     <meta name="csrf-token" content="<?= e(csrf_token()) ?>">
 </head>
 <body class="admin-page">
+    <a href="#admin-main" class="sr-only sr-only-focusable">Ir al contenido principal</a>
 
     <div class="admin-layout">
 

@@ -20,6 +20,7 @@
     <meta name="csrf-token" content="<?= e(csrf_token()) ?>">
 </head>
 <body>
+    <a href="#content-body" class="sr-only sr-only-focusable">Ir al contenido principal</a>
     <?= $content ?>
 
     <!-- SkinLab JS -->

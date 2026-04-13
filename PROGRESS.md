@@ -175,38 +175,95 @@ Recreación limpia y modular de CanvasThemes para desarrollo de temas Canvas LMS
 
 ---
 
-## FASE 5: Visualización y Herramientas ⬜
-> Pendiente
+## FASE 5: Visualización y Herramientas ✅
+> Completada: 2026-03-30
 
-| # | Tarea | Estado |
-|---|-------|--------|
-| 5.1 | Carga dinámica de páginas de proyecto | ⬜ |
-| 5.2 | Visor de código fuente (HTML, CSS master/mobile/desktop, JS) | ⬜ |
-| 5.3 | Simulador móvil (phone/tablet, portrait/landscape) | ⬜ |
-| 5.4 | Modo oscuro para preview | ⬜ |
-| 5.5 | Exportación a ZIP | ⬜ |
-| 5.6 | Atajos de teclado (Ctrl+E, Ctrl+R, Escape) | ⬜ |
-| 5.7 | Sincronización de estado por URL limpia | ⬜ |
-| 5.8 | API de contenido y código fuente | ⬜ |
+### Tareas completadas
+
+| # | Tarea | Fecha | Detalles |
+|---|-------|-------|----------|
+| 5.1 | Simulador móvil | 2026-03-30 | 4 dispositivos (Android 360, iPhone 14, iPad Mini, iPad 10a gen), portrait/landscape, dark mode toggle, iframe con viewport real. Panel de info con estadísticas de tráfico 2026 y fuentes |
+| 5.2 | Visor de código fuente | 2026-03-30 | 5 tabs (HTML, CSS Master, CSS Mobile, CSS Desktop, JS). Botón copiar por tab. Limpia bloque html[data-theme="dark"] del CSS compilado. Atajos: Ctrl+E abre/cierra |
+| 5.3 | Exportación ZIP | 2026-03-30 | Endpoint GET /api/export/{slug}. Descarga ZIP con todos los archivos del proyecto |
+| 5.4 | Preview API | 2026-03-30 | Endpoint GET /api/preview. Renderiza página completa para iframe con soporte de dark mode via data-theme |
+| 5.5 | Sa11y en toolbar | 2026-03-30 | Botón A11y carga Sa11y v4.4.1 (español) bajo demanda vía CDN. Evalúa #content-body con tooltips visuales. Fallback automático a axe-core si CDN falla |
+| 5.6 | axe-core en página Accesibilidad | 2026-03-30 | Página herramienta del proyecto. Reporte detallado por página: resumen, errores por impacto, tags WCAG, tabla de elementos afectados con correcciones |
+| 5.7 | Página Colores (The Color API) | 2026-03-29 | Swatches del proyecto, propuestas light/dark via API, preview tipografía/botones en ambos modos, tabla de contraste WCAG AA/AAA |
+| 5.8 | Atajos de teclado | 2026-03-30 | Ctrl+R (recargar), Ctrl+E (código), Escape (cerrar paneles) |
+| 5.9 | Toast notifications | 2026-03-30 | Sistema global sl-toast centrado inferior. Compilar, recargar y acciones muestran feedback visual |
+| 5.10 | Colores institucionales nav | 2026-03-29 | Nav Canvas (Col 1) cambia colores según proyecto seleccionado. Campos nav_bg_color y nav_text_color en BD y formularios |
+| 5.11 | Separador herramientas | 2026-03-29 | Col 2 separa contenido (páginas) de herramientas (Colores, Accesibilidad) |
+
+### Archivos creados
+
+- `app/Controllers/Api/PreviewController.php` — Renderiza HTML completo para iframe
+- `app/Controllers/Api/ExportController.php` — Genera ZIP del proyecto
+- `public/assets/js/sa11y-toolbar.js` — Sa11y bajo demanda con fallback axe-core
+- `public/assets/js/tool-colors.js` — Página Colores con The Color API
+- `public/assets/js/tool-accessibility.js` — Página Accesibilidad con axe-core
+- `public/assets/css/tools.css` — Estilos de páginas herramienta
 
 ---
 
-## FASE 6: Documentación y Pulido ⬜
-> Pendiente
+## FASE 6: Documentación y Pulido ✅
+> Completada: 2026-03-30
+
+### Tareas completadas
+
+| # | Tarea | Fecha | Detalles |
+|---|-------|-------|----------|
+| 6.1 | Documentación Canvas LMS | 2026-03-29 | 13 secciones migradas de CanvasThemes: HTML permitido/restringido, atributos, CSS inline/archivos, dark mode, alto contraste, variables CSS, tipografía, buenas prácticas, roles, flujo de trabajo |
+| 6.2 | CLAUDE.md | 2026-03-30 | Políticas de diseño, restricciones Canvas, compilación CSS, i18n, seguridad, git |
+| 6.3 | Asset cache-busting | 2026-03-30 | `asset()` helper agrega `?v=filemtime` automáticamente |
+| 6.4 | Revisión de accesibilidad | 2026-04-12 | Pendiente revisión general del UI de SkinLab |
+| 6.5 | Testing de seguridad | 2026-03-30 | Audit completo: 3 críticos + 5 altos + 5 medios corregidos |
+
+---
+
+## Audit de Seguridad ✅
+> Completado: 2026-03-30
+
+### Vulnerabilidades corregidas
+
+| Severidad | # | Vulnerabilidad | Fix |
+|-----------|---|---------------|-----|
+| **Crítico** | 1 | Path traversal en /api/source | preg_match + realpath containment en source, content, preview |
+| **Crítico** | 2 | XSS en preview iframe | sandbox="allow-scripts" sin allow-same-origin |
+| **Crítico** | 3 | Credenciales BD en git | .env + Env::load(), config lee variables |
+| **Alto** | 4 | Logout vía GET | Cambiado a POST con CSRF |
+| **Alto** | 5 | Guest credentials hardcodeadas | Password aleatorio con random_bytes |
+| **Alto** | 6 | Debug mode activo | APP_DEBUG=false en .env |
+| **Alto** | 7 | Cookie sin flag secure | Auto-enabled si APP_URL es https |
+| **Alto** | 8 | Reset password sin token | Rate limit propio (3/min) |
+| **Medio** | 9 | CSRF token sin rotación | Rotado después de cada POST exitoso, nuevo token en JSON response |
+| **Medio** | 10 | Sin rate limit en toggle/compile | RateLimitMiddleware agregado |
+| **Medio** | 11 | img-src CSP abierto | Documentado como necesario para contenido Canvas |
+| **Medio** | 12 | Tabla rate_limits sin limpieza | Evento MySQL cada 5 min verificado |
+
+### Archivos creados
+
+- `.env` — Credenciales y configuración (excluido de git)
+- `.env.example` — Template para deployment
+- `app/Core/Env.php` — Parser de .env
+
+---
+
+## Pendientes
 
 | # | Tarea | Estado |
 |---|-------|--------|
-| 6.1 | Sección de documentación integrada | ⬜ |
-| 6.2 | Tema oscuro completo para dashboard | ⬜ |
-| 6.3 | Optimización de rendimiento (lazy loading, cache) | ⬜ |
-| 6.4 | Revisión de accesibilidad (ARIA, contraste) | ⬜ |
-| 6.5 | Testing de seguridad (XSS, CSRF, path traversal, injection) | ⬜ |
+| P.1 | Revisión de accesibilidad del UI de SkinLab | ⬜ |
+| P.2 | Tema oscuro completo del dashboard | ⬜ |
+| P.3 | Módulo Git/GitHub en Admin | ⬜ |
+| P.4 | Optimización de rendimiento (lazy loading, cache) | ⬜ |
 
 ---
 
 ## Notas Técnicas
 
 - **Stack:** PHP 8.3, MySQL 8.0, Bootstrap 5, Bootstrap Icons, Lato font
-- **BD:** skinlab (usuario: skinlab_user)
+- **BD:** skinlab (usuario: skinlab_user, credenciales en .env)
 - **URL:** https://skinlab.test (Laragon con auto SSL)
 - **Entorno:** Laragon en Windows 11
+- **Seguridad:** CSP, CSRF con rotación, rate limiting por IP, prepared statements, sandbox iframe
+- **Herramientas externas:** The Color API (paletas), Sa11y v4.4.1 (accesibilidad), axe-core v4.9.1 (fallback)
