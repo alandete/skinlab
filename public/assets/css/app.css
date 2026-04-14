@@ -39,13 +39,13 @@
     --sl-space-12: 3rem;      /* 48px */
 
     /* ── Colors (SkinLab brand) ── */
-    --sl-primary:       #3E5DC2;    /* Slate Indigo — botones, enlaces, acentos */
+    --sl-primary:       #1C4AA6;    /* Slate Indigo — botones, enlaces, acentos */
     --sl-primary-hover: #4D6BD0;
     --sl-primary-dark:  #2E4A9E;
-    --sl-brand:         #661F91;    /* Rebecca Purple — sidebar, toolbar, marca */
-    --sl-brand-light:   #7A3BA3;
+    --sl-brand:         #5336BF;    /* Rebecca Purple — sidebar, toolbar, marca */
+    --sl-brand-light:   #D92579;
     --sl-accent:        #BFCDF1;    /* Periwinkle — fondos suaves, badges */
-    --sl-highlight:     #FC7E2C;    /* Pumpkin Spice — CTA, notificaciones */
+    --sl-highlight:     #F25C05;    /* Pumpkin Spice — CTA, notificaciones */
     --sl-secondary:     #3E5DC2;
     --sl-secondary-light: #4D6BD0;
     --sl-white:         #FEFEFE;

@@ -160,6 +160,7 @@
 
 .admin-sidebar-user-info strong {
     font-size: var(--sl-text-base);
+    color: var(--sl-white);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
