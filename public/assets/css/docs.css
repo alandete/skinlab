@@ -281,6 +281,7 @@ html {
     border-radius: var(--sl-radius-lg);
     padding: 1.125rem;
     border: 1px solid;
+    margin-bottom: var(--sl-space-3);
 }
 
 .practice-card h4 {
