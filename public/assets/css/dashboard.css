@@ -169,6 +169,11 @@
     flex-shrink: 0;
 }
 
+.sl-toolbar-user .user-badge {
+    background: color-mix(in srgb, var(--sl-white) 20%, transparent);
+    color: var(--sl-white);
+}
+
 .sl-toolbar-tools-extended {
     display: none;
 }
