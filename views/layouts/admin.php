@@ -58,6 +58,12 @@
                             <span><?= e(__('admin.tab_docs')) ?></span>
                         </a>
                     </li>
+                    <li>
+                        <a href="/admin/ui-kit" class="<?= ($activeTab ?? '') === 'ui-kit' ? 'active' : '' ?>">
+                            <i class="bi bi-palette2" aria-hidden="true"></i>
+                            <span>UI Kit</span>
+                        </a>
+                    </li>
                 </ul>
             </nav>
 

@@ -88,4 +88,13 @@ class AdminController
             'breadcrumb' => __('admin.tab_docs'),
         ], 'layouts.admin');
     }
+
+    public function uiKit(Request $request, array $params = []): void
+    {
+        View::render('admin.ui-kit', [
+            'title'      => 'UI Kit — ' . __('admin.title'),
+            'activeTab'  => 'ui-kit',
+            'breadcrumb' => 'UI Kit',
+        ], 'layouts.admin');
+    }
 }
