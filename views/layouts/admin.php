@@ -115,5 +115,6 @@
     <script src="<?= asset('js/admin.js') ?>"></script>
     <script src="<?= asset('js/admin-projects.js') ?>"></script>
     <script src="<?= asset('js/admin-project-edit.js') ?>"></script>
+    <script src="<?= asset('js/docs.js') ?>"></script>
 </body>
 </html>
