@@ -117,12 +117,13 @@ html, body {
 
 a {
     color: var(--sl-primary);
-    text-decoration: none;
+    text-decoration: none !important;
     transition: color var(--sl-transition-fast);
 }
 
 a:hover {
     color: var(--sl-primary-hover);
+    text-decoration: none !important;
 }
 
 /* Underline solo en enlaces de texto dentro de contenido */

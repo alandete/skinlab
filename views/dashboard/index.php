@@ -124,7 +124,7 @@
             </ul>
             <button class="sl-canvas-nav-toggle" id="btn-toggle-nav"
                     title="Toggle nav" aria-label="Toggle Canvas navigation">
-                <i class="bi bi-chevron-left" aria-hidden="true"></i>
+                <i class="bi bi-chevron-right" aria-hidden="true"></i>
             </button>
         </nav>
 
