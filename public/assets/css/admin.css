@@ -27,7 +27,7 @@
     display: none;
     flex-direction: column;
     width: 12rem;
-    background: var(--sl-secondary);
+    background: var(--sl-brand);
     color: var(--sl-white);
     flex-shrink: 0;
     overflow-y: auto;
@@ -1212,6 +1212,6 @@
 /* ── min-width: 1200px (xl) ── */
 @media (min-width: 1200px) {
     .admin-main {
-        padding: var(--sl-space-6);
+        padding: var(--sl-space-3) var(--sl-space-4) var(--sl-space-3);
     }
 }

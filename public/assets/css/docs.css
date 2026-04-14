@@ -410,12 +410,12 @@ pre code {
         overflow-y: auto;
         border-bottom: none;
         border-right: 1px solid var(--sl-border-light);
-        padding: var(--sl-space-5) 0;
+        padding: var(--sl-space-3) 0;
     }
 
     .toc {
         flex-direction: column;
-        padding: 0 0.75rem;
+        padding: 0 var(--sl-space-2) 0 0;
     }
 
     .toc-title {

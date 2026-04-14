@@ -38,24 +38,28 @@
     --sl-space-10: 2.5rem;    /* 40px */
     --sl-space-12: 3rem;      /* 48px */
 
-    /* ── Colors ── */
-    --sl-primary:       #0374B5;
-    --sl-primary-hover: #0587D4;
-    --sl-primary-dark:  #025E91;
-    --sl-secondary:     #2D3B45;
-    --sl-secondary-light: #394B58;
-    --sl-white:         #FFFFFF;
+    /* ── Colors (SkinLab brand) ── */
+    --sl-primary:       #3E5DC2;    /* Slate Indigo — botones, enlaces, acentos */
+    --sl-primary-hover: #4D6BD0;
+    --sl-primary-dark:  #2E4A9E;
+    --sl-brand:         #661F91;    /* Rebecca Purple — sidebar, toolbar, marca */
+    --sl-brand-light:   #7A3BA3;
+    --sl-accent:        #BFCDF1;    /* Periwinkle — fondos suaves, badges */
+    --sl-highlight:     #FC7E2C;    /* Pumpkin Spice — CTA, notificaciones */
+    --sl-secondary:     #3E5DC2;
+    --sl-secondary-light: #4D6BD0;
+    --sl-white:         #FEFEFE;
 
     /* Backgrounds */
     --sl-bg:            #F5F5F5;
-    --sl-bg-white:      #FFFFFF;
+    --sl-bg-white:      #FEFEFE;
     --sl-bg-dark:       #1A1A2E;
 
     /* Text */
-    --sl-text:          #2D3B45;
+    --sl-text:          #2D3045;
     --sl-text-light:    #566069;
     --sl-text-muted:    #717B84;
-    --sl-page-title:    #666666;
+    --sl-page-title:    #555555;
 
     /* Borders */
     --sl-border:        #C7CDD1;
@@ -66,8 +70,8 @@
     --sl-success-bg:    #E8F5E9;
     --sl-danger:        #C62828;
     --sl-danger-bg:     #FFEBEE;
-    --sl-warning:       #F57C00;
-    --sl-warning-dark:  #E65100;
+    --sl-warning:       #FC7E2C;    /* Pumpkin Spice */
+    --sl-warning-dark:  #E56A1A;
     --sl-warning-bg:    #FFF3E0;
 
     /* ── Borders & Radius ── */
