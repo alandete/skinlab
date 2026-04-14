@@ -8,17 +8,17 @@
 }
 
 .tool-section h2 {
-    font-size: 1.25rem;
-    font-weight: 700;
+    font-size: var(--sl-text-lg);
+    font-weight: var(--sl-weight-bold);
     color: var(--sl-text);
-    margin-bottom: 0.75rem;
+    margin-bottom: var(--sl-space-3);
     padding-bottom: 0.5rem;
     border-bottom: 2px solid var(--sl-border-light);
 }
 
 .tool-desc {
     color: var(--sl-text-light);
-    margin-bottom: 1rem;
+    margin-bottom: var(--sl-space-4);
     line-height: 1.6;
 }
 
@@ -38,14 +38,14 @@
 .color-swatches {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
+    gap: var(--sl-space-3);
 }
 
 .tool-swatch {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem;
+    gap: var(--sl-space-2);
+    padding: var(--sl-space-2);
     border: 1px solid var(--sl-border-light);
     border-radius: var(--sl-radius-lg);
     min-width: 10rem;
@@ -66,13 +66,13 @@
 }
 
 .tool-swatch-info code {
-    font-size: 0.75rem;
+    font-size: var(--sl-text-xs);
     color: var(--sl-text);
-    font-weight: 600;
+    font-weight: var(--sl-weight-semibold);
 }
 
 .tool-swatch-info small {
-    font-size: 0.6875rem;
+    font-size: var(--sl-text-xs);
     color: var(--sl-text-muted);
 }
 
@@ -80,7 +80,7 @@
 .tool-row {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: var(--sl-space-4);
 }
 
 .tool-preview-card {
@@ -90,8 +90,8 @@
 }
 
 .tool-preview-card h3 {
-    font-size: 0.875rem;
-    font-weight: 700;
+    font-size: var(--sl-text-base);
+    font-weight: var(--sl-weight-bold);
     padding: 0.625rem 1rem;
     background: var(--sl-bg);
     color: var(--sl-text);
@@ -105,24 +105,24 @@
 }
 
 .tool-preview-body {
-    padding: 1.25rem;
-    font-size: 0.875rem;
+    padding: var(--sl-space-5);
+    font-size: var(--sl-text-base);
     line-height: 1.6;
 }
 
 .tool-preview-body h4 {
     font-size: 1.125rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--sl-space-2);
 }
 
 .tool-preview-body p {
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--sl-space-2);
 }
 
 .tool-preview-buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: var(--sl-space-2);
     margin: 1rem 0;
 }
 
@@ -130,8 +130,8 @@
     display: inline-block;
     padding: 0.4375rem 1rem;
     border-radius: var(--sl-radius);
-    font-size: 0.8125rem;
-    font-weight: 600;
+    font-size: var(--sl-text-sm);
+    font-weight: var(--sl-weight-semibold);
 }
 
 .tool-btn-outline {
@@ -142,7 +142,7 @@
 .tool-preview-card-sample {
     border: 1px solid;
     border-radius: var(--sl-radius);
-    padding: 1rem;
+    padding: var(--sl-space-4);
     margin-top: 1rem;
 }
 
@@ -152,7 +152,7 @@
 }
 
 .tool-preview-card-sample p {
-    font-size: 0.8125rem;
+    font-size: var(--sl-text-sm);
     margin: 0;
 }
 
@@ -160,23 +160,23 @@
 .tool-contrast-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.8125rem;
+    font-size: var(--sl-text-sm);
 }
 
 .tool-contrast-table th {
     background: var(--sl-bg);
-    font-weight: 700;
+    font-weight: var(--sl-weight-bold);
     text-align: left;
-    padding: 0.5rem 0.75rem;
+    padding: var(--sl-space-2) 0.75rem;
     border-bottom: 2px solid var(--sl-border-light);
-    font-size: 0.75rem;
+    font-size: var(--sl-text-xs);
     text-transform: uppercase;
     letter-spacing: 0.03em;
     color: var(--sl-text-muted);
 }
 
 .tool-contrast-table td {
-    padding: 0.5rem 0.75rem;
+    padding: var(--sl-space-2) 0.75rem;
     border-bottom: 1px solid var(--sl-border-light);
     vertical-align: middle;
 }
@@ -185,8 +185,8 @@
     display: inline-block;
     padding: 0.25rem 0.625rem;
     border-radius: var(--sl-radius);
-    font-weight: 600;
-    font-size: 0.75rem;
+    font-weight: var(--sl-weight-semibold);
+    font-size: var(--sl-text-xs);
     border: 1px solid color-mix(in srgb, black 10%, transparent);
 }
 
@@ -194,8 +194,8 @@
     display: inline-block;
     padding: 0.125rem 0.5rem;
     border-radius: 0.625rem;
-    font-size: 0.6875rem;
-    font-weight: 700;
+    font-size: var(--sl-text-xs);
+    font-weight: var(--sl-weight-bold);
 }
 
 .tool-badge-pass {
@@ -215,19 +215,19 @@
 .a11y-pages {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: var(--sl-space-2);
 }
 
 .a11y-page-btn {
     display: flex;
     align-items: center;
-    gap: 0.375rem;
-    padding: 0.5rem 0.875rem;
+    gap: var(--sl-space-2);
+    padding: var(--sl-space-2) 0.875rem;
     border: 1px solid var(--sl-border-light);
     border-radius: var(--sl-radius);
     background: var(--sl-bg-white);
     color: var(--sl-text-light);
-    font-size: 0.8125rem;
+    font-size: var(--sl-text-sm);
     font-family: var(--sl-font);
     cursor: pointer;
     transition: all var(--sl-transition-fast);
@@ -253,8 +253,8 @@
     min-width: 1.25rem;
     height: 1.25rem;
     border-radius: 50%;
-    font-size: 0.625rem;
-    font-weight: 700;
+    font-size: var(--sl-text-xs);
+    font-weight: var(--sl-weight-bold);
     margin-left: 0.25rem;
 }
 
@@ -273,15 +273,15 @@
 }
 
 .a11y-report {
-    font-size: 0.875rem;
+    font-size: var(--sl-text-base);
 }
 
 /* ── Summary badges ── */
 .a11y-summary {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
+    gap: var(--sl-space-2);
+    margin-bottom: var(--sl-space-6);
 }
 
 .a11y-badge-pass,
@@ -290,11 +290,11 @@
 .a11y-badge-warn {
     display: flex;
     align-items: center;
-    gap: 0.375rem;
-    padding: 0.5rem 0.875rem;
+    gap: var(--sl-space-2);
+    padding: var(--sl-space-2) 0.875rem;
     border-radius: var(--sl-radius);
-    font-size: 0.8125rem;
-    font-weight: 600;
+    font-size: var(--sl-text-sm);
+    font-weight: var(--sl-weight-semibold);
 }
 
 .a11y-badge-pass { background: var(--sl-success-bg); color: var(--sl-success); }
@@ -304,8 +304,8 @@
 
 /* ── Section title ── */
 .a11y-section-title {
-    font-size: 1rem;
-    font-weight: 700;
+    font-size: var(--sl-text-md);
+    font-weight: var(--sl-weight-bold);
     color: var(--sl-text);
     margin: 1.5rem 0 0.75rem;
 }
@@ -314,17 +314,17 @@
 .a11y-detail {
     border: 1px solid var(--sl-border-light);
     border-radius: var(--sl-radius);
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--sl-space-2);
     overflow: hidden;
 }
 
 .a11y-detail summary {
     padding: 0.625rem 1rem;
-    font-size: 0.8125rem;
+    font-size: var(--sl-text-sm);
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--sl-space-2);
     transition: background var(--sl-transition-fast);
 }
 
@@ -341,8 +341,8 @@
     display: inline-block;
     padding: 0.125rem 0.5rem;
     border-radius: 0.625rem;
-    font-size: 0.6875rem;
-    font-weight: 700;
+    font-size: var(--sl-text-xs);
+    font-weight: var(--sl-weight-bold);
     flex-shrink: 0;
 }
 
@@ -353,26 +353,26 @@
 
 /* ── Detail body ── */
 .a11y-detail-body {
-    padding: 0.75rem 1rem;
+    padding: var(--sl-space-3) 1rem;
     border-top: 1px solid var(--sl-border-light);
 }
 
 .a11y-description {
-    font-size: 0.8125rem;
+    font-size: var(--sl-text-sm);
     color: var(--sl-text-light);
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--sl-space-2);
     line-height: 1.5;
 }
 
 .a11y-tags {
-    margin-bottom: 0.75rem;
+    margin-bottom: var(--sl-space-3);
 }
 
 .a11y-tag {
     display: inline-block;
     padding: 0.125rem 0.375rem;
     border-radius: 0.25rem;
-    font-size: 0.625rem;
+    font-size: var(--sl-text-xs);
     background: var(--sl-bg);
     color: var(--sl-text-muted);
     margin-right: 0.25rem;
@@ -382,29 +382,29 @@
 .a11y-nodes-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.75rem;
+    font-size: var(--sl-text-xs);
 }
 
 .a11y-nodes-table th {
     background: var(--sl-bg);
-    font-weight: 700;
+    font-weight: var(--sl-weight-bold);
     text-align: left;
     padding: 0.375rem 0.625rem;
     border-bottom: 1px solid var(--sl-border-light);
-    font-size: 0.6875rem;
+    font-size: var(--sl-text-xs);
     text-transform: uppercase;
     letter-spacing: 0.03em;
     color: var(--sl-text-muted);
 }
 
 .a11y-nodes-table td {
-    padding: 0.5rem 0.625rem;
+    padding: var(--sl-space-2) 0.625rem;
     border-bottom: 1px solid var(--sl-border-light);
     vertical-align: top;
 }
 
 .a11y-nodes-table code {
-    font-size: 0.6875rem;
+    font-size: var(--sl-text-xs);
     word-break: break-all;
     color: var(--sl-text-light);
     background: var(--sl-bg);
@@ -413,7 +413,7 @@
 }
 
 .a11y-fix {
-    font-size: 0.75rem;
+    font-size: var(--sl-text-xs);
     color: var(--sl-text);
     line-height: 1.5;
 }
