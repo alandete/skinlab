@@ -5,23 +5,21 @@
     <!-- TOC Sidebar -->
     <nav class="docs-toc" aria-label="Tabla de contenidos">
         <ul class="toc">
-            <li class="toc-title">Referencia</li>
+            <li class="toc-title">Canvas LMS</li>
             <li><a href="#html-permitido" class="toc-link active"><i class="bi bi-code-slash" aria-hidden="true"></i> HTML Permitido</a></li>
             <li><a href="#html-restringido" class="toc-link"><i class="bi bi-slash-circle" aria-hidden="true"></i> HTML Restringido</a></li>
             <li><a href="#atributos" class="toc-link"><i class="bi bi-tag" aria-hidden="true"></i> Atributos</a></li>
-            <li><a href="#css-permitido" class="toc-link"><i class="bi bi-palette" aria-hidden="true"></i> CSS Permitido</a></li>
+            <li><a href="#css-permitido" class="toc-link"><i class="bi bi-palette" aria-hidden="true"></i> CSS Inline</a></li>
             <li><a href="#css-restringido" class="toc-link"><i class="bi bi-x-circle" aria-hidden="true"></i> CSS Restringido</a></li>
-            <li class="toc-title">Temas y Modos</li>
+            <li><a href="#variables-css" class="toc-link"><i class="bi bi-palette2" aria-hidden="true"></i> Variables Canvas</a></li>
             <li><a href="#dark-mode" class="toc-link"><i class="bi bi-moon" aria-hidden="true"></i> Modo Oscuro</a></li>
             <li><a href="#high-contrast" class="toc-link"><i class="bi bi-circle-half" aria-hidden="true"></i> Alto Contraste</a></li>
-            <li><a href="#variables-css" class="toc-link"><i class="bi bi-palette2" aria-hidden="true"></i> Variables CSS</a></li>
-            <li class="toc-title">Recursos</li>
             <li><a href="#tipografia" class="toc-link"><i class="bi bi-fonts" aria-hidden="true"></i> Tipografía</a></li>
+            <li class="toc-title">Proyecto</li>
             <li><a href="#buenas-practicas" class="toc-link"><i class="bi bi-lightbulb" aria-hidden="true"></i> Buenas Prácticas</a></li>
-            <li><a href="#fuentes" class="toc-link"><i class="bi bi-link-45deg" aria-hidden="true"></i> Fuentes</a></li>
-            <li class="toc-title">SkinLab</li>
-            <li><a href="#roles" class="toc-link"><i class="bi bi-shield-lock" aria-hidden="true"></i> Roles y Acceso</a></li>
             <li><a href="#flujo-trabajo" class="toc-link"><i class="bi bi-diagram-3" aria-hidden="true"></i> Flujo de Trabajo</a></li>
+            <li><a href="#roles" class="toc-link"><i class="bi bi-shield-lock" aria-hidden="true"></i> Roles y Acceso</a></li>
+            <li><a href="#fuentes" class="toc-link"><i class="bi bi-link-45deg" aria-hidden="true"></i> Fuentes</a></li>
         </ul>
     </nav>
 
@@ -138,62 +136,6 @@
             </div>
         </section>
 
-        <!-- ════════════ DARK MODE ════════════ -->
-        <section id="dark-mode">
-            <h2><i class="bi bi-moon" aria-hidden="true"></i> Modo Oscuro</h2>
-            <div class="callout warning">
-                <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
-                <div><strong>Estado actual:</strong> Canvas <strong>NO tiene modo oscuro nativo</strong> para la web (hasta 2026). Las apps móviles (iOS/Android) sí lo soportan.</div>
-            </div>
-            <h3>Cómo funciona en móvil</h3>
-            <ul class="docs-list">
-                <li>Invierte el esquema de colores claro a oscuro</li>
-                <li>Usa tonos oscuros refinados (no negro puro)</li>
-                <li>Transforma los colores institucionales</li>
-                <li><strong>NO ajusta</strong> colores hardcodeados en contenido personalizado</li>
-            </ul>
-            <div class="practice-card good">
-                <h4><i class="bi bi-check-circle" aria-hidden="true"></i> Hacer</h4>
-                <ul>
-                    <li>Heredar colores del contenedor padre</li>
-                    <li>Asegurar contraste suficiente en ambos modos</li>
-                    <li>Probar invirtiendo colores manualmente</li>
-                </ul>
-            </div>
-            <div class="practice-card bad">
-                <h4><i class="bi bi-x-circle" aria-hidden="true"></i> Evitar</h4>
-                <ul>
-                    <li><code>color: #000000</code> o <code>color: black</code></li>
-                    <li><code>background-color: #ffffff</code> o <code>background: white</code></li>
-                    <li>Depender de <code>prefers-color-scheme</code> en web</li>
-                </ul>
-            </div>
-            <h3>Estrategia para proyectos</h3>
-            <p>Usar variables de Canvas (<code>--ic-brand-*</code>) para que los diseños se adapten automáticamente:</p>
-            <pre><code>/* Usar variables de Canvas con fallback */
-.mi-titulo {
-  color: var(--ic-brand-font-color-dark, #2D3B45);
-}
-.mi-link {
-  color: var(--ic-link-color, #0374B5);
-}
-.mi-boton {
-  background: var(--ic-brand-primary, #0374B5);
-  color: #fff;
-}</code></pre>
-        </section>
-
-        <!-- ════════════ ALTO CONTRASTE ════════════ -->
-        <section id="high-contrast">
-            <h2><i class="bi bi-circle-half" aria-hidden="true"></i> Alto Contraste</h2>
-            <p>Canvas incluye un modo <strong>High Contrast UI</strong> que los usuarios activan desde <strong>Cuenta > Configuración</strong>.</p>
-            <ul class="docs-list">
-                <li>Aumenta el contraste en texto, botones y elementos UI</li>
-                <li>Apunta a WCAG 2.1 Nivel AAA</li>
-                <li>Puede sobreescribir <code>--ic-brand-primary</code> y <code>--ic-link-color</code></li>
-            </ul>
-        </section>
-
         <!-- ════════════ VARIABLES CSS ════════════ -->
         <section id="variables-css">
             <h2><i class="bi bi-palette2" aria-hidden="true"></i> Variables CSS de Canvas</h2>
@@ -264,6 +206,62 @@ html[data-theme="dark"] {
             <pre><code>GET /api/v1/brand_variables</code></pre>
         </section>
 
+        <!-- ════════════ DARK MODE ════════════ -->
+        <section id="dark-mode">
+            <h2><i class="bi bi-moon" aria-hidden="true"></i> Modo Oscuro</h2>
+            <div class="callout warning">
+                <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
+                <div><strong>Estado actual:</strong> Canvas <strong>NO tiene modo oscuro nativo</strong> para la web (hasta 2026). Las apps móviles (iOS/Android) sí lo soportan.</div>
+            </div>
+            <h3>Cómo funciona en móvil</h3>
+            <ul class="docs-list">
+                <li>Invierte el esquema de colores claro a oscuro</li>
+                <li>Usa tonos oscuros refinados (no negro puro)</li>
+                <li>Transforma los colores institucionales</li>
+                <li><strong>NO ajusta</strong> colores hardcodeados en contenido personalizado</li>
+            </ul>
+            <div class="practice-card good">
+                <h4><i class="bi bi-check-circle" aria-hidden="true"></i> Hacer</h4>
+                <ul>
+                    <li>Heredar colores del contenedor padre</li>
+                    <li>Asegurar contraste suficiente en ambos modos</li>
+                    <li>Probar invirtiendo colores manualmente</li>
+                </ul>
+            </div>
+            <div class="practice-card bad">
+                <h4><i class="bi bi-x-circle" aria-hidden="true"></i> Evitar</h4>
+                <ul>
+                    <li><code>color: #000000</code> o <code>color: black</code></li>
+                    <li><code>background-color: #ffffff</code> o <code>background: white</code></li>
+                    <li>Depender de <code>prefers-color-scheme</code> en web</li>
+                </ul>
+            </div>
+            <h3>Estrategia para proyectos</h3>
+            <p>Usar variables de Canvas (<code>--ic-brand-*</code>) para que los diseños se adapten automáticamente:</p>
+            <pre><code>/* Usar variables de Canvas con fallback */
+.mi-titulo {
+  color: var(--ic-brand-font-color-dark, #2D3B45);
+}
+.mi-link {
+  color: var(--ic-link-color, #0374B5);
+}
+.mi-boton {
+  background: var(--ic-brand-primary, #0374B5);
+  color: #fff;
+}</code></pre>
+        </section>
+
+        <!-- ════════════ ALTO CONTRASTE ════════════ -->
+        <section id="high-contrast">
+            <h2><i class="bi bi-circle-half" aria-hidden="true"></i> Alto Contraste</h2>
+            <p>Canvas incluye un modo <strong>High Contrast UI</strong> que los usuarios activan desde <strong>Cuenta > Configuración</strong>.</p>
+            <ul class="docs-list">
+                <li>Aumenta el contraste en texto, botones y elementos UI</li>
+                <li>Apunta a WCAG 2.1 Nivel AAA</li>
+                <li>Puede sobreescribir <code>--ic-brand-primary</code> y <code>--ic-link-color</code></li>
+            </ul>
+        </section>
+
         <!-- ════════════ TIPOGRAFÍA ════════════ -->
         <section id="tipografia">
             <h2><i class="bi bi-fonts" aria-hidden="true"></i> Tipografía</h2>
@@ -324,18 +322,6 @@ html[data-theme="dark"] {
             </div>
         </section>
 
-        <!-- ════════════ FUENTES ════════════ -->
-        <section id="fuentes">
-            <h2><i class="bi bi-link-45deg" aria-hidden="true"></i> Fuentes de Referencia</h2>
-            <ul class="docs-list sources">
-                <li><a href="https://community.instructure.com/t5/Canvas-Resource-Documents/Canvas-HTML-Editor-Allowlist/ta-p/387066" target="_blank" rel="noopener">Canvas HTML Editor Allowlist – Instructure Community</a></li>
-                <li><a href="https://github.com/instructure/canvas-lms/blob/master/gems/canvas_sanitize/lib/canvas_sanitize/canvas_sanitize.rb" target="_blank" rel="noopener">canvas_sanitize.rb – GitHub Source</a></li>
-                <li><a href="https://canvas.instructure.com/doc/api/brand_configs.html" target="_blank" rel="noopener">Brand Configs API Documentation</a></li>
-                <li><a href="https://community.canvaslms.com/t5/Canvas-Basics-Guide/How-do-I-enable-the-high-contrast-user-interface-in-Canvas/ta-p/615334" target="_blank" rel="noopener">High Contrast UI – Canvas Guide</a></li>
-                <li><a href="https://community.canvaslms.com/t5/Admin-Guide/How-do-I-upload-custom-JavaScript-and-CSS-files-to-an-account/ta-p/253" target="_blank" rel="noopener">Upload Custom CSS/JS – Admin Guide</a></li>
-            </ul>
-        </section>
-
         <!-- ════════════ ROLES Y ACCESO ════════════ -->
         <section id="roles">
             <h2><i class="bi bi-shield-lock" aria-hidden="true"></i> Roles y Acceso</h2>
@@ -378,6 +364,18 @@ html[data-theme="dark"] {
                 <li><code>--ct-primary</code>, <code>--ct-secondary</code>, etc. — colores de uso (se aclaran en dark mode)</li>
                 <li><code>--ct-neutral-*</code> — paleta de neutros tintados con <code>color-mix()</code></li>
                 <li><code>--ct-bg</code>, <code>--ct-text</code>, <code>--ct-link</code>, <code>--ct-border</code> — tokens semánticos</li>
+            </ul>
+        </section>
+
+        <!-- ════════════ FUENTES ════════════ -->
+        <section id="fuentes">
+            <h2><i class="bi bi-link-45deg" aria-hidden="true"></i> Fuentes de Referencia</h2>
+            <ul class="docs-list sources">
+                <li><a href="https://community.instructure.com/t5/Canvas-Resource-Documents/Canvas-HTML-Editor-Allowlist/ta-p/387066" target="_blank" rel="noopener">Canvas HTML Editor Allowlist – Instructure Community</a></li>
+                <li><a href="https://github.com/instructure/canvas-lms/blob/master/gems/canvas_sanitize/lib/canvas_sanitize/canvas_sanitize.rb" target="_blank" rel="noopener">canvas_sanitize.rb – GitHub Source</a></li>
+                <li><a href="https://canvas.instructure.com/doc/api/brand_configs.html" target="_blank" rel="noopener">Brand Configs API Documentation</a></li>
+                <li><a href="https://community.canvaslms.com/t5/Canvas-Basics-Guide/How-do-I-enable-the-high-contrast-user-interface-in-Canvas/ta-p/615334" target="_blank" rel="noopener">High Contrast UI – Canvas Guide</a></li>
+                <li><a href="https://community.canvaslms.com/t5/Admin-Guide/How-do-I-upload-custom-JavaScript-and-CSS-files-to-an-account/ta-p/253" target="_blank" rel="noopener">Upload Custom CSS/JS – Admin Guide</a></li>
             </ul>
         </section>
 
