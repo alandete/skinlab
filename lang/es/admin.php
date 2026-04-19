@@ -36,16 +36,35 @@ return [
     'custom_pages'          => 'Páginas adicionales',
     'custom_pages_hint'     => 'Páginas de contenido personalizado, adicionales a la organización y actividades.',
     'add_pages'             => 'Agregar páginas',
+    'add_custom_page'       => 'Agregar página',
     'page_name'             => 'Nombre de la página',
     'add_more'              => 'Agregar otra',
     'pages_section_org'     => 'Organización',
     'pages_section_custom'  => 'Páginas adicionales',
     'pages_section_act'     => 'Actividades',
     'delete_page'           => 'Eliminar página',
+    'rename_page'           => 'Renombrar página',
     'confirm_delete_page'   => '¿Eliminar la página <strong>:name</strong>? El archivo HTML se eliminará.',
     'page_deleted'          => 'Página eliminada.',
     'pages_created'         => 'Página(s) creada(s).',
     'org_add_hint'          => 'Solo agrega nuevas páginas. No elimina las existentes.',
+    'organization_hint'     => 'Define el tipo y cantidad de páginas. Las faltantes se crean al guardar; las eliminadas aquí se borran del proyecto.',
+    'add_org_semanas'       => 'Agregar semana',
+    'add_org_modulos'       => 'Agregar módulo',
+    'add_org_unidades'      => 'Agregar unidad',
+
+    // Protección
+    'protection'            => 'Protección',
+    'protect_label'         => 'Proteger contra eliminación',
+    'protect_hint'          => 'Impide que el proyecto sea eliminado accidentalmente. Solo administradores pueden cambiar este ajuste.',
+    'activities_hint'       => 'Marca para crear, desmarca para eliminar. Los cambios se aplican al guardar.',
+    'slug_collision'        => 'Ya existe una página con ese nombre.',
+
+    // Pestañas de edición de proyecto
+    'project_sections'      => 'Secciones del proyecto',
+    'tab_config'            => 'Configuración',
+    'tab_content'           => 'Contenido',
+    'section_identification' => 'Identificación',
 
     // Colores
     'brand_colors'          => 'Colores de la marca',

@@ -122,24 +122,13 @@ class ProjectApiController
             }
         }
 
-        // Páginas adicionales
+        // Páginas adicionales — acepta formato legacy (strings) o nuevo (objetos {name})
         $customPages = $request->input('customPages', []);
         if (is_array($customPages)) {
-            foreach ($customPages as $pageName) {
-                $pageName = trim($pageName);
+            foreach ($customPages as $item) {
+                $pageName = is_array($item) ? trim((string)($item['name'] ?? '')) : trim((string)$item);
                 if ($pageName === '') continue;
-                $pageSlug = to_slug($pageName);
-                if ($pageSlug === '' || !is_valid_slug($pageSlug)) continue;
-                $filePath = $projectPath . '/pages/' . $pageSlug . '.html';
-                if (!file_exists($filePath)) {
-                    $html = '<div class="custom-page">' . "\n" .
-                        '  <h2>' . htmlspecialchars($pageName, ENT_QUOTES, 'UTF-8') . '</h2>' . "\n" .
-                        '  <div class="page-content">' . "\n" .
-                        '    <p>Contenido de ' . htmlspecialchars($pageName, ENT_QUOTES, 'UTF-8') . '.</p>' . "\n" .
-                        '  </div>' . "\n" .
-                        '</div>' . "\n";
-                    file_put_contents($filePath, $html);
-                }
+                self::createCustomPageFile($projectPath . '/pages', $pageName);
             }
         }
 
@@ -209,6 +198,7 @@ class ProjectApiController
 
     /**
      * POST /api/projects/edit
+     * Actualización unificada: metadata + diff de páginas (organización, custom, actividades).
      */
     public function edit(Request $request, array $params = []): void
     {
@@ -224,7 +214,13 @@ class ProjectApiController
             Response::json(['error' => __('general.not_found')], 404);
         }
 
+        $slug = $project['slug'];
+        $projectPath = STORAGE_PATH . '/projects/' . $slug;
+        $pagesDir = $projectPath . '/pages';
+
         $fields = [];
+
+        // ── Metadata ──
         $name = $request->input('name');
         if ($name !== null) {
             $name = trim($name);
@@ -244,7 +240,6 @@ class ProjectApiController
             }
         }
 
-        // Colores del nav Canvas
         $navColors = $request->input('navColors');
         if ($navColors !== null) {
             if (!empty($navColors['bg']) && is_hex_color($navColors['bg'])) {
@@ -255,46 +250,165 @@ class ProjectApiController
             }
         }
 
-        // Agregar páginas organizativas si se solicita
-        $orgType = $request->input('orgType');
-        $orgCount = (int) ($request->input('orgCount', 0));
-
-        if ($orgType !== null && $orgType !== 'none' && $orgCount > 0) {
-            $orgLabels = ['semanas' => 'Semana', 'modulos' => 'Módulo', 'unidades' => 'Unidad'];
-            $orgLabel = $orgLabels[$orgType] ?? '';
-
-            if ($orgLabel) {
-                $projectPath = STORAGE_PATH . '/projects/' . $project['slug'];
-                $pagesDir = $projectPath . '/pages';
-                $orgTpl = file_get_contents(BASE_PATH . '/templates/pages/organization.html');
-
-                for ($i = 1; $i <= $orgCount; $i++) {
-                    $num = str_pad((string) $i, 2, '0', STR_PAD_LEFT);
-                    $fileName = to_slug($orgLabel) . '-' . $num . '.html';
-                    if (!file_exists($pagesDir . '/' . $fileName)) {
-                        $content = str_replace('{{ORG_LABEL}}', $orgLabel . ' ' . $num, $orgTpl);
-                        file_put_contents($pagesDir . '/' . $fileName, $content);
-                    }
-                }
-
-                $fields['org_type'] = $orgType;
-                $fields['org_count'] = $orgCount;
-            }
-        }
-
-        // CDNs
         $newCdns = $request->input('cdns');
         if (is_array($newCdns)) {
             $fields['cdns'] = $newCdns;
         }
 
-        // Actualizar master CSS (colores + imports)
-        $slug = $project['slug'];
-        $masterFile = STORAGE_PATH . '/projects/' . $slug . '/css/' . $slug . '-master.css';
+        // Solo admin puede cambiar el flag de protección
+        $isProtected = $request->input('is_protected');
+        if ($isProtected !== null && AuthMiddleware::isAdmin()) {
+            $fields['is_protected'] = $isProtected ? 1 : 0;
+        }
+
+        // ── Diff de páginas de organización ──
+        // Cliente envía la lista de las que deben permanecer (oldSlug).
+        // Las que no estén en la lista se eliminan. Luego orgType+orgCount crea las faltantes.
+        $orgType = $request->input('orgType', 'none');
+        $orgCount = (int) $request->input('orgCount', 0);
+        $organization = $request->input('organization', null);
+
+        if (is_array($organization) && is_dir($pagesDir)) {
+            $keepOrg = [];
+            $orgPrefixLabel = ['semana' => 'Semana', 'modulo' => 'Módulo', 'unidad' => 'Unidad'];
+            $orgTpl = null;
+
+            foreach ($organization as $item) {
+                $os = is_array($item) ? ($item['oldSlug'] ?? null) : null;
+                if (!$os || !preg_match('/^(semana|modulo|unidad)-(\d+)$/', $os, $m)) continue;
+                $keepOrg[$os] = true;
+
+                // Crear archivo si la lista lo incluye pero no existe (páginas agregadas con "+")
+                $path = $pagesDir . '/' . $os . '.html';
+                if (!file_exists($path)) {
+                    if ($orgTpl === null) {
+                        $orgTpl = file_get_contents(BASE_PATH . '/templates/pages/organization.html');
+                    }
+                    $label = ($orgPrefixLabel[$m[1]] ?? ucfirst($m[1])) . ' ' . $m[2];
+                    file_put_contents($path, str_replace('{{ORG_LABEL}}', $label, $orgTpl));
+                }
+            }
+            foreach (glob($pagesDir . '/*.html') ?: [] as $f) {
+                $fn = basename($f, '.html');
+                if (preg_match('/^(semana|modulo|unidad)-\d+$/', $fn) && !isset($keepOrg[$fn])) {
+                    self::safeUnlink($f, $pagesDir);
+                }
+            }
+        }
+
+        if ($orgType !== 'none' && $orgCount > 0) {
+            $orgLabels = ['semanas' => 'Semana', 'modulos' => 'Módulo', 'unidades' => 'Unidad'];
+            $orgLabel = $orgLabels[$orgType] ?? '';
+            if ($orgLabel && is_dir($pagesDir)) {
+                $prefix = to_slug($orgLabel);
+                // Calcular el número máximo existente del tipo actual (después del diff de delete)
+                $existingMax = 0;
+                foreach (glob($pagesDir . '/' . $prefix . '-*.html') ?: [] as $f) {
+                    $fn = basename($f, '.html');
+                    if (preg_match('/^' . preg_quote($prefix, '/') . '-(\d+)$/', $fn, $m)) {
+                        $existingMax = max($existingMax, (int) $m[1]);
+                    }
+                }
+                // Solo crear páginas nuevas más allá del máximo actual (no revive las eliminadas).
+                if ($orgCount > $existingMax) {
+                    $orgTpl = file_get_contents(BASE_PATH . '/templates/pages/organization.html');
+                    for ($i = $existingMax + 1; $i <= $orgCount; $i++) {
+                        $num = str_pad((string) $i, 2, '0', STR_PAD_LEFT);
+                        $fileName = $prefix . '-' . $num . '.html';
+                        if (!file_exists($pagesDir . '/' . $fileName)) {
+                            $content = str_replace('{{ORG_LABEL}}', $orgLabel . ' ' . $num, $orgTpl);
+                            file_put_contents($pagesDir . '/' . $fileName, $content);
+                        }
+                    }
+                }
+                $fields['org_type'] = $orgType;
+                $fields['org_count'] = $orgCount;
+            }
+        } elseif ($orgType === 'none') {
+            $fields['org_type'] = 'none';
+            $fields['org_count'] = 0;
+        }
+
+        // ── Diff de páginas adicionales (rename + add + delete) ──
+        $customPages = $request->input('customPages', null);
+        if (is_array($customPages) && is_dir($pagesDir)) {
+            $activitySlugs = ['tarea', 'foros', 'quiz'];
+            $keepCustom = [];  // slugs finales que deben quedar
+            $reserved = [];    // evitar colisiones intra-request
+
+            foreach ($customPages as $item) {
+                if (!is_array($item)) continue;
+                $pageName = trim((string)($item['name'] ?? ''));
+                $oldSlug = isset($item['oldSlug']) && $item['oldSlug'] !== '' ? (string)$item['oldSlug'] : null;
+                if ($pageName === '') continue;
+
+                $newSlug = to_slug($pageName);
+                if ($newSlug === '' || !is_valid_slug($newSlug)) continue;
+
+                // Bloquear colisiones con organización y actividades
+                if (preg_match('/^(semana|modulo|unidad)-\d+$/', $newSlug) || in_array($newSlug, $activitySlugs, true)) {
+                    continue;
+                }
+
+                // Evitar duplicados intra-request
+                if (isset($reserved[$newSlug])) continue;
+                $reserved[$newSlug] = true;
+
+                if ($oldSlug === null) {
+                    // Nueva página
+                    $path = $pagesDir . '/' . $newSlug . '.html';
+                    if (!file_exists($path)) {
+                        self::createCustomPageFile($pagesDir, $pageName);
+                    }
+                    $keepCustom[$newSlug] = true;
+                } else {
+                    // Posible rename (o sin cambios)
+                    $oldPath = $pagesDir . '/' . $oldSlug . '.html';
+                    $newPath = $pagesDir . '/' . $newSlug . '.html';
+                    if ($oldSlug !== $newSlug && file_exists($oldPath) && !file_exists($newPath)) {
+                        rename($oldPath, $newPath);
+                    }
+                    $keepCustom[$newSlug] = true;
+                }
+            }
+
+            // Eliminar archivos custom que no están en la lista final
+            foreach (glob($pagesDir . '/*.html') ?: [] as $f) {
+                $fn = basename($f, '.html');
+                if (preg_match('/^(semana|modulo|unidad)-\d+$/', $fn)) continue;
+                if (in_array($fn, $activitySlugs, true)) continue;
+                if (!isset($keepCustom[$fn])) {
+                    self::safeUnlink($f, $pagesDir);
+                }
+            }
+        }
+
+        // ── Diff de actividades (add/remove por checkbox) ──
+        $activities = $request->input('activities', null);
+        if (is_array($activities) && is_dir($pagesDir)) {
+            $activityTemplates = ['tarea' => 'pages/tarea.html', 'foros' => 'pages/foros.html', 'quiz' => 'pages/quiz.html'];
+            $templatesDir = BASE_PATH . '/templates';
+            $desired = array_values(array_intersect($activities, array_keys($activityTemplates)));
+
+            foreach ($activityTemplates as $actSlug => $tplPath) {
+                $filePath = $pagesDir . '/' . $actSlug . '.html';
+                $shouldExist = in_array($actSlug, $desired, true);
+                if ($shouldExist && !file_exists($filePath)) {
+                    $tplFull = $templatesDir . '/' . $tplPath;
+                    if (file_exists($tplFull)) {
+                        file_put_contents($filePath, file_get_contents($tplFull));
+                    }
+                } elseif (!$shouldExist && file_exists($filePath)) {
+                    self::safeUnlink($filePath, $pagesDir);
+                }
+            }
+        }
+
+        // ── Actualizar master CSS (colores + imports) ──
+        $masterFile = $projectPath . '/css/' . $slug . '-master.css';
         if (file_exists($masterFile)) {
             $css = file_get_contents($masterFile);
 
-            // Colores (prefijo genérico: detecta cualquier --xxx-primary-base)
             if (isset($fields['color_primary'])) {
                 $css = preg_replace('/--[a-z0-9]+-primary-base:\s*#[0-9A-Fa-f]{6}/', '--' . css_prefix($slug) . '-primary-base: ' . $fields['color_primary'], $css);
             }
@@ -302,14 +416,10 @@ class ProjectApiController
                 $css = preg_replace('/--[a-z0-9]+-secondary-base:\s*#[0-9A-Fa-f]{6}/', '--' . css_prefix($slug) . '-secondary-base: ' . $fields['color_secondary'], $css);
             }
 
-            // Imports de CDNs
             if (is_array($newCdns)) {
-                // Eliminar TODOS los @import existentes
                 $css = preg_replace('/^@import\s+url\(.+?\);\s*$/m', '', $css);
-                // Limpiar líneas vacías extras después del @charset
                 $css = preg_replace('/(@charset\s+"[^"]+";)\s*\n+/', '$1' . "\n", $css);
 
-                // Regenerar imports
                 $cdnUrls = App::config('cdns', []);
                 $imports = '';
                 foreach ($newCdns as $cdn) {
@@ -318,7 +428,6 @@ class ProjectApiController
                     }
                 }
 
-                // Insertar después de @charset
                 if ($imports) {
                     $css = preg_replace('/(@charset\s+"[^"]+";)\n/', '$1' . "\n" . $imports, $css);
                 }
@@ -335,6 +444,38 @@ class ProjectApiController
             'success' => true,
             'message' => __('admin.project_updated'),
         ]);
+    }
+
+    /**
+     * Genera un archivo HTML vacío para una página adicional.
+     */
+    private static function createCustomPageFile(string $pagesDir, string $pageName): void
+    {
+        $pageSlug = to_slug($pageName);
+        if ($pageSlug === '' || !is_valid_slug($pageSlug)) return;
+        $filePath = $pagesDir . '/' . $pageSlug . '.html';
+        if (file_exists($filePath)) return;
+
+        $esc = htmlspecialchars($pageName, ENT_QUOTES, 'UTF-8');
+        $html = '<div class="custom-page">' . "\n" .
+            '  <h2>' . $esc . '</h2>' . "\n" .
+            '  <div class="page-content">' . "\n" .
+            '    <p>Contenido de ' . $esc . '.</p>' . "\n" .
+            '  </div>' . "\n" .
+            '</div>' . "\n";
+        file_put_contents($filePath, $html);
+    }
+
+    /**
+     * Elimina un archivo solo si está contenido dentro del directorio esperado (anti path-traversal).
+     */
+    private static function safeUnlink(string $filePath, string $allowedDir): void
+    {
+        $real = realpath($filePath);
+        $base = realpath($allowedDir);
+        if ($real && $base && strpos($real, $base) === 0 && is_file($real)) {
+            unlink($real);
+        }
     }
 
     /**

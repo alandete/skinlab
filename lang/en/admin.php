@@ -36,16 +36,35 @@ return [
     'custom_pages'          => 'Additional pages',
     'custom_pages_hint'     => 'Custom content pages, in addition to organization and activities.',
     'add_pages'             => 'Add pages',
+    'add_custom_page'       => 'Add page',
     'page_name'             => 'Page name',
     'add_more'              => 'Add another',
     'pages_section_org'     => 'Organization',
     'pages_section_custom'  => 'Additional pages',
     'pages_section_act'     => 'Activities',
     'delete_page'           => 'Delete page',
+    'rename_page'           => 'Rename page',
     'confirm_delete_page'   => 'Delete page <strong>:name</strong>? The HTML file will be removed.',
     'page_deleted'          => 'Page deleted.',
     'pages_created'         => 'Page(s) created.',
     'org_add_hint'          => 'Only adds new pages. Does not remove existing ones.',
+    'organization_hint'     => 'Choose type and count. Missing pages are created on save; removed ones are deleted.',
+    'add_org_semanas'       => 'Add week',
+    'add_org_modulos'       => 'Add module',
+    'add_org_unidades'      => 'Add unit',
+
+    // Protection
+    'protection'            => 'Protection',
+    'protect_label'         => 'Protect from deletion',
+    'protect_hint'          => 'Prevents accidental deletion of the project. Only admins can change this setting.',
+    'activities_hint'       => 'Check to create, uncheck to delete. Changes apply on save.',
+    'slug_collision'        => 'A page with that name already exists.',
+
+    // Project edit tabs
+    'project_sections'      => 'Project sections',
+    'tab_config'            => 'Configuration',
+    'tab_content'           => 'Content',
+    'section_identification' => 'Identification',
 
     // Colors
     'brand_colors'          => 'Brand colors',

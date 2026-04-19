@@ -80,7 +80,7 @@ class Project
 
     public static function update(int $id, array $fields): void
     {
-        $allowed = ['name', 'description', 'color_primary', 'color_secondary', 'nav_bg_color', 'nav_text_color', 'org_type', 'org_count', 'cdns'];
+        $allowed = ['name', 'description', 'color_primary', 'color_secondary', 'nav_bg_color', 'nav_text_color', 'org_type', 'org_count', 'cdns', 'is_protected'];
         $sets = [];
         $params = [':id' => $id];
 

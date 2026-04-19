@@ -49,13 +49,20 @@ $cdnDescs = [
     </div>
     <?php else: ?>
     <?php foreach ($projects as $proj): ?>
-    <article class="project-card <?= !$proj['is_active'] ? 'project-card-inactive' : '' ?>"
+    <article class="project-card <?= !$proj['is_active'] ? 'project-card-inactive' : '' ?> <?= !empty($proj['is_protected']) ? 'project-card-protected' : '' ?>"
              data-project-id="<?= (int)$proj['id'] ?>"
              data-slug="<?= e($proj['slug']) ?>">
         <header class="project-card-header">
             <div class="project-color-dot" style="background: <?= e($proj['color_primary']) ?>" aria-hidden="true"></div>
             <div class="project-card-title">
-                <h3><?= e($proj['name']) ?></h3>
+                <h3>
+                    <?= e($proj['name']) ?>
+                    <?php if (!empty($proj['is_protected'])): ?>
+                    <i class="bi bi-shield-lock-fill project-card-lock"
+                       title="<?= e(__('admin.protect_label')) ?>"
+                       aria-label="<?= e(__('admin.protect_label')) ?>"></i>
+                    <?php endif; ?>
+                </h3>
                 <code>projects/<?= e($proj['slug']) ?>/</code>
             </div>
             <div class="project-card-menu">

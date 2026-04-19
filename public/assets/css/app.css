@@ -39,13 +39,13 @@
     --sl-space-12: 3rem;      /* 48px */
 
     /* ── Colors (SkinLab brand) ── */
-    --sl-primary:       #1C4AA6;    /* Slate Indigo — botones, enlaces, acentos */
+    --sl-primary:       #495293;    /* Victoria — botones, enlaces, acentos */
     --sl-primary-hover: #4D6BD0;
     --sl-primary-dark:  #2E4A9E;
-    --sl-brand:         #5336BF;    /* Rebecca Purple — sidebar, toolbar, marca */
+    --sl-brand:         #332550;    /* Port Gore — sidebar, toolbar, marca */
     --sl-brand-light:   #D92579;
-    --sl-accent:        #BFCDF1;    /* Periwinkle — fondos suaves, badges */
-    --sl-highlight:     #F25C05;    /* Pumpkin Spice — CTA, notificaciones */
+    --sl-accent:        #BFCDF1;    /* Spindle — fondos suaves, badges */
+    --sl-highlight:     #e87c53;    /* Burnt Sienna — CTA, notificaciones */
     --sl-secondary:     #3E5DC2;
     --sl-secondary-light: #4D6BD0;
     --sl-white:         #FEFEFE;
@@ -620,7 +620,8 @@ select.form-input {
 }
 
 /* ── Utilidades ── */
-.hidden {
+.hidden,
+[hidden] {
     display: none !important;
 }
 

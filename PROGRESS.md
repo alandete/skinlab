@@ -248,6 +248,34 @@ Recreación limpia y modular de CanvasThemes para desarrollo de temas Canvas LMS
 
 ---
 
+## Rediseño módulo Crear/Editar Proyecto ✅
+> Completado: 2026-04-18
+
+Reconstrucción completa del módulo desde cero (no parches).
+
+### Tareas completadas
+
+| # | Tarea | Fecha | Detalles |
+|---|-------|-------|----------|
+| PE.1 | Layout con pestañas | 2026-04-18 | Pestaña 1 "Configuración" (identificación, colores marca, colores nav Canvas, librerías), Pestaña 2 "Contenido" (organización, páginas adicionales, actividades). ARIA completo, nav con flechas |
+| PE.2 | Flujo unificado crear/editar | 2026-04-18 | Mismo formulario y JS para ambos. Estado inicial cambia, interacciones idénticas |
+| PE.3 | Páginas adicionales inline | 2026-04-18 | Eliminado contador → inputs. Botón "+ Agregar página" inserta fila editable. Enter confirma, Esc cancela |
+| PE.4 | Renombrar páginas | 2026-04-18 | Botón ✎ convierte el nombre en input inline. Nuevo endpoint o diff en `/api/projects/edit` renombra archivo en filesystem |
+| PE.5 | Actividades sincronizadas | 2026-04-18 | Checkboxes reflejan estado real. Al guardar: desmarcadas → elimina archivo, marcadas nuevas → crea desde template |
+| PE.6 | Organización: crear + eliminar | 2026-04-18 | Tipo + cantidad crea faltantes. Lista con botón × permite eliminar individuales. Sin renombrar (rompe el patrón) |
+| PE.7 | API edit unificada | 2026-04-18 | `POST /api/projects/edit` ahora hace diff completo: custom (rename/add/delete), actividades (add/delete), organización (add/delete). `safeUnlink` con containment. Validación anti-colisión con patrones reservados |
+| PE.8 | Sin reloads | 2026-04-18 | Single save → toast → redirect a listado. Elimina `btn-save-pages` intermedio |
+
+### Archivos modificados
+
+- `views/admin/project-edit.php` — Rediseño completo con fieldsets, tabs, listas de páginas con rename inline
+- `public/assets/js/admin-project-edit.js` — Reescrito: tabs con teclado, rename inline, diff en save
+- `app/Controllers/Api/ProjectApiController.php` — `edit()` unificado con diff, helpers `createCustomPageFile` y `safeUnlink`
+- `public/assets/css/admin.css` — Eliminados estilos obsoletos (`.project-edit-layout`, `.pages-list`, `.new-page-row`, `.edit-colors-grid`). Agregados `.project-tabs`, `.project-panel`, `.form-section`, `.color-pair`, `.page-list`, `.page-list-item`
+- `lang/es/admin.php` + `lang/en/admin.php` — 8 strings nuevos (tab_config, tab_content, rename_page, add_custom_page, organization_hint, activities_hint, slug_collision, project_sections, section_identification)
+
+---
+
 ## Pendientes
 
 | # | Tarea | Estado |
@@ -256,6 +284,7 @@ Recreación limpia y modular de CanvasThemes para desarrollo de temas Canvas LMS
 | P.2 | Tema oscuro completo del dashboard | ⬜ |
 | P.3 | Módulo Git/GitHub en Admin | ⬜ |
 | P.4 | Optimización de rendimiento (lazy loading, cache) | ⬜ |
+| P.5 | Fix: `color-scheme: light` + meta tag en layouts (bloquea auto-dark de Chromium en Win11) | ⬜ |
 
 ---
 
