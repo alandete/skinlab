@@ -13,6 +13,7 @@
             <li><a href="#css-restringido" class="toc-link"><i class="bi bi-x-circle" aria-hidden="true"></i> CSS Restringido</a></li>
             <li><a href="#variables-css" class="toc-link"><i class="bi bi-palette2" aria-hidden="true"></i> Variables Canvas</a></li>
             <li><a href="#dark-mode" class="toc-link"><i class="bi bi-moon" aria-hidden="true"></i> Modo Oscuro</a></li>
+            <li><a href="#dark-mode-web-canvas" class="toc-link"><i class="bi bi-moon-stars" aria-hidden="true"></i> Dark mode en Canvas Web</a></li>
             <li><a href="#high-contrast" class="toc-link"><i class="bi bi-circle-half" aria-hidden="true"></i> Alto Contraste</a></li>
             <li><a href="#tipografia" class="toc-link"><i class="bi bi-fonts" aria-hidden="true"></i> Tipografía</a></li>
             <li class="toc-title">Proyecto</li>
@@ -251,6 +252,76 @@ html[data-theme="dark"] {
 }</code></pre>
         </section>
 
+        <!-- ════════════ DARK MODE EN CANVAS WEB ════════════ -->
+        <section id="dark-mode-web-canvas">
+            <h2><i class="bi bi-moon-stars" aria-hidden="true"></i> Dark mode en Canvas LMS Web</h2>
+
+            <div class="callout warning">
+                <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
+                <div>
+                    <strong>Caso reportado:</strong> Un usuario que ingresó al curso desde un navegador web vio los contenidos del curso en modo oscuro sin haber activado nada en Canvas. El resto de la interfaz de Canvas seguía en modo claro, generando una inconsistencia visual.
+                </div>
+            </div>
+
+            <h3>¿Por qué ocurre?</h3>
+            <p>El CSS del proyecto incluye una regla <code>@media (prefers-color-scheme: dark)</code> que aplica estilos oscuros automáticamente cuando el <strong>sistema operativo del usuario</strong> tiene modo oscuro habilitado. Esto lo resuelve el navegador y no puede desactivarse desde Canvas ni desde el CSS una vez la regla está presente.</p>
+            <p>Como Canvas LMS web <strong>no tiene soporte nativo para dark mode</strong>, el resultado es una página donde:</p>
+            <ul class="docs-list">
+                <li>Los contenidos del curso (nuestro CSS) se ven en modo oscuro.</li>
+                <li>La interfaz de Canvas (barra superior, menú lateral, gradebook, RCE, LTI) se mantiene en modo claro.</li>
+                <li>Los recursos embebidos (imágenes, iframes, LTI) muchas veces no respetan el modo oscuro.</li>
+            </ul>
+
+            <h3>¿Es un error de Canvas?</h3>
+            <p>No. Canvas simplemente <strong>no contempla dark mode en su versión web</strong> — solo ofrece un toggle de <em>alto contraste</em> en la configuración de usuario (que no es dark mode, es un contraste aumentado en modo claro).</p>
+
+            <h3>¿Es un error del CSS generado?</h3>
+            <p>Tampoco. La regla <code>@media (prefers-color-scheme: dark)</code> funciona como debe: respeta la preferencia del sistema operativo. El problema es que esa preferencia aplica <strong>solo al CSS del proyecto</strong>, no a la interfaz de Canvas que lo rodea.</p>
+
+            <h3>Solución implementada en SkinLab</h3>
+            <div class="callout info">
+                <i class="bi bi-info-circle" aria-hidden="true"></i>
+                <div>
+                    <strong>El compilador desactiva el dark mode automático solo en desktop</strong>, manteniéndolo en móvil. Canvas tiene dos slots de CSS (uno desktop y otro móvil/app) y SkinLab los aprovecha.
+                </div>
+            </div>
+
+            <h4>¿Cómo funciona?</h4>
+            <ul class="docs-list">
+                <li><strong>Desktop (<code>slug-desktop.css</code>):</strong> el compilador elimina automáticamente el bloque <code>@media (prefers-color-scheme: dark)</code>. Los usuarios en navegador de escritorio nunca verán dark mode automático, manteniendo consistencia con la interfaz clara de Canvas.</li>
+                <li><strong>Móvil / App (<code>slug-mobile.css</code>):</strong> conserva el bloque <code>@media (prefers-color-scheme: dark)</code>. Los usuarios en la app Canvas Student ven dark mode cuando su sistema lo tiene habilitado, coherente con el resto de apps del dispositivo.</li>
+                <li><strong>Ambiente de desarrollo:</strong> sigue disponible el toggle manual (<code>html[data-theme="dark"]</code>) en el dashboard de SkinLab para previsualizar dark mode durante el desarrollo. El compilador lo elimina siempre.</li>
+            </ul>
+
+            <h4>Dónde vive la lógica</h4>
+            <p>El compilador (<code>app/Helpers/CssCompiler.php</code>) aplica dos reglas al generar el archivo desktop: una elimina el bloque cuando tiene el comentario <code>DARK MODE — Canvas real</code>, la otra (fallback) elimina cualquier <code>@media (prefers-color-scheme: dark)</code> sin comentario.</p>
+
+            <h4>Verificación</h4>
+            <p>Probado con dark mode del sistema activado:</p>
+            <ul class="docs-list">
+                <li>Navegador de escritorio → contenido del curso en modo claro (correcto, consistente con Canvas).</li>
+                <li>App móvil con dark mode en el dispositivo → contenido del curso en modo oscuro.</li>
+                <li>App móvil con modo claro → contenido del curso en modo claro.</li>
+            </ul>
+
+            <h3>Opciones descartadas</h3>
+            <div class="practice-card bad">
+                <h4><i class="bi bi-x-circle" aria-hidden="true"></i> Mantener dark mode automático también en desktop</h4>
+                <ul>
+                    <li>Era el estado original hasta que se reportó el caso.</li>
+                    <li>Genera inconsistencia visual entre el contenido del curso (oscuro) y la interfaz de Canvas (clara).</li>
+                </ul>
+            </div>
+
+            <div class="practice-card bad">
+                <h4><i class="bi bi-x-circle" aria-hidden="true"></i> Dark mode opt-in con toggle en el contenido</h4>
+                <ul>
+                    <li>Requiere JavaScript que Canvas no permite en páginas wiki.</li>
+                    <li>Tendría que subirse como JS personalizado en el Theme Editor a nivel de cuenta.</li>
+                </ul>
+            </div>
+        </section>
+
         <!-- ════════════ ALTO CONTRASTE ════════════ -->
         <section id="high-contrast">
             <h2><i class="bi bi-circle-half" aria-hidden="true"></i> Alto Contraste</h2>
@@ -343,8 +414,8 @@ html[data-theme="dark"] {
                 <thead><tr><th>Archivo</th><th>Descripción</th></tr></thead>
                 <tbody>
                     <tr><td><code>slug-master.css</code></td><td>Archivo de trabajo. Se edita aquí y se compila.</td></tr>
-                    <tr><td><code>slug-mobile.css</code></td><td>Generado. Estilos hasta 992px. Para Canvas móvil/tablet.</td></tr>
-                    <tr><td><code>slug-desktop.css</code></td><td>Generado. Todos los estilos. Para Canvas desktop.</td></tr>
+                    <tr><td><code>slug-mobile.css</code></td><td>Generado. Estilos hasta 992px. Conserva <code>@media (prefers-color-scheme: dark)</code>. Para Canvas móvil/tablet.</td></tr>
+                    <tr><td><code>slug-desktop.css</code></td><td>Generado. Todos los estilos excepto <code>@media (prefers-color-scheme: dark)</code>. Para Canvas desktop.</td></tr>
                 </tbody>
             </table>
             <h3>Proceso</h3>

@@ -93,9 +93,9 @@ Solo las etiquetas documentadas en la sección "HTML Permitido". Importante:
 
 Al compilar `master.css` → `mobile.css` + `desktop.css`:
 
-1. Eliminar bloque `html[data-theme="dark"]` (ambiente de pruebas).
-2. Mobile: eliminar `@media (min-width: 1200px)` y superiores.
-3. Desktop: mantener todo excepto el bloque de pruebas.
+1. Eliminar bloque `html[data-theme="dark"]` en ambos (ambiente de pruebas).
+2. Mobile: eliminar `@media (min-width: 1200px)` y superiores. Conservar `@media (prefers-color-scheme: dark)` — la app nativa de Canvas Student soporta dark mode.
+3. Desktop: eliminar `@media (prefers-color-scheme: dark)`. Canvas web no tiene dark mode nativo, dejarlo genera inconsistencia visual (contenido oscuro vs UI Canvas claro).
 4. Los archivos compilados son los que se suben a Canvas.
 
 ---

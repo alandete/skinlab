@@ -6,8 +6,13 @@ namespace App\Helpers;
 
 /**
  * Compila CSS master → mobile + desktop.
- * Mobile: elimina @media >= 1200px y html[data-theme="dark"]
- * Desktop: todo excepto html[data-theme="dark"]
+ *
+ * Mobile: elimina html[data-theme="dark"] y @media >= 1200px. Conserva prefers-color-scheme.
+ * Desktop: elimina html[data-theme="dark"] y @media (prefers-color-scheme: dark).
+ *
+ * El dark mode automático se mantiene solo en móvil porque la app de Canvas
+ * soporta dark mode nativo. En web desktop, Canvas no tiene dark mode y dejar
+ * prefers-color-scheme genera inconsistencia visual (contenido oscuro, UI Canvas claro).
  */
 class CssCompiler
 {
@@ -32,11 +37,26 @@ class CssCompiler
             $clean
         );
 
-        // Desktop: todo limpio
-        $desktop = preg_replace('/\n{3,}/', "\n\n", $clean);
+        // ── Desktop: conserva todo excepto dark-mode automático ──
+        $desktop = $clean;
+
+        // Comentario "DARK MODE — Canvas real" + bloque @media
+        $desktop = preg_replace(
+            '!/\*[═\s]*DARK MODE\s*—\s*Canvas real[^*]*\*/\s*@media\s*\(\s*prefers-color-scheme\s*:\s*dark\s*\)\s*\{(?:[^{}]*|\{[^{}]*\})*\}\s*!s',
+            '',
+            $desktop
+        );
+        // Fallback: cualquier @media (prefers-color-scheme: dark) sin el comentario
+        $desktop = preg_replace(
+            '/@media\s*\(\s*prefers-color-scheme\s*:\s*dark\s*\)\s*\{(?:[^{}]*|\{[^{}]*\})*\}\s*/s',
+            '',
+            $desktop
+        );
+
+        $desktop = preg_replace('/\n{3,}/', "\n\n", $desktop);
         $desktop = trim($desktop) . "\n";
 
-        // Mobile: eliminar @media >= 1200px
+        // ── Mobile: elimina @media >= 1200px (conserva prefers-color-scheme) ──
         $mobile = $clean;
 
         // Con comentario (X-Large, XX-Large)
